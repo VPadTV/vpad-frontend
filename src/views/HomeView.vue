@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import SearchHeader from './components/SearchHeader.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <SearchHeader />
   </main>
 </template>
+
+<style scoped lang="scss"></style>
