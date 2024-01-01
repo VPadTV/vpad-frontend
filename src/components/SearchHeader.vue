@@ -25,7 +25,7 @@ header {
     display: flex;
     align-items: center;
     background-color: $main;
-    width: 100vw;
+    width: 100%;
     padding: 1rem;
 
     .logo {
