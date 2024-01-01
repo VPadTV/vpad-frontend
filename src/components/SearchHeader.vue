@@ -3,7 +3,9 @@
 
 <template>
     <header>
-        <img alt="VPad" class="logo" src="@/assets/logo_whitebg.png" height="60" />
+        <RouterLink to="/" class="logo">
+            <img alt="VPad" src="@/assets/logo_whitebg.png" height="60" />
+        </RouterLink>
         <form id="search-box" method="get">
             <input name="search" type="text">
             <button id="search-button">
@@ -11,9 +13,9 @@
             </button>
         </form>
         <section id="stuff">
-            <RouterLink to=""><img src="@/assets/pencil.png" alt="Create"></RouterLink>
-            <RouterLink to=""><img src="@/assets/mailbox.png" alt="Notifications"></RouterLink>
-            <RouterLink to=""><img src="@/assets/circle.png" alt="Profile"></RouterLink>
+            <RouterLink to="/create"><img src="@/assets/pencil.png" alt="Create"></RouterLink>
+            <RouterLink to="/notifications"><img src="@/assets/mailbox.png" alt="Notifications"></RouterLink>
+            <RouterLink to="/profile"><img src="@/assets/circle.png" alt="Profile"></RouterLink>
         </section>
     </header>
 </template>
@@ -61,6 +63,9 @@ header {
         background-color: $accent;
         img {
             height: 100%;
+        }
+        :hover {
+            cursor: pointer;
         }
     }
 }

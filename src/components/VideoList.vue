@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
 import { get } from '../lib/api'
+import LikeIcon from './LikeIcon.vue';
+import DislikeIcon from './DislikeIcon.vue';
 
 let videos: Ref<{ id: number, title: string }[] | null> = ref(null)
 
@@ -15,10 +17,20 @@ function rand(min: number, max: number) {
 
 <template>
     <main class="videos">
-        <div class="video" v-for="video in videos" :key="video.id">
+        <RouterLink :to="`/post/${video.id}`" class="video" v-for="video in videos" :key="video.id">
             <div class="thumbnail"></div>
-            <a class="title">{{ video.title }}</a>
-        </div>
+            <p class="text">
+                <span class="title">{{ video.title }}</span>
+                <RouterLink :to="`/user/x`" class="author">Guy Person</RouterLink>
+                <span class="meta">
+                    <span class="votes">
+                        100 <LikeIcon></LikeIcon>
+                        50 <DislikeIcon></DislikeIcon>
+                    </span>
+                    <span>2024-01-01</span>
+                </span>
+            </p>
+        </RouterLink>
     </main>
 </template>
   
@@ -33,9 +45,10 @@ function rand(min: number, max: number) {
 }
 
 main {
+    $gap: 2rem;
     columns: 6 200px;
-    column-gap: 1.5rem;
-    padding: 1rem;
+    gap: $gap;
+    padding: 1.5rem 1.5rem 0;
 
     @for $i from 1 through 104 { 
         .video:nth-child(#{$i}) .thumbnail {
@@ -48,15 +61,46 @@ main {
     .video {
         width: 100%;
         display: inline-block;
+        margin-bottom: $gap;
         .thumbnail {
             background-color: gray;
         }
         
-        .title {
-            display: inline-block;
+        .text {
             max-width: 100%;
-            max-height: 2lh;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+
+            * {
+                max-width: 100%;
+                color: $text;
+                overflow: hidden;
+                max-height: 2lh;    
+            }
+
+            .author:hover {
+                color: $link;
+                filter: unset;
+            }
+
+            .votes {
+                display: inline-flex;
+                column-gap: 0.25rem;
+                flex-direction: row;
+                align-items: center;
+                margin-right: 0.25rem;
+            }
+
+            svg {
+                height: 1rem;
+                width: 1rem;
+                display: inline;
+            }
+
+            svg.dislike {
+                transform: scaleY(-1);
+            }
         }
     }
 }
