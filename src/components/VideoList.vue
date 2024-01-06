@@ -3,66 +3,66 @@ import { onMounted, ref, type Ref } from 'vue';
 import { get } from '../lib/api'
 import LikeIcon from './LikeIcon.vue';
 import DislikeIcon from './DislikeIcon.vue';
+import { formatNumber } from '@/lib/helpers';
 
-let videos: Ref<{ id: number, title: string }[] | null> = ref(null)
+export type Video = { id: number, title: string, author: string, likes: number | string, dislikes: number | string }
+
+let videos: Ref<Video[] | null> = ref(null)
 
 onMounted(async () => {
-    videos.value = await get('url', {})
+    videos.value = (await get<Video[]>('url', {})).map(video => ({
+        ...video,
+        likes: formatNumber(video.likes),
+        dislikes: formatNumber(video.dislikes),
+    }))
 })
 
 function rand(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function getRandomSize() {
+    return {
+        width: `${rand(200, 400)}px`,
+        height: `${rand(200, 500)}px`,
+    }
+}
 </script>
 
 <template>
-    <main class="videos">
+    <section class="videos">
         <RouterLink :to="`/post/${video.id}`" class="video" v-for="video in videos" :key="video.id">
-            <div class="thumbnail"></div>
+            <div class="thumbnail" :style="getRandomSize()"></div>
             <p class="text">
                 <span class="title">{{ video.title }}</span>
-                <RouterLink :to="`/user/x`" class="author">Guy Person</RouterLink>
+                <RouterLink :to="`/user/x`" class="author">{{ video.author }}son</RouterLink>
                 <span class="meta">
                     <span class="votes">
-                        100 <LikeIcon></LikeIcon>
-                        50 <DislikeIcon></DislikeIcon>
+                        {{ video.likes }} <LikeIcon></LikeIcon>
+                        {{ video.dislikes }} <DislikeIcon></DislikeIcon>
                     </span>
                     <span>2024-01-01</span>
                 </span>
             </p>
         </RouterLink>
-    </main>
+    </section>
 </template>
   
 <style scoped lang="scss">
 @import '@/assets/base.scss';
 
-@function rand($min, $max) {
-  $rand: random();
-  $randomNum: $min + floor($rand * (($max - $min) + 1));
-
-  @return $randomNum;
-}
-
-main {
+section {
     $gap: 2rem;
-    columns: 6 200px;
+    columns: 5 200px;
     gap: $gap;
-    padding: 1.5rem 1.5rem 0;
-
-    @for $i from 1 through 104 { 
-        .video:nth-child(#{$i}) .thumbnail {
-            $h: (rand(200, 400)) + px;
-            height: $h;
-            line-height: $h;
-        }
-    }
+    padding: 4rem 6rem 0;
 
     .video {
         width: 100%;
         display: inline-block;
         margin-bottom: $gap;
         .thumbnail {
+            max-width: 250px;
             background-color: gray;
         }
         

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+defineProps<{
+    sidebarClosed: boolean
+}>()
 
-const sidebarClosed = ref(true)
 </script>
 
 <template>
@@ -15,11 +16,11 @@ const sidebarClosed = ref(true)
   
 <style scoped lang="scss">
 @import '@/assets/base.scss';
+
 aside {
-    position: fixed;
     background-color: $main;
     height: 100%;
-    min-width: 15vw;
+    width: $sidebar-width;
     transition: transform .2s;
     padding: 0 1rem 0 0;
 
