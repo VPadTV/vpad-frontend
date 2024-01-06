@@ -26,9 +26,11 @@
 header {
     display: flex;
     align-items: center;
+    justify-content: center;
     background-color: $main;
-    width: 100%;
+    width: 100vw;
     padding: 1rem;
+    height: $header-height;
 
     .logo {
         margin: 0 1rem 0 0;

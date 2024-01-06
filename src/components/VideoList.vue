@@ -35,12 +35,12 @@ function getRandomSize() {
             <div class="thumbnail" :style="getRandomSize()"></div>
             <p class="text">
                 <span class="title">{{ video.title }}</span>
-                <RouterLink :to="`/user/x`" class="author">{{ video.author }}son</RouterLink>
+                <RouterLink :to="`/user/x`" class="author">{{ video.author }}</RouterLink>
                 <span class="meta">
                     <span class="votes">
                         {{ video.likes }} <LikeIcon></LikeIcon>
                         {{ video.dislikes }} <DislikeIcon></DislikeIcon>
-                    </span>
+                    </span><br/>
                     <span>2024-01-01</span>
                 </span>
             </p>
@@ -56,6 +56,7 @@ section {
     columns: 5 200px;
     gap: $gap;
     padding: 4rem 6rem 0;
+    overflow-y: scroll;
 
     .video {
         width: 100%;
@@ -64,15 +65,17 @@ section {
         .thumbnail {
             max-width: 250px;
             background-color: gray;
+            margin: auto;
         }
         
         .text {
             max-width: 100%;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
 
             * {
+                text-align: center;
                 max-width: 100%;
                 color: $text;
                 overflow: hidden;
@@ -89,7 +92,6 @@ section {
                 column-gap: 0.25rem;
                 flex-direction: row;
                 align-items: center;
-                margin-right: 0.25rem;
             }
 
             svg {

@@ -13,27 +13,31 @@ const videoSidebarMargin = computed(() => ({
 
 
 <template>
-    <main>
-        <SearchHeader/>
-        <section>
-            <SubscriptionSidebar :sidebarClosed="sidebarClosed"/>
-            <VideoList :class="videoSidebarMargin"/>
-        </section>
-    </main>
+    <SearchHeader/>
+    <SubscriptionSidebar :sidebarClosed="sidebarClosed"/>
+    <VideoList :class="videoSidebarMargin"/>
 </template>
 
 <style scoped lang="scss">
 @import '@/assets/base.scss';
 
+header {
+    top: 0;
+    position: fixed;
+    z-index: 1;
+}
+
 aside {
-    position: absolute;
+    position: fixed;
+    left: 0;
+    top: $header-height;
     height: 100%;
     z-index: 1;
-    scroll-behavior: auto;
 }
 
 section.videos {
-    transition: margin-left .2s;
+    margin-top: $header-height;
+    transition: margin-left $sidebar-transition-time;
 }
 
 .aside-margin {
