@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UserProfilePicture from './UserProfilePicture.vue';
+import UserProfilePicture from '../UserProfilePicture.vue';
 </script>
 
 <template>

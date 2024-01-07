@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
-import { get } from '../lib/api'
+import { get } from '@/lib/api'
 import { formatNumber } from '@/lib/helpers';
 import type { Video } from '@/lib/types';
 

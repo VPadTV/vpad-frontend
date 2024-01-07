@@ -2,7 +2,7 @@
 import { onMounted, ref, type Ref } from 'vue';
 import { get } from '@/lib/api';
 import type { User, Video } from '@/lib/types';
-import CollapsibleUserList from './CollapsibleUserList.vue'
+import CollapsibleUserList from '../CollapsibleUserList.vue'
 
 let subs: Ref<User[]> = ref([])
 let follows: Ref<User[]> = ref([])
@@ -40,7 +40,7 @@ aside {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
 
     * {

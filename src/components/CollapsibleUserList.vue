@@ -44,9 +44,19 @@ div {
     transition: transform $sidebar-transition-time;
     color: $text;
     margin: 0 0 1rem;
+    width: 100%;
+    height: 1.5rem;
+
+    display: inline-flex;
+    justify-content: space-between;
+
+    h2 {
+        vertical-align: middle;
+        display: inline;
+    }
 
     img {
-        width: 1.1rem;
+        height: 100%;
         vertical-align: middle;
         text-align: center;
         rotate: 90deg;
@@ -55,13 +65,6 @@ div {
     img.collapsed {
         transform: rotate(180deg);
     }
-}
-
-h2 {
-    text-align: center;
-    vertical-align: middle;
-    display: inline;
-    margin-right: .5rem;
 }
 
 section {

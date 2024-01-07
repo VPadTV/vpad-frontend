@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import SearchHeader from '../components/SearchHeader.vue'
-import SubscriptionSidebar from '../components/SubscriptionSidebar.vue'
-import VideoList from '../components/VideoList.vue'
+import SearchHeader from '@/components/sections/SearchHeader.vue'
+import SubscriptionSidebar from '@/components/sections/SubscriptionSidebar.vue'
+import VideoList from '@/components/sections/VideoList.vue'
 
 let sidebarClosed = ref(false)
 </script>
