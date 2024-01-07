@@ -21,7 +21,7 @@ export async function get<T>(url: string, query?: { [key: string]: string | numb
 
 
     return data.map((text, index) => ({
-        id: index,
+        id: index.toString(),
         title: text,
         author: faker.internet.displayName(),
         likes: faker.number.int(1e4),

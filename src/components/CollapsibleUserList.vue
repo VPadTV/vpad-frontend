@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { type User } from '@/lib/types'
 import { ref } from 'vue';
+import UserProfilePicture from './UserProfilePicture.vue';
 defineProps<{
     title: string,
     users: User[]
@@ -12,14 +13,12 @@ const collapsed = ref(false)
 
 <template>
     <div>
-        <div>
-            <button class="title" :onClick="() => collapsed = !collapsed">
-                <h2>{{ title }}</h2><img :class="{ collapsed }" src="@/assets/arrow.png" alt="">
-            </button>
-        </div>
+        <button class="title" :onClick="() => collapsed = !collapsed">
+            <h2>{{ title }}</h2><img :class="{ collapsed }" src="@/assets/arrow.png" alt="">
+        </button>
         <section :class="{ collapsed }">
             <RouterLink :to="`/user/${user.id}`" class="video" v-for="user in users" :key="user.id">
-                <img src="@/assets/circle.png" alt="pfp">
+                <UserProfilePicture :userId="user.id"/>
                 <span>{{ user.nickname }}</span>
             </RouterLink>
         </section>
@@ -33,15 +32,18 @@ div {
     width: 100%;
 }
 
+.title:hover {
+    cursor: pointer;
+}
+
 .title {
-    height: 3rem;
+    padding: 0;
     background: none;
     border: none;
-    border-radius: 100%;
-    padding: .5rem;
+    vertical-align: middle;
     transition: transform $sidebar-transition-time;
-
     color: $text;
+    margin: 0 0 1rem;
 
     img {
         width: 1.1rem;
@@ -52,10 +54,6 @@ div {
 
     img.collapsed {
         transform: rotate(180deg);
-    }
-
-    :hover {
-        cursor: pointer;
     }
 }
 

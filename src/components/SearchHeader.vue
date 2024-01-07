@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UserProfilePicture from './UserProfilePicture.vue';
 </script>
 
 <template>
@@ -15,7 +16,7 @@
         <section id="stuff">
             <RouterLink to="/create"><img src="@/assets/pencil.png" alt="Create"></RouterLink>
             <RouterLink to="/notifications"><img src="@/assets/mailbox.png" alt="Notifications"></RouterLink>
-            <RouterLink to="/profile"><img src="@/assets/circle.png" alt="Profile"></RouterLink>
+            <RouterLink to="/profile"><UserProfilePicture :userId="'among us'"/></RouterLink>
         </section>
     </header>
 </template>

@@ -1,10 +1,10 @@
 export type User = {
-    id: number,
+    id: string,
     nickname: string
 }
 
 export type Video = {
-    id: number,
+    id: string,
     title: string,
     author: string,
     likes: number | string,
