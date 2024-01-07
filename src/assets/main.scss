@@ -30,9 +30,15 @@ body, #app {
 
 a {
     text-decoration: none;
-    transition: 0.1s filter;
+    transition: 0.2s color;
 }
 
 a:hover {
-    filter: opacity(80%);
+    color: $link;
+    * {
+        color: $link;
+    }
+    img {
+        filter: opacity(80%);
+    }
 }

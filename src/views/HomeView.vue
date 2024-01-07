@@ -54,10 +54,10 @@ aside.collapsed {
         width: 1.2rem;
         vertical-align: middle;
     }
-    
-    :hover {
-        cursor: pointer;
-    }
+}
+
+.arrow:hover {
+    cursor: pointer;
 }
 
 .arrow.collapsed {

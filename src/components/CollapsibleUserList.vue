@@ -42,7 +42,6 @@ div {
     border: none;
     vertical-align: middle;
     transition: transform $sidebar-transition-time;
-    color: $text;
     margin: 0 0 1rem;
     width: 100%;
     height: 1.5rem;
@@ -78,7 +77,6 @@ section {
     a {
         border: 1px solid $main-light;
         padding: .6rem;
-        color: $text;
         width: 100%;
         
         img {

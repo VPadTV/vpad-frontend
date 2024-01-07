@@ -5,7 +5,8 @@ $background: #0E0F10;
 $main-light: #3D454A;
 $extra: #FFFFFF;
 $text: #FFFFFF;
-$link: #b3cefc;
+$text-faded: #CCCCCC;
+$link: #7bc8fc;
 
 $header-height: 100px;
 $sidebar-width: 300px;
@@ -19,4 +20,5 @@ $sidebar-transition-time: .2s;
     font-weight: normal;
     text-overflow: ellipsis;
     scrollbar-width: thin;
+    color: $text;
 }
