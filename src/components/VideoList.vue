@@ -2,15 +2,7 @@
 import { onMounted, ref, type Ref } from 'vue';
 import { get } from '../lib/api'
 import { formatNumber } from '@/lib/helpers';
-
-export type Video = {
-    id: number,
-    title: string,
-    author: string,
-    likes: number | string,
-    dislikes: number | string
-    createdAt: Date,
-}
+import type { Video } from '@/lib/types';
 
 let videos: Ref<Video[] | null> = ref(null)
 
@@ -19,7 +11,7 @@ onMounted(async () => {
         ...video,
         likes: formatNumber(video.likes),
         dislikes: formatNumber(video.dislikes),
-    }))
+    })).splice(0, 20)
 })
 
 function rand(min: number, max: number) {

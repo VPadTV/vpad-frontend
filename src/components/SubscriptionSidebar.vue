@@ -1,34 +1,30 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
-import HorizontalLine from './HorizontalLine.vue';
 import { get } from '@/lib/api';
+import type { User, Video } from '@/lib/types';
+import CollapsibleUserList from './CollapsibleUserList.vue'
 
-export type Author = { id: number, author: string }
-
-let authors: Ref<Author[] | null> = ref(null)
+let subs: Ref<User[]> = ref([])
+let follows: Ref<User[]> = ref([])
 
 onMounted(async () => {
-    authors.value = await get<Author[]>('url', {})
+    subs.value = (await get<Video[]>('url', {})).map(video => ({
+        id: video.id,
+        nickname: video.author
+    })).splice(10, 20)
+
+    follows.value = (await get<Video[]>('url', {})).map(video => ({
+        id: video.id,
+        nickname: video.author
+    })).splice(22, 30)
 })
 
 </script>
 
 <template>
     <aside>
-        <h2>Subscriptions</h2>
-        <section class="sub">
-            <RouterLink :to="`/user/${author.id}`" class="video" v-for="author in authors" :key="author.id">
-                <img src="@/assets/circle.png" alt="sex">
-                <span>{{ author.author }}</span>
-            </RouterLink>
-        </section>
-        <h2>Follows</h2>
-        <section class="follow">
-            <RouterLink :to="`/user/${author.id}`" class="video" v-for="author in authors" :key="author.id">
-                <img src="@/assets/circle.png" alt="sex">
-                <span>{{ author.author }}</span>
-            </RouterLink>
-        </section>
+        <CollapsibleUserList title="Subscriptions" class="subs" :users="subs"/>
+        <CollapsibleUserList title="Follows" class="follow" :users="follows"/>
     </aside>
 </template>
   
@@ -49,41 +45,6 @@ aside {
 
     * {
         flex-shrink: 0;
-    }
-
-    div {
-        margin: 10px 0;
-    }
-
-    section {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        row-gap: 10px;
-        width: 100%;
-
-        a {
-            border: 1px solid $main-light;
-            padding: .6rem;
-            color: $text;
-            width: 100%;
-            
-            img {
-                height: 1lh;
-                vertical-align: middle;
-                margin-right: .6rem;
-            }
-
-            span {
-                vertical-align: middle;
-            }
-        }
-    }
-
-    h2 {
-        text-align: center;
-        vertical-align: middle;
-        margin: .8rem 0 .6rem;
     }
     
 }
