@@ -1,42 +1,77 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import SearchHeader from '../components/SearchHeader.vue'
 import SubscriptionSidebar from '../components/SubscriptionSidebar.vue'
 import VideoList from '../components/VideoList.vue'
 
 let sidebarClosed = ref(false)
-
-const videoSidebarMargin = computed(() => ({
-    'aside-margin': !sidebarClosed.value
-}))
 </script>
 
 
 <template>
     <SearchHeader/>
-    <SubscriptionSidebar :sidebarClosed="sidebarClosed"/>
-    <VideoList :class="videoSidebarMargin"/>
+    <SubscriptionSidebar :class="{ collapsed: sidebarClosed }"/>
+    <button class="arrow" :class="{ collapsed: sidebarClosed }" :onClick="() => sidebarClosed = !sidebarClosed">
+        <img src="@/assets/arrow.png" alt="">
+    </button>
+    <div class="scroll">
+        <VideoList :class="{ 'aside-margin': !sidebarClosed }"/>
+    </div>
 </template>
 
 <style scoped lang="scss">
 @import '@/assets/base.scss';
 
 header {
-    top: 0;
     position: fixed;
     z-index: 1;
 }
 
 aside {
     position: fixed;
-    left: 0;
     top: $header-height;
-    height: 100%;
+    height: calc(100vh - $header-height);
     z-index: 1;
 }
 
-section.videos {
+aside.collapsed {
+    transform: translateX(-100%);
+}
+
+.arrow {
+    position: fixed;
+    background-color: $main-light;
+    border: none;
+    border-radius: 100%;
+    padding: .5rem;
+    top: calc($header-height + 1rem);
+    left: calc($sidebar-width + 1rem);
+    z-index: 1;
+
+    transition: transform $sidebar-transition-time;
+
+    img {
+        width: 1.2rem;
+        vertical-align: middle;
+    }
+    
+    :hover {
+        cursor: pointer;
+    }
+}
+
+.arrow.collapsed {
+    transform: translateX(-$sidebar-width) rotate(-180deg);
+}
+
+.scroll {
     margin-top: $header-height;
+    position: relative;
+    height: calc(100vh - $header-height);
+    overflow: auto;
+}
+
+.videos {
     transition: margin-left $sidebar-transition-time;
 }
 

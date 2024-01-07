@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
 import { get } from '../lib/api'
-import LikeIcon from './LikeIcon.vue';
-import DislikeIcon from './DislikeIcon.vue';
 import { formatNumber } from '@/lib/helpers';
 
-export type Video = { id: number, title: string, author: string, likes: number | string, dislikes: number | string }
+export type Video = {
+    id: number,
+    title: string,
+    author: string,
+    likes: number | string,
+    dislikes: number | string
+    createdAt: Date,
+}
 
 let videos: Ref<Video[] | null> = ref(null)
 
@@ -23,7 +28,6 @@ function rand(min: number, max: number) {
 
 function getRandomSize() {
     return {
-        width: `${rand(200, 400)}px`,
         height: `${rand(200, 500)}px`,
     }
 }
@@ -36,13 +40,7 @@ function getRandomSize() {
             <p class="text">
                 <span class="title">{{ video.title }}</span>
                 <RouterLink :to="`/user/x`" class="author">{{ video.author }}</RouterLink>
-                <span class="meta">
-                    <span class="votes">
-                        {{ video.likes }} <LikeIcon></LikeIcon>
-                        {{ video.dislikes }} <DislikeIcon></DislikeIcon>
-                    </span><br/>
-                    <span>2024-01-01</span>
-                </span>
+                <span>{{ video.createdAt.toLocaleDateString() }}</span>
             </p>
         </RouterLink>
     </section>
@@ -52,8 +50,8 @@ function getRandomSize() {
 @import '@/assets/base.scss';
 
 section {
-    $gap: 2rem;
-    columns: 5 200px;
+    $gap: 2.8rem;
+    columns: 14rem;
     gap: $gap;
     padding: 4rem 6rem 0;
     overflow-y: scroll;
@@ -63,7 +61,9 @@ section {
         display: inline-block;
         margin-bottom: $gap;
         .thumbnail {
-            max-width: 250px;
+            min-width: 100%;
+            max-width: 100%;
+            height: auto;
             background-color: gray;
             margin: auto;
         }

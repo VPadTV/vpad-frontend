@@ -1,8 +1,4 @@
 <script setup lang="ts">
-defineProps<{
-    sidebarClosed: boolean
-}>()
-
 import { onMounted, ref, type Ref } from 'vue';
 import HorizontalLine from './HorizontalLine.vue';
 import { get } from '@/lib/api';
@@ -18,18 +14,19 @@ onMounted(async () => {
 </script>
 
 <template>
-    <aside :class="{ collapsed: sidebarClosed }">
+    <aside>
         <h2>Subscriptions</h2>
-        <section>
+        <section class="sub">
             <RouterLink :to="`/user/${author.id}`" class="video" v-for="author in authors" :key="author.id">
-                {{ author.author }}
+                <img src="@/assets/circle.png" alt="sex">
+                <span>{{ author.author }}</span>
             </RouterLink>
         </section>
-        <HorizontalLine/>
         <h2>Follows</h2>
-        <section>
+        <section class="follow">
             <RouterLink :to="`/user/${author.id}`" class="video" v-for="author in authors" :key="author.id">
-                {{ author.author }}
+                <img src="@/assets/circle.png" alt="sex">
+                <span>{{ author.author }}</span>
             </RouterLink>
         </section>
     </aside>
@@ -40,7 +37,6 @@ onMounted(async () => {
 
 aside {
     background-color: $main;
-    height: 100%;
     width: $sidebar-width;
     transition: transform $sidebar-transition-time;
     padding: 1rem 1rem 1rem;
@@ -48,7 +44,7 @@ aside {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 
     * {
@@ -63,19 +59,33 @@ aside {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        row-gap: 10px;
+        width: 100%;
 
         a {
+            border: 1px solid $main-light;
+            padding: .6rem;
             color: $text;
+            width: 100%;
+            
+            img {
+                height: 1lh;
+                vertical-align: middle;
+                margin-right: .6rem;
+            }
+
+            span {
+                vertical-align: middle;
+            }
         }
     }
 
     h2 {
         text-align: center;
         vertical-align: middle;
+        margin: .8rem 0 .6rem;
     }
+    
 }
 
-aside.collapsed {
-    transform: translate(-100%);
-}
 </style>

@@ -25,6 +25,7 @@ export async function get<T>(url: string, query?: { [key: string]: string | numb
         title: text,
         author: faker.internet.displayName(),
         likes: faker.number.int(1e4),
-        dislikes: faker.number.int(1e4)
+        dislikes: faker.number.int(1e4),
+        createdAt: faker.date.recent(),
     })) as any
 }
