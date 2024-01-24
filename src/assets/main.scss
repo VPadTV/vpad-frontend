@@ -34,11 +34,5 @@ a {
 }
 
 a:hover {
-    color: $link;
-    * {
-        color: $link;
-    }
-    img {
-        filter: opacity(80%);
-    }
+    filter: opacity(80%);
 }

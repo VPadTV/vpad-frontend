@@ -52,6 +52,9 @@ section {
     columns: 14rem;
     gap: $gap;
     padding: 4rem 6rem 0;
+    @media screen and (max-width: 570px) {
+        padding: 4rem 3rem 0;
+    }
     overflow-y: scroll;
 
     .video {
@@ -90,10 +93,7 @@ section {
                     vertical-align: middle;
                 }
             }
-
-            .author:hover {
-            }
-
+            
             .date {
                 color: $text-faded;
             }
