@@ -1,6 +1,6 @@
-import { listOf } from "./mock/listOf"
-import { video } from "./mock/video"
-import { user } from "./mock/user"
+import { listOf } from "@/utils/mock/listOf"
+import { user } from "@/utils/mock/user"
+import { video } from "@/utils/mock/video"
 
 export async function get<T>(url: string, query?: { [key: string]: string | number | boolean }): Promise<T | undefined> {
     if (query)

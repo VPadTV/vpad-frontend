@@ -2,10 +2,9 @@
 import UserProfilePicture from '../UserProfilePicture.vue';
 
 import { onMounted, ref, type Ref } from 'vue';
-import { get } from '@/lib/api'
-import { formatNumber } from '@/lib/helpers';
-import type { Video } from '@/lib/types';
-
+import { get } from '@/composables/api/base'
+import { formatNumber } from '@/utils/helpers';
+import type { Video } from '@/types/entities';
 
 let videos: Ref<Video[] | undefined> = ref(undefined)
 

@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import type { Video } from "../types";
+import type { Video } from "@/types/entities";
 import { user } from "./user";
 
 export const video = () => ({

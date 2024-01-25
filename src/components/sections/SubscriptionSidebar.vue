@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
-import { get } from '@/lib/api';
-import type { User } from '@/lib/types';
+import { get } from '@/composables/api/base';
+import type { User } from '@/types/entities';
 import CollapsibleUserList from '../CollapsibleUserList.vue'
 
 let subs: Ref<User[]> = ref([])
