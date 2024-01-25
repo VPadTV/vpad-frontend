@@ -1,22 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
 import { get } from '@/lib/api';
-import type { User, Video } from '@/lib/types';
+import type { User } from '@/lib/types';
 import CollapsibleUserList from '../CollapsibleUserList.vue'
 
 let subs: Ref<User[]> = ref([])
 let follows: Ref<User[]> = ref([])
 
 onMounted(async () => {
-    subs.value = (await get<Video[]>('url', {})).map(video => ({
-        id: video.id,
-        nickname: video.author
-    })).splice(10, 20)
-
-    follows.value = (await get<Video[]>('url', {})).map(video => ({
-        id: video.id,
-        nickname: video.author
-    })).splice(22, 30)
+    subs.value = (await get<User[]>('users'))?.splice(10, 20) ?? []
+    follows.value = (await get<User[]>('users'))?.splice(20, 30) ?? []
 })
 
 </script>
@@ -42,6 +35,10 @@ aside {
     align-items: flex-start;
     overflow-y: scroll;
     overflow-x: hidden;
+
+    > div {
+        margin-bottom: 1rem;
+    }
 
     * {
         flex-shrink: 0;

@@ -7,10 +7,10 @@ import { formatNumber } from '@/lib/helpers';
 import type { Video } from '@/lib/types';
 
 
-let videos: Ref<Video[] | null> = ref(null)
+let videos: Ref<Video[] | undefined> = ref(undefined)
 
 onMounted(async () => {
-    videos.value = (await get<Video[]>('url', {})).map(video => ({
+    videos.value = (await get<Video[]>('videos'))?.map(video => ({
         ...video,
         likes: formatNumber(video.likes),
         dislikes: formatNumber(video.dislikes),
@@ -74,9 +74,17 @@ section {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            
+            .title {
+                margin-bottom: .2rem;
+            }
+
+            .author {
+                margin-bottom: .15rem;
+            }
 
             * {
-                text-align: center;
+                text-align: left;
                 overflow: hidden;
                 max-height: 2lh;    
                 max-width: 100%;
