@@ -3,16 +3,16 @@ import UserProfilePicture from '../UserProfilePicture.vue';
 
 import { onMounted, ref, type Ref } from 'vue';
 import { get } from '@/composables/api/base'
-import { formatNumber } from '@/utils/helpers';
-import type { Video } from '@/types/entities';
+import { formatNumber } from '@/utils';
+import type { Post } from '@/types/entities';
 
-let videos: Ref<Video[] | undefined> = ref(undefined)
+let posts: Ref<Post[] | undefined> = ref(undefined)
 
 onMounted(async () => {
-    videos.value = (await get<Video[]>('videos'))?.map(video => ({
-        ...video,
-        likes: formatNumber(video.likes),
-        dislikes: formatNumber(video.dislikes),
+    posts.value = (await get<Post[]>('posts'))?.map(post => ({
+        ...post,
+        likes: formatNumber(post.likes),
+        dislikes: formatNumber(post.dislikes),
     })).splice(0, 20)
 })
 
@@ -20,7 +20,7 @@ function rand(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRandomSize() {
+function getRandomHeight() {
     return {
         height: `${rand(200, 500)}px`,
     }
@@ -28,16 +28,16 @@ function getRandomSize() {
 </script>
 
 <template>
-    <section class="videos">
-        <RouterLink :to="`/post/${video.id}`" class="video" v-for="video in videos" :key="video.id">
-            <img class="thumbnail" :style="getRandomSize()"/>
+    <section class="posts">
+        <RouterLink :to="`/post/${post.id}`" class="post" v-for="post in posts" :key="post.id">
+            <div class="thumbnail" :style="getRandomHeight()"></div>
             <p class="text">
-                <span class="title">{{ video.title }}</span>
-                <RouterLink :to="`/user/${video.author.id}`" class="author">
-                    <UserProfilePicture :userId="video.author.id" />
-                    <span>{{ video.author.nickname }}</span>
+                <span class="title">{{ post.title }}</span>
+                <RouterLink :to="`/user/${post.author.id}`" class="author">
+                    <UserProfilePicture :userId="post.author.id" />
+                    <span>{{ post.author.nickname }}</span>
                 </RouterLink>
-                <span class="date">{{ video.createdAt.toLocaleDateString() }}</span>
+                <span class="date">{{ post.createdAt.toLocaleDateString() }}</span>
             </p>
         </RouterLink>
     </section>
@@ -50,13 +50,9 @@ section {
     $gap: 2.8rem;
     columns: 14rem;
     gap: $gap;
-    padding: 4rem 6rem 0;
-    @media screen and (max-width: 570px) {
-        padding: 4rem 3rem 0;
-    }
     overflow-y: scroll;
 
-    .video {
+    .post {
         width: 100%;
         display: inline-block;
         margin-bottom: $gap;
@@ -74,12 +70,8 @@ section {
             flex-direction: column;
             align-items: flex-start;
 
-            .title {
+            .title, .author {
                 margin-bottom: .2rem;
-            }
-
-            .author {
-                margin-bottom: .15rem;
             }
 
             * {

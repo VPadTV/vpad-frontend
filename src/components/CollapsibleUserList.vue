@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type User } from '@/lib/types'
+import { type User } from '@/types/entities'
 import { ref } from 'vue';
 import UserProfilePicture from './UserProfilePicture.vue';
 defineProps<{
@@ -17,7 +17,7 @@ const collapsed = ref(false)
             <h2>{{ title }}</h2><img :class="{ collapsed }" src="@/assets/arrow.png" alt="">
         </button>
         <section :class="{ collapsed }">
-            <RouterLink :to="`/user/${user.id}`" class="video" v-for="user in users" :key="user.id">
+            <RouterLink :to="`/user/${user.id}`" v-for="user in users" :key="user.id">
                 <UserProfilePicture :userId="user.id"/>
                 <span>{{ user.nickname }}</span>
             </RouterLink>

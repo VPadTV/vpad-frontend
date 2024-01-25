@@ -7,3 +7,12 @@ export function formatNumber(n: number | string): string {
     }
     return formatter.format(n)
 }
+
+export const numify = (val: unknown): number | undefined => {
+    if (typeof val === 'number') return val;
+    else if (typeof val === 'string') {
+        const parsed = parseFloat(val)
+        if (!isNaN(parsed)) return parsed
+    }
+    return undefined
+}

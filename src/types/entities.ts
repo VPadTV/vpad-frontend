@@ -3,8 +3,9 @@ export type User = {
     nickname: string
 }
 
-export type Video = {
+export type Post = {
     id: string,
+    url: string,
     title: string,
     author: User,
     likes: number | string,
