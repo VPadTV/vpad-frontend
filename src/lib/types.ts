@@ -6,7 +6,7 @@ export type User = {
 export type Video = {
     id: string,
     title: string,
-    author: string,
+    author: User,
     likes: number | string,
     dislikes: number | string
     createdAt: Date,

@@ -1,12 +1,13 @@
 import { faker } from "@faker-js/faker";
 import type { Video } from "../types";
+import { user } from "./user";
 
-export const videos = () => (Array.from({ length: 100 }).map(() => ({
+export const video = () => ({
     id: faker.string.nanoid(),
     title: faker.lorem.words({ min: 2, max: 12 }),
-    author: faker.internet.displayName(),
+    author: user(),
     likes: faker.number.int(1e4),
     dislikes: faker.number.int(1e4),
     createdAt: faker.date.recent({ days: 300 }),
     updatedAt: faker.date.recent({ days: 300 }),
-})) as Video[])
+}) as Video

@@ -34,9 +34,9 @@ function getRandomSize() {
             <img class="thumbnail" :style="getRandomSize()"/>
             <p class="text">
                 <span class="title">{{ video.title }}</span>
-                <RouterLink :to="`/user/x`" class="author">
-                    <UserProfilePicture :userId="video.author" />
-                    <span>{{ video.author }}</span>
+                <RouterLink :to="`/user/${video.author.id}`" class="author">
+                    <UserProfilePicture :userId="video.author.id" />
+                    <span>{{ video.author.nickname }}</span>
                 </RouterLink>
                 <span class="date">{{ video.createdAt.toLocaleDateString() }}</span>
             </p>
@@ -74,7 +74,7 @@ section {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            
+
             .title {
                 margin-bottom: .2rem;
             }
