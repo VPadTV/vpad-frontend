@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PostView from '../views/PostView.vue'
+import UserView from '../views/UserView.vue'
+import BlankView from '../views/BlankView.vue'
+import ReloadOnRouteChange from '@/components/ReloadOnRouteChange.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,9 +14,35 @@ const router = createRouter({
             component: HomeView
         },
         {
-            path: '/post/:postId',
-            name: 'postId',
-            component: PostView
+            path: '/',
+            component: ReloadOnRouteChange,
+            children: [
+                {
+                    path: '/post/:postId',
+                    name: 'postId',
+                    component: PostView
+                },
+                {
+                    path: '/user/:userId',
+                    name: 'userId',
+                    component: UserView
+                },
+            ]
+        },
+        {
+            path: '/create',
+            name: 'create',
+            component: BlankView
+        },
+        {
+            path: '/notifications',
+            name: 'notifications',
+            component: BlankView
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: BlankView
         },
         // {
         //     path: '/about',

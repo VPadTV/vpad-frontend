@@ -34,7 +34,7 @@ function getRandomHeight() {
             <p class="text">
                 <span class="title">{{ post.title }}</span>
                 <RouterLink :to="`/user/${post.author.id}`" class="author">
-                    <UserProfilePicture :userId="post.author.id" />
+                    <UserProfilePicture :id="post.author.id" />
                     <span>{{ post.author.nickname }}</span>
                 </RouterLink>
                 <span class="date">{{ post.createdAt.toLocaleDateString() }}</span>

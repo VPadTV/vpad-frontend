@@ -18,7 +18,7 @@ const collapsed = ref(false)
         </button>
         <section :class="{ collapsed }">
             <RouterLink :to="`/user/${user.id}`" v-for="user in users" :key="user.id">
-                <UserProfilePicture :userId="user.id"/>
+                <UserProfilePicture :id="user.id"/>
                 <span>{{ user.nickname }}</span>
             </RouterLink>
         </section>

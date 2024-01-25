@@ -2,56 +2,43 @@
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
 import PostList from '@/components/sections/PostList.vue';
 
-import { onMounted, ref, type Ref } from 'vue';
-import { get } from '@/composables/api/base'
+import { onMounted, ref } from 'vue';
 import type { Post } from '@/types/entities';
-import { formatNumber, numify } from '@/utils';
+import { numify } from '@/utils';
+
+const { post } = defineProps<{
+    post: Post
+}>()
 
 import slider from "vue3-slider"
-
-let postWidth = ref((100+30)/2)
-
+let postScale = ref((100+30)/2)
 function updatePostscale(value: number) {
     localStorage.setItem('postScale', value.toString())
 }
 
-let post: Ref<Post | undefined> = ref(undefined)
-
 onMounted(async () => {
-    const postRaw = await get<Post>('post')
-    if (postRaw) {
-        post.value = ({
-            ...postRaw,
-            likes: formatNumber(postRaw.likes),
-            dislikes: formatNumber(postRaw.dislikes),
-        })
-    }
-
     const loadedPostScale = numify(localStorage.getItem('postScale'))
     if (loadedPostScale && loadedPostScale >= 30 && loadedPostScale <= 100)
-        postWidth.value = loadedPostScale
+        postScale.value = loadedPostScale
 })
 
 </script>
 
 <template>
-    <section v-if="post" class="post">
-        <slider orientation="vertical" v-model="postWidth" color="#4C9BD4" trackColor="#202427" :min="30" @change="updatePostscale"></slider>
+    <section class="post">
+        <slider orientation="vertical" v-model="postScale" color="#4C9BD4" trackColor="#202427" :min="30" @change="updatePostscale"></slider>
         <section class="content-background">
-            <img :src="post.url" class="content" :style="{ width: `${postWidth}%` }"/>
+            <img :src="post.url" class="content" :style="{ width: `${postScale}%` }"/>
         </section>
         <p class="text">
             <span class="title">{{ post?.title }}</span>
             <RouterLink :to="`/user/${post.author.id}`" class="author">
-                <UserProfilePicture :userId="post.author.id" />
+                <UserProfilePicture :id="post.author.id" />
                 <span>{{ post.author.nickname }}</span>
             </RouterLink>
             <span class="date">{{ post.createdAt.toLocaleDateString() }}</span>
         </p>
         <PostList/>
-    </section>
-    <section v-else class="no-post">
-        Sadge
     </section>
 </template> 
   

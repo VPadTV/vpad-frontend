@@ -1,6 +1,6 @@
 <script setup lang="ts">
-defineProps<{
-    userId: string
+const { id } = defineProps<{
+    id: string
 }>()
 
 </script>
