@@ -1,6 +1,8 @@
 import { faker } from "@faker-js/faker";
 import type { Post } from "@/types/entities";
 import { user } from "./user";
+import ExampleHorizontal from '@/assets/example_horizontal.png'
+import ExampleVertical from '@/assets/example_vertical.png'
 
 const pickRandom = <T>(...options: T[]): T => {
     return options[Math.floor(Math.random() * options.length)];
@@ -19,7 +21,7 @@ const randomCasing = (str: string): string => {
 export const post = (id?: string) => ({
     id: id ?? faker.string.nanoid(),
     title: randomCasing(faker.lorem.words({ min: 2, max: 6 })),
-    url: pickRandom('/src/assets/example_horizontal.png', '/src/assets/example_vertical.png'),
+    url: pickRandom(ExampleHorizontal, ExampleVertical),
     author: user(),
     likes: faker.number.int(1e4),
     dislikes: faker.number.int(1e4),
