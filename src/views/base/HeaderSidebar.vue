@@ -21,11 +21,11 @@ onMounted(async () => {
 
 
 <template>
-    <SearchHeader/>
     <SubscriptionSidebar :class="{ closed }"/>
     <button class="arrow" :class="{ closed }" :onClick="toggleClosed">
         <ArrowIcon class="arrow-icon" :class="{ closed }"/>
     </button>
+    <SearchHeader/>
     <div class="scroll">
         <main :class="{ 'aside-margin': !closed }">
             <slot></slot>
@@ -38,6 +38,7 @@ onMounted(async () => {
 
 header {
     position: fixed;
+    top: 0;
     z-index: 1;
 }
 
@@ -82,8 +83,8 @@ aside.closed {
 }
 
 .scroll {
-    margin-top: $header-height;
     position: relative;
+    margin-top: $header-height;
     height: calc(100vh - $header-height);
     overflow: auto;
 
@@ -94,6 +95,28 @@ aside.closed {
 
 .aside-margin {
     margin-left: $sidebar-width;
+}
+
+@media screen and (max-width: $mobile-width) {
+    aside {
+        width: 100%;
+    }
+    .arrow {
+        position: fixed;
+        background-color: transparent;
+        border-radius: 0 100% 100% 0;
+        top: calc(50vh);
+        scale: 1.5;
+        padding: 0;
+        left: .5rem;
+    }
+
+    .arrow.closed {
+        transform: none;
+        .arrow-icon {
+            transform: scaleX(-1);
+        }
+    }
 }
 
 </style>
