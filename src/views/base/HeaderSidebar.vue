@@ -100,6 +100,7 @@ aside.closed {
 @media screen and (max-width: $mobile-width) {
     aside {
         width: 100%;
+        padding: 1rem 2.4rem;
     }
     .arrow {
         position: fixed;
