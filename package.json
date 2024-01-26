@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.3.1",
+    "vercel": "^33.3.0",
     "vue": "^3.3.10",
     "vue-router": "^4.2.5",
     "vue3-slider": "^1.9.0"
