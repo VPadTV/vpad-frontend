@@ -66,12 +66,13 @@ section {
         
         .text {
             max-width: 100%;
+            margin-top: .4rem;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
 
             .title, .author {
-                margin-bottom: .2rem;
+                margin-bottom: .1rem;
             }
 
             * {

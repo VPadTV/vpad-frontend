@@ -12,7 +12,7 @@ const { user } = defineProps<{
     <section class="user">
         <p class="details">
             <RouterLink :to="`/user/${user.id}`" class="identity">
-                <UserProfilePicture :id="user.id" />
+                <UserProfilePicture class="pfp" :id="user.id" />
                 <span class="name">{{ user.nickname }}</span>
             </RouterLink>
         </p>
@@ -33,7 +33,8 @@ const { user } = defineProps<{
 
     .identity {
         font-size: 1.5rem;
-        img {
+        .pfp {
+            width: 1lh;
             height: 1lh;
             vertical-align: middle;
             margin-right: .3rem;
