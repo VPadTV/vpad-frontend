@@ -39,7 +39,7 @@ function hideLoading() {
         <p class="text">
             <span class="title">{{ post?.title }}</span>
             <RouterLink :to="`/user/${post.author.id}`" class="author">
-                <UserProfilePicture :id="post.author.id" />
+                <UserProfilePicture class="pfp" :id="post.author.id" />
                 <span>{{ post.author.nickname }}</span>
             </RouterLink>
             <span class="date">{{ post.createdAt.toLocaleDateString() }}</span>
@@ -101,10 +101,13 @@ function hideLoading() {
 
     .author {
         font-size: 1.2rem;
-        img {
-            height: 1lh;
+        display: flex;
+        align-items: center;
+        .pfp {
+            width: .9lh;
+            height: .9lh;
             vertical-align: middle;
-            margin-right: .3rem;
+            margin-right: .4rem;
         }
         span {
             height: 1lh;
