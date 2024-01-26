@@ -38,6 +38,12 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
+@import '@/assets/base.scss';
+
+.post {
+    margin: 1rem 4rem;
+}
+
 .notfound {
     margin: 2rem 4rem;
     width: 100%;
@@ -51,4 +57,12 @@ onMounted(async () => {
     margin-top: 1rem;
     margin: 0 4rem;
 }
+
+
+@media screen and (max-width: $mobile-width-large) {
+    .post {
+        margin: 1rem;
+    }
+}
+
 </style>

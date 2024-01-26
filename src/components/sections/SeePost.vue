@@ -49,9 +49,6 @@ function hideLoading() {
   
 <style scoped lang="scss">
 @import '@/assets/base.scss';
-.post {
-    margin: 1rem 4rem;
-}
 .content-background {
     width: 100%;
     background-color: $main;

@@ -97,7 +97,7 @@ aside.closed {
     margin-left: $sidebar-width;
 }
 
-@media screen and (max-width: $mobile-width) {
+@media screen and (max-width: $mobile-width-large) {
     aside {
         width: 100%;
         padding: 1rem 2.4rem;
