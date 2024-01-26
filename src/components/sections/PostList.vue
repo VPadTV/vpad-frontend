@@ -82,8 +82,9 @@ section {
             }
 
             .author {
-                img {
+                svg {
                     height: 1lh;
+                    width: 1lh;
                     vertical-align: middle;
                     margin-right: .3rem;
                 }

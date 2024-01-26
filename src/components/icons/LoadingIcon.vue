@@ -51,12 +51,14 @@
 
 <style scoped lang="scss">
 svg {
-    margin: auto;
     background: none;
     display: inline-block;
-    shape-rendering: auto;
     animation-play-state: running;
     animation-delay: 0s;
     height: 6rem;
+    
+    * {
+        stroke: white;
+    }
 }
 </style>

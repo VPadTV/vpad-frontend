@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import UserProfilePicture from '../UserProfilePicture.vue';
+import SearchIcon from '../icons/SearchIcon.vue';
+import PenIcon from '../icons/PenIcon.vue';
+import MailIcon from '../icons/MailIcon.vue';
 </script>
 
 <template>
@@ -10,13 +13,13 @@ import UserProfilePicture from '../UserProfilePicture.vue';
         <form id="search-box" method="get">
             <input name="search" type="text">
             <button id="search-button">
-                <img alt="Search" src="@/assets/search.svg">
+                <SearchIcon/>
             </button>
         </form>
         <section id="stuff">
-            <RouterLink to="/create"><img src="@/assets/pencil.png" alt="Create"></RouterLink>
-            <RouterLink to="/notifications"><img src="@/assets/mailbox.png" alt="Notifications"></RouterLink>
-            <RouterLink to="/profile"><UserProfilePicture :id="'among us'"/></RouterLink>
+            <RouterLink to="/create"><PenIcon/></RouterLink>
+            <RouterLink to="/notifications"><MailIcon/></RouterLink>
+            <RouterLink to="/profile" class="profile"><UserProfilePicture :id="'among us'"/></RouterLink>
         </section>
     </header>
 </template>
@@ -71,8 +74,9 @@ header {
         justify-content: center;
         background-color: $accent;
         overflow: hidden;
-        img {
+        svg {
             height: 100%;
+            width: 100%;
         }
         :hover {
             cursor: pointer;
@@ -92,8 +96,11 @@ header {
     align-items: center;
     gap: 0.5rem;
 
-    a, img {
-        height: 120%;
+    a {
+        height: 100%;
+    }
+    .profile {
+        margin-left: .4rem;
     }
 }
 </style>

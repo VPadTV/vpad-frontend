@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import LoadingIcon from '@/components/icons/LoadingIcon.vue';
 import { onMounted, ref } from 'vue';
 import type { Post } from '@/types/entities';
 import { numify } from '@/utils';
@@ -11,9 +11,11 @@ const { post } = defineProps<{
 }>()
 
 let postScale = ref((100+30)/2)
+
 function updatePostscale(value: number) {
     localStorage.setItem('postScale', value.toString())
 }
+
 onMounted(async () => {
     const loadedPostScale = numify(localStorage.getItem('postScale'))
     if (loadedPostScale && loadedPostScale >= 30 && loadedPostScale <= 100)
@@ -31,7 +33,7 @@ function hideLoading() {
     <section class="post">
         <slider orientation="vertical" v-model="postScale" color="#4C9BD4" trackColor="#202427" :min="30" @change="updatePostscale"></slider>
         <section class="content-background">
-            <LoadingSpinner :class="{ hidden: !loading }"/>
+            <LoadingIcon :class="{ hidden: !loading }"/>
             <img :class="{ hidden: loading }" @load="hideLoading()" :src="post.url" class="content" :style="{ width: `${postScale}%` }"/>
         </section>
         <p class="text">

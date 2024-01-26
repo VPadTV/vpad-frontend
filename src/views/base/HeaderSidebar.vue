@@ -1,23 +1,35 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import SearchHeader from '@/components/sections/SearchHeader.vue'
 import SubscriptionSidebar from '@/components/sections/SubscriptionSidebar.vue'
+import ArrowIcon from '@/components/icons/ArrowIcon.vue'
+import { boolify } from '@/utils';
 
-let sidebarClosed = ref(false)
+const closed = ref(false)
+
+function toggleClosed() {
+    closed.value = !closed.value;
+    localStorage.setItem('sidebarClosed', closed.value.toString());
+}
+
+onMounted(async () => {
+    const loadedClosed = boolify(localStorage.getItem('sidebarClosed'));
+    if (loadedClosed != null)
+        closed.value = loadedClosed;
+})
 </script>
 
 
 <template>
     <SearchHeader/>
-    <SubscriptionSidebar :class="{ collapsed: sidebarClosed }"/>
-    <button class="arrow" :class="{ collapsed: sidebarClosed }" :onClick="() => sidebarClosed = !sidebarClosed">
-        <img src="@/assets/arrow.png" alt="">
+    <SubscriptionSidebar :class="{ closed }"/>
+    <button class="arrow" :class="{ closed }" :onClick="toggleClosed">
+        <ArrowIcon class="arrow-icon" :class="{ closed }"/>
     </button>
     <div class="scroll">
-        <main :class="{ 'aside-margin': !sidebarClosed }">
+        <main :class="{ 'aside-margin': !closed }">
             <slot></slot>
         </main>
-        
     </div>
 </template>
 
@@ -36,7 +48,7 @@ aside {
     z-index: 1;
 }
 
-aside.collapsed {
+aside.closed {
     transform: translateX(-100%);
 }
 
@@ -45,14 +57,14 @@ aside.collapsed {
     background-color: $main;
     border: none;
     border-radius: 0 0 100% 0;
-    padding:   .5rem 1rem 1rem .5rem;
+    padding: .5rem 1rem 1rem .5rem;
     top: calc($header-height);
     left: calc($sidebar-width);
     z-index: 1;
 
     transition: transform $sidebar-transition-time;
 
-    img {
+    .arrow-icon {
         width: 1.2rem;
         vertical-align: middle;
     }
@@ -62,9 +74,9 @@ aside.collapsed {
     cursor: pointer;
 }
 
-.arrow.collapsed {
+.arrow.closed {
     transform: translateX(-$sidebar-width);
-    img {
+    .arrow-icon {
         transform: scaleX(-1);
     }
 }

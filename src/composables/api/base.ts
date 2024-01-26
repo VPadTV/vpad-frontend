@@ -8,8 +8,6 @@ export async function get<T>(url: string, query?: { [key: string]: string | numb
     //     method: "get",
     // })
 
-    console.log('sex 2')
-
     if (url.startsWith('posts'))
         return store.posts as T
     else if (url.startsWith('post'))

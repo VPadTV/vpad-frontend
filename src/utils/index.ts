@@ -16,3 +16,12 @@ export const numify = (val: unknown): number | undefined => {
     }
     return undefined
 }
+
+export const boolify = (val: unknown): boolean | undefined => {
+    if (typeof val === 'boolean') return val;
+    else if (typeof val === 'string') {
+        if (val === 'true') return true;
+        else if (val === 'false') return false;
+    }
+    return undefined
+}

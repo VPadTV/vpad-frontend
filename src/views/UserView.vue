@@ -5,7 +5,7 @@ import type { User } from '@/types/entities';
 import { get } from '@/composables/api/base'
 import { type Ref, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import LoadingIcon from '@/components/icons/LoadingIcon.vue';
 
 let user: Ref<User | undefined> = ref(undefined)
 
@@ -25,7 +25,7 @@ onMounted(async () => {
     <BaseHeaderSidebar>
         <SeeUser v-if="user" :user="user"/>
         <div v-else class="notfound">
-            <LoadingSpinner/>
+            <LoadingIcon/>
         </div>
         <UserList/>
     </BaseHeaderSidebar>

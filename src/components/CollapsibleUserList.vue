@@ -1,21 +1,37 @@
 <script setup lang="ts">
 import { type User } from '@/types/entities'
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import UserProfilePicture from './UserProfilePicture.vue';
 import CloseableComponent from './CloseableComponent.vue';
-defineProps<{
+import ArrowIcon from './icons/ArrowIcon.vue';
+import { boolify } from '@/utils';
+const { title, users } = defineProps<{
     title: string,
     users: User[]
 }>()
 
 const closed = ref(false)
 
+function toggleClosed() {
+    closed.value = !closed.value;
+    localStorage.setItem(`${title}-userListClosed`, closed.value.toString());
+}
+
+onMounted(async () => {
+    const loadedClosed = boolify(localStorage.getItem(`${title}-userListClosed`));
+    if (loadedClosed != null)
+        closed.value = loadedClosed;
+})
+
 </script>
 
 <template>
     <div>
-        <button class="title" :onClick="() => closed = !closed">
-            <h2>{{ title }}</h2><img :class="{ closed }" src="@/assets/arrow.png" alt="">
+        <button class="title" :onClick="toggleClosed">
+            <h2>{{ title }}</h2>
+            <span class="arrow" :class="{ closed }">
+                <ArrowIcon/>
+            </span>
         </button>
         <CloseableComponent :closed="closed">
             <section>
@@ -57,15 +73,14 @@ div {
         display: inline;
     }
 
-    img {
-        height: 100%;
-        vertical-align: middle;
-        text-align: center;
+    .arrow {
+        height: 1.2rem;
+        width: 1.2rem;
         rotate: 90deg;
     }
 
-    img.closed {
-        transform: rotate(180deg);
+    .arrow.closed {
+        rotate: -90deg;
     }
 }
 
@@ -82,7 +97,8 @@ section {
         padding: .6rem;
         width: 100%;
         
-        img {
+        svg {
+            width: 1lh;
             height: 1lh;
             vertical-align: middle;
             margin-right: .6rem;

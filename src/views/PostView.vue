@@ -7,7 +7,7 @@ import { get } from '@/composables/api/base'
 import { type Ref, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import PostList from '@/components/sections/PostList.vue';
-import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import LoadingIcon from '@/components/icons/LoadingIcon.vue';
 
 let post: Ref<Post | undefined> = ref(undefined)
 
@@ -31,7 +31,7 @@ onMounted(async () => {
     <BaseHeaderSidebar>
         <SeePost v-if="post" :post="post"/>
         <div v-else class="notfound">
-            <LoadingSpinner/>
+            <LoadingIcon/>
         </div>
         <PostList/>
     </BaseHeaderSidebar>
