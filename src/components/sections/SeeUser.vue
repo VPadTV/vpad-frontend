@@ -1,36 +1,21 @@
 <script setup lang="ts">
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
-
-import { onMounted, ref, type Ref } from 'vue';
-import { get } from '@/composables/api/base'
 import type { User } from '@/types/entities';
 
-const { id } = defineProps<{
-    id: string
+const { user } = defineProps<{
+    user: User
 }>()
-
-let user: Ref<User | undefined> = ref(undefined)
-
-onMounted(async () => {
-    const userRaw = await get<User>('user', { id })
-    if (userRaw)
-        user.value = userRaw
-})
 
 </script>
 
 <template>
-    <section v-if="user" class="user">
-        <p class="text">
-            <span class="name">{{ user.nickname }}</span>
-            <RouterLink :to="`/user/${user.id}`" class="author">
+    <section class="user">
+        <p class="details">
+            <RouterLink :to="`/user/${user.id}`" class="identity">
                 <UserProfilePicture :id="user.id" />
-                <span>{{ user.nickname }}</span>
+                <span class="name">{{ user.nickname }}</span>
             </RouterLink>
         </p>
-    </section>
-    <section v-else class="no-user">
-        Sadge
     </section>
 </template> 
   
@@ -40,22 +25,14 @@ onMounted(async () => {
     margin: 1rem 4rem;
 }
 
-.text {
+.details {
     max-width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 
-    .name, .author {
-        margin-bottom: .2rem;
-    }
-
-    .name {
-        font-size: 1.4rem;
-    }
-
-    .author {
-        font-size: 1.2rem;
+    .identity {
+        font-size: 1.5rem;
         img {
             height: 1lh;
             vertical-align: middle;
@@ -66,13 +43,6 @@ onMounted(async () => {
             vertical-align: middle;
             display: inline-block;
         }
-    }
-
-    * {
-        text-align: left;
-        overflow: hidden;
-        max-height: 2lh;    
-        max-width: 100%;
     }
 }
 </style>

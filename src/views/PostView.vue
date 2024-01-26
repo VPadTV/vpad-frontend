@@ -6,6 +6,8 @@ import { formatNumber } from '@/utils';
 import { get } from '@/composables/api/base'
 import { type Ref, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import PostList from '@/components/sections/PostList.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 let post: Ref<Post | undefined> = ref(undefined)
 
@@ -28,9 +30,25 @@ onMounted(async () => {
 <template>
     <BaseHeaderSidebar>
         <SeePost v-if="post" :post="post"/>
-        <div v-else>Sadge</div>
+        <div v-else class="notfound">
+            <LoadingSpinner/>
+        </div>
+        <PostList/>
     </BaseHeaderSidebar>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
+.notfound {
+    margin: 2rem 4rem;
+    width: 100%;
+    height: 15rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.posts {
+    margin-top: 1rem;
+    margin: 0 4rem;
+}
 </style>

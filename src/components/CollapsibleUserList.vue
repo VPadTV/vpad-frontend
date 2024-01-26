@@ -2,26 +2,29 @@
 import { type User } from '@/types/entities'
 import { ref } from 'vue';
 import UserProfilePicture from './UserProfilePicture.vue';
+import CloseableComponent from './CloseableComponent.vue';
 defineProps<{
     title: string,
     users: User[]
 }>()
 
-const collapsed = ref(false)
+const closed = ref(false)
 
 </script>
 
 <template>
     <div>
-        <button class="title" :onClick="() => collapsed = !collapsed">
-            <h2>{{ title }}</h2><img :class="{ collapsed }" src="@/assets/arrow.png" alt="">
+        <button class="title" :onClick="() => closed = !closed">
+            <h2>{{ title }}</h2><img :class="{ closed }" src="@/assets/arrow.png" alt="">
         </button>
-        <section :class="{ collapsed }">
-            <RouterLink :to="`/user/${user.id}`" v-for="user in users" :key="user.id">
-                <UserProfilePicture :id="user.id"/>
-                <span>{{ user.nickname }}</span>
-            </RouterLink>
-        </section>
+        <CloseableComponent :closed="closed">
+            <section>
+                <RouterLink :to="`/user/${user.id}`" v-for="user in users" :key="user.id">
+                    <UserProfilePicture :id="user.id"/>
+                    <span>{{ user.nickname }}</span>
+                </RouterLink>
+            </section>
+        </CloseableComponent>
     </div>
 </template>
 
@@ -61,7 +64,7 @@ div {
         rotate: 90deg;
     }
 
-    img.collapsed {
+    img.closed {
         transform: rotate(180deg);
     }
 }
@@ -89,10 +92,6 @@ section {
             vertical-align: middle;
         }
     }
-}
-
-section.collapsed {
-    display: none;
 }
 
 </style>

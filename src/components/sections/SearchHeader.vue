@@ -39,17 +39,22 @@ header {
 }
 
 #search-box, #stuff {
-    height: 2rem;
+    height: calc(2rem + 4px);
     display: flex;
 }
 
 #search-box {
+    border: 2px solid transparent;
+    border-radius: 1rem;
+    overflow: hidden;
     input {
         height: 100%;
         width: 40vw;
         border: 0;
-        padding: 4px;
-        font-size: 1.2rem;
+        padding: 6px;
+        font-size: 1rem;
+        overflow: hidden;
+        color: $text-dark;
     }
 
     input:focus {
@@ -58,12 +63,14 @@ header {
 
     button {
         height: 100%;
-        padding: 0.22rem;
+        padding: 0.22rem 0.8rem;
+        padding-right: 0.82rem;
         border: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
         background-color: $accent;
+        overflow: hidden;
         img {
             height: 100%;
         }
@@ -74,7 +81,9 @@ header {
 }
 
 #search-box:focus-within {
-    outline: 2px solid $accent;
+    border: 2px solid $accent;
+    background-color: $accent;
+    outline: none;
 }
 
 #stuff {

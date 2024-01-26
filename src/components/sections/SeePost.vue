@@ -1,26 +1,29 @@
 <script setup lang="ts">
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
-import PostList from '@/components/sections/PostList.vue';
-
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import { onMounted, ref } from 'vue';
 import type { Post } from '@/types/entities';
 import { numify } from '@/utils';
+import slider from "vue3-slider"
 
 const { post } = defineProps<{
     post: Post
 }>()
 
-import slider from "vue3-slider"
 let postScale = ref((100+30)/2)
 function updatePostscale(value: number) {
     localStorage.setItem('postScale', value.toString())
 }
-
 onMounted(async () => {
     const loadedPostScale = numify(localStorage.getItem('postScale'))
     if (loadedPostScale && loadedPostScale >= 30 && loadedPostScale <= 100)
         postScale.value = loadedPostScale
 })
+
+let loading = ref(true)
+function hideLoading() {
+    loading.value = false
+}
 
 </script>
 
@@ -28,7 +31,8 @@ onMounted(async () => {
     <section class="post">
         <slider orientation="vertical" v-model="postScale" color="#4C9BD4" trackColor="#202427" :min="30" @change="updatePostscale"></slider>
         <section class="content-background">
-            <img :src="post.url" class="content" :style="{ width: `${postScale}%` }"/>
+            <LoadingSpinner :class="{ hidden: !loading }"/>
+            <img :class="{ hidden: loading }" @load="hideLoading()" :src="post.url" class="content" :style="{ width: `${postScale}%` }"/>
         </section>
         <p class="text">
             <span class="title">{{ post?.title }}</span>
@@ -38,7 +42,6 @@ onMounted(async () => {
             </RouterLink>
             <span class="date">{{ post.createdAt.toLocaleDateString() }}</span>
         </p>
-        <PostList/>
     </section>
 </template> 
   
@@ -68,6 +71,10 @@ onMounted(async () => {
     }
 }
 
+.loading-spinner {
+    padding: 1rem;
+}
+
 .vue3-slider {
     position: fixed;
     right: 3.5rem;
@@ -86,6 +93,7 @@ onMounted(async () => {
     }
 
     .title {
+        margin-top: .3rem;
         font-size: 1.4rem;
     }
 
@@ -113,9 +121,5 @@ onMounted(async () => {
     max-height: 2lh;    
     max-width: 100%;
 }
-}
-
-.posts {
-    margin-top: 1rem;
 }
 </style>

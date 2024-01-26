@@ -42,12 +42,12 @@ aside.collapsed {
 
 .arrow {
     position: fixed;
-    background-color: $main-light;
+    background-color: $main;
     border: none;
-    border-radius: 100%;
-    padding: .5rem;
-    top: calc($header-height + 1rem);
-    left: calc($sidebar-width + 1rem);
+    border-radius: 0 0 100% 0;
+    padding:   .5rem 1rem 1rem .5rem;
+    top: calc($header-height);
+    left: calc($sidebar-width);
     z-index: 1;
 
     transition: transform $sidebar-transition-time;
@@ -63,7 +63,10 @@ aside.collapsed {
 }
 
 .arrow.collapsed {
-    transform: translateX(-$sidebar-width) rotate(-180deg);
+    transform: translateX(-$sidebar-width);
+    img {
+        transform: scaleX(-1);
+    }
 }
 
 .scroll {

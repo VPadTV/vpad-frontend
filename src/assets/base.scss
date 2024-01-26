@@ -5,6 +5,7 @@ $main-light: #3D454A;
 $extra: #FFFFFF;
 $text: #FFFFFF;
 $text-faded: #AAAAAA;
+$text-dark: #000000;
 $link: #7bc8fc;
 
 $header-height: 100px;
@@ -20,4 +21,8 @@ $sidebar-transition-time: .2s;
     text-overflow: ellipsis;
     scrollbar-width: thin;
     color: $text;
+}
+
+.hidden {
+    display: none;
 }
