@@ -55,9 +55,10 @@ header {
 
 .search-box {
     height: 40%;
-    border: 2px solid transparent;
+    border: 2px solid $main-light;
     border-radius: 1rem;
     overflow: hidden;
+    transition: background-color 0.08s, border 0.08s;
     input {
         height: 100%;
         width: 40vw;
@@ -65,7 +66,8 @@ header {
         padding: 6px;
         font-size: 1rem;
         overflow: hidden;
-        color: $text-dark;
+        color: $text;
+        background-color: $main;
     }
 
     input:focus {
@@ -80,7 +82,7 @@ header {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background-color: $accent;
+        background-color: transparent;
         overflow: hidden;
         svg {
             height: 100%;

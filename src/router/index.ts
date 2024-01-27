@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import PostView from '@/views/PostView.vue'
 import UserView from '@/views/UserView.vue'
 import WIPView from '@/views/WIPView.vue'
+import LoginView from '@/views/LoginView.vue'
 import ReloadOnRouteChange from '@/components/ReloadOnRouteChange.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 
@@ -44,6 +45,11 @@ const router = createRouter({
             path: '/profile',
             name: 'profile',
             component: WIPView
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: LoginView
         },
         { path: "/:catchAll(.*)", component: PageNotFound },
         // {

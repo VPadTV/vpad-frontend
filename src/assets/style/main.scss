@@ -23,7 +23,7 @@ body {
     scrollbar-color: $main-light transparent;
 }
 
-body, #app {
+html, body, #app {
     height: 100%;
     overflow: hidden;
 }
