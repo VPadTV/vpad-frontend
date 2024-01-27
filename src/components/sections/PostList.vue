@@ -56,6 +56,7 @@ section {
         width: 100%;
         display: inline-block;
         margin-bottom: $gap;
+
         .thumbnail {
             min-width: 100%;
             max-width: 100%;
@@ -63,7 +64,7 @@ section {
             background-color: gray;
             margin: auto;
         }
-        
+
         .text {
             max-width: 100%;
             margin-top: .4rem;
@@ -71,14 +72,15 @@ section {
             flex-direction: column;
             align-items: flex-start;
 
-            .title, .author {
+            .title,
+            .author {
                 margin-bottom: .1rem;
             }
 
             * {
                 text-align: left;
                 overflow: hidden;
-                max-height: 2lh;    
+                max-height: 2lh;
                 max-width: 100%;
             }
 
@@ -89,17 +91,17 @@ section {
                     vertical-align: middle;
                     margin-right: .3rem;
                 }
+
                 span {
                     height: 1lh;
                     vertical-align: middle;
                 }
             }
-            
+
             .date {
                 color: $text-faded;
             }
         }
     }
 }
-
 </style>

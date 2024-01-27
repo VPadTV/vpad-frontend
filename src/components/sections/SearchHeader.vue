@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 import UserProfilePicture from '../UserProfilePicture.vue';
+import ProfileDropdown from '../ProfileDropdown.vue';
 import SearchIcon from '../icons/SearchIcon.vue';
 import PenIcon from '../icons/PenIcon.vue';
 import MailIcon from '../icons/MailIcon.vue';
+
+const profileDropdownClosed = ref(true)
 </script>
 
 <template>
@@ -13,17 +18,24 @@ import MailIcon from '../icons/MailIcon.vue';
         <form class="search-box" method="get">
             <input name="search" type="text">
             <button>
-                <SearchIcon/>
+                <SearchIcon />
             </button>
         </form>
-        <section class="user-area">
+        <nav class="user-area">
             <RouterLink to="/" class="logo-mobile">
                 <img alt="VPad" src="@/assets/logo_whitebg.png" height="60" />
             </RouterLink>
-            <RouterLink to="/create"><PenIcon/></RouterLink>
-            <RouterLink to="/notifications"><MailIcon/></RouterLink>
-            <RouterLink to="/profile" class="profile"><UserProfilePicture :id="'among us'"/></RouterLink>
-        </section>
+            <RouterLink to="/create">
+                <PenIcon />
+            </RouterLink>
+            <RouterLink to="/notifications">
+                <MailIcon />
+            </RouterLink>
+            <button class="profile" @click="() => profileDropdownClosed = !profileDropdownClosed">
+                <UserProfilePicture :id="'among us'" />
+            </button>
+            <ProfileDropdown :closed="profileDropdownClosed" />
+        </nav>
     </header>
 </template>
   
@@ -41,14 +53,15 @@ header {
 
     .logo {
         margin: 0 1rem 0 0;
-        
+
         img {
             vertical-align: middle;
         }
     }
 }
 
-.search-box, .user-area {
+.search-box,
+.user-area {
     height: 100%;
     display: flex;
 }
@@ -59,6 +72,7 @@ header {
     border-radius: 1rem;
     overflow: hidden;
     transition: background-color 0.08s, border 0.08s;
+
     input {
         height: 100%;
         width: 40vw;
@@ -84,10 +98,12 @@ header {
         justify-content: center;
         background-color: transparent;
         overflow: hidden;
+
         svg {
             height: 100%;
             width: 100%;
         }
+
         :hover {
             cursor: pointer;
         }
@@ -107,11 +123,18 @@ header {
     align-items: center;
     gap: 0.5rem;
 
-    a {
+    a,
+    button {
         height: 100%;
     }
-    .profile {
-        margin-left: .4rem;
+
+    button {
+        border: none;
+        background: none;
+    }
+
+    button:hover {
+        cursor: pointer;
     }
 
     .logo-mobile {
@@ -148,11 +171,13 @@ header {
         height: unset;
         height: calc($header-height-width-large - 70px);
         margin-left: 0;
+
         .profile {
             margin-left: .2rem;
         }
     }
 }
+
 @media screen and (max-width: $mobile-width-small) {
     .logo {
         display: none;
@@ -163,13 +188,16 @@ header {
     }
 
     .user-area {
+
         // width: unset;
         a {
             aspect-ratio: 1;
+
             * {
                 vertical-align: middle;
             }
         }
+
         .logo-mobile {
             display: unset;
 

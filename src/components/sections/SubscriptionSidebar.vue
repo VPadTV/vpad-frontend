@@ -16,8 +16,8 @@ onMounted(async () => {
 
 <template>
     <aside>
-        <CollapsibleUserList title="Subscriptions" class="subs" :users="subs"/>
-        <CollapsibleUserList title="Follows" class="follow" :users="follows"/>
+        <CollapsibleUserList title="Subscriptions" class="subs" :users="subs" />
+        <CollapsibleUserList title="Follows" class="follow" :users="follows" />
     </aside>
 </template>
   
@@ -36,14 +36,13 @@ aside {
     overflow-y: scroll;
     overflow-x: hidden;
 
-    > div {
+    >div {
         margin-bottom: 1rem;
     }
 
     * {
         flex-shrink: 0;
     }
-    
-}
 
+}
 </style>

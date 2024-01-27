@@ -5,6 +5,7 @@
 
 <style scoped lang="scss">
 @import '@/assets/style/base.scss';
+
 div {
     background-color: $main-light;
     height: 2px;

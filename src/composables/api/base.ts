@@ -2,7 +2,7 @@ import { store } from "@/store/store"
 import { BackendError } from "@/types/http"
 import { getAuthorization } from "./auth"
 
-export async function get<T>(url: string, query?: { [key: string]: string | number | boolean }): Promise<T | undefined | BackendError> {
+export async function get<T>(url: string, query?: { [key: string]: string | number | boolean }): Promise<T | undefined> {
 
     if (query)
         url += '?' + new URLSearchParams(query as any)
@@ -22,7 +22,7 @@ export async function get<T>(url: string, query?: { [key: string]: string | numb
     return undefined
 }
 
-export async function post<T>(url: string, body?: FormData | URLSearchParams): Promise<T | undefined | BackendError> {
+export async function post<T>(url: string, body?: FormData | URLSearchParams): Promise<T | undefined> {
     const response = await fetch(import.meta.env.VITE_API_URL + url, {
         method: "POST",
         body,
@@ -31,7 +31,7 @@ export async function post<T>(url: string, body?: FormData | URLSearchParams): P
     if (response.status !== 200) {
         if (response.headers.get('content-type') === 'application/json') {
             const jsonError = await response.json()
-            return new BackendError(
+            const error = new BackendError(
                 jsonError.code ?? 500,
                 jsonError.error ?? 'Unknown'
             );

@@ -5,29 +5,29 @@ import SubscriptionSidebar from '@/components/sections/SubscriptionSidebar.vue'
 import ArrowIcon from '@/components/icons/ArrowIcon.vue'
 import { boolify } from '@/utils';
 
-const closed = ref(false)
+const sidebarClosed = ref(false)
 
 function toggleClosed() {
-    closed.value = !closed.value;
-    localStorage.setItem('sidebarClosed', closed.value.toString());
+    sidebarClosed.value = !sidebarClosed.value;
+    localStorage.setItem('sidebarClosed', sidebarClosed.value.toString());
 }
 
 onMounted(async () => {
     const loadedClosed = boolify(localStorage.getItem('sidebarClosed'));
     if (loadedClosed != null)
-        closed.value = loadedClosed;
+        sidebarClosed.value = loadedClosed;
 })
 </script>
 
 
 <template>
-    <SubscriptionSidebar :class="{ closed }"/>
-    <button class="arrow" :class="{ closed }" :onClick="toggleClosed">
-        <ArrowIcon class="arrow-icon" :class="{ closed }"/>
+    <SubscriptionSidebar :class="{ closed: sidebarClosed }" />
+    <button class="arrow" :class="{ closed: sidebarClosed }" :onClick="toggleClosed">
+        <ArrowIcon class="arrow-icon" />
     </button>
-    <SearchHeader/>
+    <SearchHeader />
     <div class="scroll">
-        <main :class="{ 'aside-margin': !closed }">
+        <main :class="{ 'aside-margin': !sidebarClosed }">
             <slot></slot>
         </main>
     </div>
@@ -77,6 +77,7 @@ aside.closed {
 
 .arrow.closed {
     transform: translateX(-$sidebar-width);
+
     .arrow-icon {
         transform: scaleX(-1);
     }
@@ -88,7 +89,7 @@ aside.closed {
     height: calc(100vh - $header-height);
     overflow: auto;
 
-    > main {
+    >main {
         transition: margin-left $sidebar-transition-time;
     }
 }
@@ -102,6 +103,7 @@ aside.closed {
         width: 100%;
         padding: 1rem 2.4rem;
     }
+
     .arrow {
         position: fixed;
         background-color: transparent;
@@ -115,10 +117,10 @@ aside.closed {
 
     .arrow.closed {
         transform: none;
+
         .arrow-icon {
             transform: scaleX(-1);
         }
     }
 }
-
 </style>
