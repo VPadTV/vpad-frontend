@@ -102,6 +102,8 @@ aside.closed {
     aside {
         width: 100%;
         padding: 1rem 2.4rem;
+        top: $header-height-width-large;
+        height: calc(100vh - $header-height-width-large);
     }
 
     .arrow {

@@ -7,7 +7,16 @@ import SearchIcon from '../icons/SearchIcon.vue';
 import PenIcon from '../icons/PenIcon.vue';
 import MailIcon from '../icons/MailIcon.vue';
 
+import { getUserAuth } from '@/composables/api/auth';
+
+const userAuth = getUserAuth()
+
+function toggleProfile() {
+    profileDropdownClosed.value = !profileDropdownClosed.value
+}
+
 const profileDropdownClosed = ref(true)
+
 </script>
 
 <template>
@@ -22,19 +31,24 @@ const profileDropdownClosed = ref(true)
             </button>
         </form>
         <nav class="user-area">
-            <RouterLink to="/" class="logo-mobile">
+            <RouterLink to="/" class="logo-mobile nt">
                 <img alt="VPad" src="@/assets/logo_whitebg.png" height="60" />
             </RouterLink>
-            <RouterLink to="/create">
+            <RouterLink class="nt" to="/create">
                 <PenIcon />
             </RouterLink>
-            <RouterLink to="/notifications">
+            <RouterLink class="nt" to="/notifications">
                 <MailIcon />
             </RouterLink>
-            <button class="profile" @click="() => profileDropdownClosed = !profileDropdownClosed">
-                <UserProfilePicture :id="'among us'" />
-            </button>
-            <ProfileDropdown :closed="profileDropdownClosed" />
+            <div class="profile-wrap nt" v-if="userAuth">
+                <button class="profile" @click="toggleProfile">
+                    <UserProfilePicture :id="''" />
+                </button>
+                <ProfileDropdown :userAuth="userAuth" :closed="profileDropdownClosed" />
+            </div>
+            <RouterLink v-else to="/login">
+                <span>Login</span>
+            </RouterLink>
         </nav>
     </header>
 </template>
@@ -123,9 +137,21 @@ header {
     align-items: center;
     gap: 0.5rem;
 
-    a,
-    button {
+    .nt {
         height: 100%;
+    }
+
+    a {
+        font-size: 1.2rem;
+    }
+
+    .profile-wrap {
+        height: 100%;
+        left: 1px;
+
+        .profile {
+            height: 100%;
+        }
     }
 
     button {
@@ -133,12 +159,12 @@ header {
         background: none;
     }
 
-    button:hover {
-        cursor: pointer;
-    }
-
     .logo-mobile {
         display: none;
+    }
+
+    .profile-wrap {
+        height: 100%;
     }
 }
 
@@ -188,9 +214,7 @@ header {
     }
 
     .user-area {
-
-        // width: unset;
-        a {
+        .nt {
             aspect-ratio: 1;
 
             * {

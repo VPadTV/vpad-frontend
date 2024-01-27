@@ -61,8 +61,10 @@ main {
     align-items: center;
     height: 1lh;
     column-gap: .6rem;
+
     .logo {
         height: 100%;
+
         img {
             height: 100%;
         }
@@ -86,7 +88,8 @@ form {
         color: $link;
     }
 
-    input, button {
+    input,
+    button {
         font-size: inherit;
         background-color: $main;
         border: 0;
@@ -96,23 +99,22 @@ form {
     button {
         padding: .8rem;
     }
-    button:hover {
-        cursor: pointer;
-    }
 
     .text-input {
         label {
             display: block;
             margin-bottom: 2px;
         }
+
         input {
             padding: .5rem;
         }
+
         a {
             text-align: right;
         }
     }
-    
+
     .submit {
         width: 100%;
         text-align: center;

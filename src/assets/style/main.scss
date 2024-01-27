@@ -3,19 +3,6 @@
 body {
     color: $text;
     background-color: $background;
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        'Segoe UI',
-        Roboto,
-        Oxygen,
-        Ubuntu,
-        Cantarell,
-        'Fira Sans',
-        'Droid Sans',
-        'Helvetica Neue',
-        sans-serif;
     font-size: 15px;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -33,6 +20,7 @@ a {
     transition: 0.2s color;
 }
 
-a:hover {
+a:hover, button:hover {
+    cursor: pointer;
     filter: opacity(80%);
 }

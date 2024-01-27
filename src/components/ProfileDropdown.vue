@@ -1,12 +1,20 @@
 <script setup lang="ts">
-import { getUser } from '@/composables/api/auth';
-const user = getUser()
+import { logout } from '@/composables/api/auth/logout';
+import router from '@/router';
+import type { UserAuth } from '@/types/auth';
+import { ref } from 'vue';
+const { userAuth, closed } = defineProps<{ userAuth: UserAuth, closed: boolean }>()
+const refreshToggle = ref(0);
 
-const { closed } = defineProps<{ closed: boolean }>()
+async function clickLogout() {
+    logout()
+    router.go(0)
+}
+
 </script>
 
 <template>
-    <ul v-if="user" :class="{ closed }">
+    <ul v-if="userAuth" :class="{ closed }" :key="refreshToggle">
         <div class="arrow-up"></div>
         <li>
             <RouterLink to="/">Profile</RouterLink>
@@ -21,7 +29,7 @@ const { closed } = defineProps<{ closed: boolean }>()
             <RouterLink to="/">Report</RouterLink>
         </li>
         <li class="logout">
-            <RouterLink to="/">Logout</RouterLink>
+            <button @click="clickLogout">Logout</button>
         </li>
     </ul>
 </template>
@@ -33,6 +41,7 @@ ul {
     $padding: 12px;
     position: absolute;
     top: 5.4rem;
+    right: 1rem;
     border-radius: $padding;
     background-color: $main-light;
     width: 140px;
@@ -43,6 +52,8 @@ ul {
     align-items: flex-start;
     row-gap: .5rem;
     box-shadow: 2px 2px 8px black;
+
+    font-size: 1rem;
 
     .arrow-up {
         $size: 10px;
@@ -62,19 +73,23 @@ ul {
         width: 100%;
     }
 
-    a {
+    a,
+    button {
         text-align: center;
         display: inline-block;
         padding: .5rem;
         background-color: $background;
+        border: none;
         border-radius: .5rem;
         width: 100%;
     }
 
     .logout {
         width: 100%;
+        font-size: inherit;
 
-        a {
+        button {
+            font-size: inherit;
             background-color: $red;
         }
     }
