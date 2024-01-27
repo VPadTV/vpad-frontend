@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import PostView from '@/views/PostView.vue'
 import UserView from '@/views/UserView.vue'
-import BlankView from '@/views/BlankView.vue'
+import WIPView from '@/views/WIPView.vue'
 import ReloadOnRouteChange from '@/components/ReloadOnRouteChange.vue'
 import PageNotFound from '@/views/PageNotFound.vue'
 
@@ -33,17 +33,17 @@ const router = createRouter({
         {
             path: '/create',
             name: 'create',
-            component: BlankView
+            component: WIPView
         },
         {
             path: '/notifications',
             name: 'notifications',
-            component: BlankView
+            component: WIPView
         },
         {
             path: '/profile',
             name: 'profile',
-            component: BlankView
+            component: WIPView
         },
         { path: "/:catchAll(.*)", component: PageNotFound },
         // {
