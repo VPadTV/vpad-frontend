@@ -34,7 +34,7 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/base.scss';
+@import '@/assets/style/base.scss';
 
 header {
     position: fixed;
@@ -110,6 +110,7 @@ aside.closed {
         scale: 1.5;
         padding: 0;
         left: .5rem;
+        transition: none;
     }
 
     .arrow.closed {

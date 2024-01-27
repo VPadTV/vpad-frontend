@@ -45,7 +45,7 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/base.scss';
+@import '@/assets/style/base.scss';
 div {
     overflow: hidden;
     width: 100%;

@@ -17,6 +17,9 @@ import MailIcon from '../icons/MailIcon.vue';
             </button>
         </form>
         <section class="user-area">
+            <RouterLink to="/" class="logo-mobile">
+                <img alt="VPad" src="@/assets/logo_whitebg.png" height="60" />
+            </RouterLink>
             <RouterLink to="/create"><PenIcon/></RouterLink>
             <RouterLink to="/notifications"><MailIcon/></RouterLink>
             <RouterLink to="/profile" class="profile"><UserProfilePicture :id="'among us'"/></RouterLink>
@@ -25,7 +28,7 @@ import MailIcon from '../icons/MailIcon.vue';
 </template>
   
 <style scoped lang="scss">
-@import '@/assets/base.scss';
+@import '@/assets/style/base.scss';
 
 header {
     padding: 0 1rem;
@@ -108,12 +111,17 @@ header {
     .profile {
         margin-left: .4rem;
     }
+
+    .logo-mobile {
+        display: none;
+    }
 }
 
 @media screen and (max-width: $mobile-width-large) {
     header {
         flex-direction: column;
         padding: .5rem 0;
+        height: $header-height-width-large;
     }
 
     .logo {
@@ -125,7 +133,7 @@ header {
     .search-box {
         order: 3;
         height: 2rem;
-        width: 60%;
+        width: 65%;
         margin-top: .5rem;
 
         input {
@@ -134,8 +142,9 @@ header {
     }
 
     .user-area {
+        width: unset;
         height: unset;
-        width: 120px;
+        height: calc($header-height-width-large - 70px);
         margin-left: 0;
         .profile {
             margin-left: .2rem;
@@ -149,6 +158,23 @@ header {
 
     .search-box {
         width: 85%;
+    }
+
+    .user-area {
+        // width: unset;
+        a {
+            aspect-ratio: 1;
+            * {
+                vertical-align: middle;
+            }
+        }
+        .logo-mobile {
+            display: unset;
+
+            img {
+                height: 100%;
+            }
+        }
     }
 }
 </style>

@@ -20,7 +20,7 @@ const { user } = defineProps<{
 </template> 
   
 <style scoped lang="scss">
-@import '@/assets/base.scss';
+@import '@/assets/style/base.scss';
 .user {
     margin: 1rem 4rem;
 }

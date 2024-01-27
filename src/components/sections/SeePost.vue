@@ -1,26 +1,13 @@
 <script setup lang="ts">
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
 import LoadingIcon from '@/components/icons/LoadingIcon.vue';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import type { Post } from '@/types/entities';
-import { numify } from '@/utils';
-import slider from "vue3-slider"
 
-const { post } = defineProps<{
-    post: Post
+const { post, postScale } = defineProps<{
+    post: Post,
+    postScale: number
 }>()
-
-let postScale = ref((100+30)/2)
-
-function updatePostscale(value: number) {
-    localStorage.setItem('postScale', value.toString())
-}
-
-onMounted(async () => {
-    const loadedPostScale = numify(localStorage.getItem('postScale'))
-    if (loadedPostScale && loadedPostScale >= 30 && loadedPostScale <= 100)
-        postScale.value = loadedPostScale
-})
 
 let loading = ref(true)
 function hideLoading() {
@@ -31,7 +18,6 @@ function hideLoading() {
 
 <template>
     <section class="post">
-        <slider orientation="vertical" v-model="postScale" color="#4C9BD4" trackColor="#202427" :min="30" @change="updatePostscale"></slider>
         <section class="content-background">
             <LoadingIcon :class="{ hidden: !loading }"/>
             <img :class="{ hidden: loading }" @load="hideLoading()" :src="post.url" class="content" :style="{ width: `${postScale}%` }"/>
@@ -48,37 +34,27 @@ function hideLoading() {
 </template> 
   
 <style scoped lang="scss">
-@import '@/assets/base.scss';
+@import '@/assets/style/base.scss';
 .content-background {
     width: 100%;
     background-color: $main;
     display: flex;
     justify-content: center;
     align-items: center;
-}
 
-.content {
-    max-width: 100%;
-    min-width: 30%;
-    background-color: gray;
-    resize: horizontal;
-    overflow: hidden;
+    .content {
+        max-width: 100%;
+        min-width: 30%;
 
-    img {
-        width: 100%;
-        text-align: center;
+        img {
+            width: 100%;
+            text-align: center;
+        }
     }
-}
+    }
 
 .loading-spinner {
     padding: 1rem;
-}
-
-.vue3-slider {
-    position: fixed;
-    right: 3.5rem;
-    top: calc(50vh - 8rem);
-    height: 20rem!important;
 }
 
 .text {
@@ -123,5 +99,21 @@ function hideLoading() {
     max-height: 2lh;    
     max-width: 100%;
 }
+}
+
+@media screen and (max-width: $mobile-width-large) {
+    .content-background {
+        max-height: 700px;
+        overflow: hidden;
+    }
+    .content {
+        width: 100%!important;
+    }
+
+    .post {
+        .text {
+            margin: 0rem 1rem 1rem;
+        }
+    }
 }
 </style>

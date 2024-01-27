@@ -44,7 +44,7 @@ function getRandomHeight() {
 </template>
   
 <style scoped lang="scss">
-@import '@/assets/base.scss';
+@import '@/assets/style/base.scss';
 
 section {
     $gap: 2.8rem;
