@@ -23,16 +23,14 @@ export async function get<T>(url: string, query?: { [key: string]: string | numb
     return undefined
 }
 
-export enum HttpMethod {
-    GET, POST, PUT, DELETE
-}
+export type HttpMethod = "get" | "post" | "put" | "delete"
 
 export async function api<T>(url: string, method: HttpMethod, body?: FormData | URLSearchParams): Promise<T | undefined> {
     const toast = useToast()
     let response: Response
     try {
         response = await fetch(import.meta.env.VITE_API_URL + url, {
-            method: HttpMethod[method],
+            method,
             body,
             headers: getAuthorization()
         })
