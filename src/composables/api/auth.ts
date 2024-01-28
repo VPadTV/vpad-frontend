@@ -16,8 +16,26 @@ export const getAuthorization = (): { 'Authorization': string } | undefined => {
     }
 }
 
-export async function login(input: URLSearchParams): Promise<UserAuth | undefined> {
-    const data = await api<UserAuth>('user/login', 'post', input)
+type RegisterBody = {
+    username: string
+    nickname?: string
+    email: string
+    password: string
+    about?: string
+}
+export async function register(body: RegisterBody): Promise<UserAuth | undefined> {
+    const data = await api<UserAuth>('user/register', 'post', new URLSearchParams(body))
+    if (!data) return undefined;
+    localStorage.setItem('userAuth', `${data.id} ${data.token}`)
+    return data;
+}
+
+type LoginBody = {
+    emailOrUsername: string
+    password: string
+}
+export async function login(body: LoginBody): Promise<UserAuth | undefined> {
+    const data = await api<UserAuth>('user/login', 'post', new URLSearchParams(body))
     if (!data) return undefined;
     localStorage.setItem('userAuth', `${data.id} ${data.token}`)
     return data;

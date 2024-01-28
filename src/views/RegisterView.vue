@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { login } from '@/composables/api/auth'
+import { register } from '@/composables/api/auth'
 import router from '@/router';
 
-let emailOrUsername = ref<string>('')
+let username = ref<string>('')
+let nickname = ref<string>('')
+let email = ref<string>('')
 let password = ref<string>('')
+let about = ref<string>('')
 
 async function onSubmit() {
-    const response = await login({
-        emailOrUsername: emailOrUsername.value!,
-        password: password.value!,
+    const response = await register({
+        username: username.value,
+        nickname: nickname.value.trim().length > 0 ? nickname.value : '',
+        email: email.value,
+        password: password.value,
+        about: about.value.length > 0 ? about.value : '',
     })
     if (response != null)
         router.push({ name: 'home' })
@@ -22,21 +28,32 @@ async function onSubmit() {
             <RouterLink to="/" class="logo">
                 <img alt="VPad" src="@/assets/logo_whitebg.png" />
             </RouterLink>
-            <span>Welcome back!</span>
+            <span>Welcome to VPad!</span>
         </h1>
         <form method="post" @submit.prevent="onSubmit" autocomplete="off">
             <section class="text-input">
-                <label>Email or Username</label>
-                <input type="text" v-model="emailOrUsername">
+                <label><span class="req">*</span>Username <small>*Must be unique</small></label>
+                <input required type="text" v-model="username" minlength="5">
             </section>
             <section class="text-input">
-                <label for="password">Password</label>
-                <input type="password" name="password" v-model="password">
-                <RouterLink to="/">Forgot password</RouterLink>
+                <label>Nickname</label>
+                <input type="text" v-model="nickname">
+            </section>
+            <section class="text-input">
+                <label><span class="req">*</span>Email</label>
+                <input required type="email" v-model="email">
+            </section>
+            <section class="text-input">
+                <label><span class="req">*</span>Password</label>
+                <input required type="password" v-model="password" minlength="5">
+            </section>
+            <section class="text-input">
+                <label>About</label>
+                <textarea type="text" v-model="about"></textarea>
             </section>
             <section class="submit">
-                <button type="submit">Login</button>
-                <RouterLink to="/register">Register instead</RouterLink>
+                <button type="submit">Register</button>
+                <RouterLink to="/login">Login instead</RouterLink>
             </section>
         </form>
     </main>
@@ -88,8 +105,13 @@ form {
         color: $link;
     }
 
+    .req {
+        color: $light-red;
+    }
+
     input,
-    button {
+    button,
+    textarea {
         font-size: inherit;
         background-color: $main;
         border: 0;
@@ -101,17 +123,33 @@ form {
     }
 
     .text-input {
+        width: 100%;
+
         label {
             display: block;
             margin-bottom: 2px;
         }
 
-        input {
+        input,
+        textarea {
             padding: .5rem;
+            width: 100%;
+        }
+
+        textarea {
+            resize: both;
+            min-width: 100%;
+            min-height: 2lh;
+            max-width: 50vw;
+            max-height: 20vh;
         }
 
         a {
             text-align: right;
+        }
+
+        small {
+            color: $text-faded;
         }
     }
 

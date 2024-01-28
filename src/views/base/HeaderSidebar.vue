@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import SearchHeader from '@/components/sections/SearchHeader.vue'
 import SubscriptionSidebar from '@/components/sections/SubscriptionSidebar.vue'
 import ArrowIcon from '@/components/icons/ArrowIcon.vue'
@@ -12,7 +12,7 @@ function toggleClosed() {
     localStorage.setItem('sidebarClosed', sidebarClosed.value.toString());
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
     const loadedClosed = boolify(localStorage.getItem('sidebarClosed'));
     if (loadedClosed != null)
         sidebarClosed.value = loadedClosed;
