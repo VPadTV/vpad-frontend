@@ -1,8 +1,8 @@
 import type { UserAuth } from "@/types/auth"
-import { post } from "../base"
+import { HttpMethod, api } from "../base"
 
 export async function login(input: URLSearchParams): Promise<UserAuth | undefined> {
-    const data = await post<UserAuth>('user/login', input)
+    const data = await api<UserAuth>('user/login', HttpMethod.POST, input)
     if (!data) return undefined;
     localStorage.setItem('userAuth', `${data.id} ${data.token}`)
     return data;

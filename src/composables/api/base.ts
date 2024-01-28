@@ -23,22 +23,34 @@ export async function get<T>(url: string, query?: { [key: string]: string | numb
     return undefined
 }
 
-export async function post<T>(url: string, body?: FormData | URLSearchParams): Promise<T | undefined> {
-    const response = await fetch(import.meta.env.VITE_API_URL + url, {
-        method: "POST",
-        body,
-        headers: getAuthorization()
-    })
+export enum HttpMethod {
+    GET, POST, PUT, DELETE
+}
+
+export async function api<T>(url: string, method: HttpMethod, body?: FormData | URLSearchParams): Promise<T | undefined> {
+    const toast = useToast()
+    let response: Response
+    try {
+        response = await fetch(import.meta.env.VITE_API_URL + url, {
+            method: HttpMethod[method],
+            body,
+            headers: getAuthorization()
+        })
+    } catch (e) {
+        toast.error('Error reaching the server')
+        return undefined
+    }
     if (response.status !== 200) {
-        if (response.headers.get('content-type') === 'application/json') {
+        if (response.headers.get('content-type')?.startsWith('application/json')) {
             const jsonError = await response.json()
             const error = new BackendError(
                 jsonError.code ?? 500,
                 jsonError.error ?? 'Unknown'
             );
-            const toast = useToast()
             toast.error(`${error.code} - ${error.error}`)
+            return undefined
         }
+        toast.error(`Server error`)
         return undefined
     }
     return await response.json() as T
