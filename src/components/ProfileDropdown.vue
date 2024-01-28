@@ -17,7 +17,7 @@ async function clickLogout() {
     <ul v-if="userAuth" :class="{ closed }" :key="refreshToggle">
         <div class="arrow-up"></div>
         <li>
-            <RouterLink to="/">Profile</RouterLink>
+            <RouterLink to="/profile">Profile</RouterLink>
         </li>
         <li>
             <RouterLink to="/">Settings</RouterLink>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import TextInput from '@/components/TextInput.vue'
+
 import { ref } from 'vue';
 import { login } from '@/composables/api/auth'
 import router from '@/router';
@@ -25,15 +27,12 @@ async function onSubmit() {
             <span>Welcome back!</span>
         </h1>
         <form method="post" @submit.prevent="onSubmit" autocomplete="off">
-            <section class="text-input">
-                <label>Email or Username</label>
-                <input type="text" v-model="emailOrUsername">
-            </section>
-            <section class="text-input">
-                <label for="password">Password</label>
-                <input type="password" name="password" v-model="password">
-                <RouterLink to="/">Forgot password</RouterLink>
-            </section>
+            <TextInput v-model="emailOrUsername">
+                Email or username
+            </TextInput>
+            <TextInput type="password" v-model="password">
+                Password
+            </TextInput>
             <section class="submit">
                 <button type="submit">Login</button>
                 <RouterLink to="/register">Register instead</RouterLink>
@@ -88,31 +87,12 @@ form {
         color: $link;
     }
 
-    input,
     button {
         font-size: inherit;
         background-color: $main;
         border: 0;
         border-radius: .5rem;
-    }
-
-    button {
-        padding: .8rem;
-    }
-
-    .text-input {
-        label {
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        input {
-            padding: .5rem;
-        }
-
-        a {
-            text-align: right;
-        }
+        padding: .5rem 1.2rem;
     }
 
     .submit {

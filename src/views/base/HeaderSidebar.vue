@@ -90,7 +90,7 @@ aside.closed {
 
 .scroll {
     position: relative;
-    margin-top: $header-height;
+    top: $header-height;
     height: calc(100vh - $header-height);
     overflow: auto;
 
@@ -128,6 +128,11 @@ aside.closed {
         .arrow-icon {
             transform: scaleX(-1);
         }
+    }
+
+    .scroll {
+        top: $header-height-width-large;
+        height: calc(100vh - $header-height-width-large);
     }
 }
 </style>

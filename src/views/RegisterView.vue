@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import TextInput from '@/components/TextInput.vue'
+import TextAreaInput from '@/components/TextAreaInput.vue'
+
 import { ref } from 'vue';
 import { register } from '@/composables/api/auth'
 import router from '@/router';
@@ -31,26 +34,21 @@ async function onSubmit() {
             <span>Welcome to VPad!</span>
         </h1>
         <form method="post" @submit.prevent="onSubmit" autocomplete="off">
-            <section class="text-input">
-                <label><span class="req">*</span>Username <small>*Must be unique</small></label>
-                <input required type="text" v-model="username" minlength="5">
-            </section>
-            <section class="text-input">
-                <label>Nickname</label>
-                <input type="text" v-model="nickname">
-            </section>
-            <section class="text-input">
-                <label><span class="req">*</span>Email</label>
-                <input required type="email" v-model="email">
-            </section>
-            <section class="text-input">
-                <label><span class="req">*</span>Password</label>
-                <input required type="password" v-model="password" minlength="5">
-            </section>
-            <section class="text-input">
-                <label>About</label>
-                <textarea type="text" v-model="about"></textarea>
-            </section>
+            <TextInput required v-model="username">
+                <span class="req">*</span>Username <small>(Must be unique)</small>
+            </TextInput>
+            <TextInput v-model="nickname">
+                Nickname
+            </TextInput>
+            <TextInput required type="email" v-model="email">
+                <span class="req">*</span>Email
+            </TextInput>
+            <TextInput required type="password" v-model="password">
+                <span class="req">*</span>Password
+            </TextInput>
+            <TextAreaInput v-model="about">
+                About
+            </TextAreaInput>
             <section class="submit">
                 <button type="submit">Register</button>
                 <RouterLink to="/login">Login instead</RouterLink>
@@ -109,48 +107,16 @@ form {
         color: $light-red;
     }
 
-    input,
-    button,
-    textarea {
+    button {
         font-size: inherit;
         background-color: $main;
         border: 0;
         border-radius: .5rem;
-    }
-
-    button {
         padding: .8rem;
     }
 
-    .text-input {
-        width: 100%;
-
-        label {
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        input,
-        textarea {
-            padding: .5rem;
-            width: 100%;
-        }
-
-        textarea {
-            resize: both;
-            min-width: 100%;
-            min-height: 2lh;
-            max-width: 50vw;
-            max-height: 20vh;
-        }
-
-        a {
-            text-align: right;
-        }
-
-        small {
-            color: $text-faded;
-        }
+    small {
+        color: $text-faded;
     }
 
     .submit {

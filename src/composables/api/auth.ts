@@ -40,6 +40,11 @@ export async function login(body: LoginBody): Promise<UserAuth | undefined> {
     localStorage.setItem('userAuth', `${data.id} ${data.token}`)
     return data;
 }
+export async function refreshToken(newToken: string): Promise<undefined> {
+    const current = getUserAuth()
+    if (!current) return
+    localStorage.setItem('userAuth', `${current.id} ${newToken}`)
+}
 
 export async function logout(): Promise<undefined> {
     localStorage.removeItem('userAuth')

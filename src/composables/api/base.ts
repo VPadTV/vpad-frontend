@@ -1,6 +1,6 @@
 import { store } from "@/store/store"
 import { BackendError } from "@/types/http"
-import { getAuthorization } from "./auth"
+import { getAuthorization, refreshToken } from "./auth"
 import { useToast } from "vue-toastification"
 
 export async function get<T>(url: string, query?: { [key: string]: string | number | boolean }): Promise<T | undefined> {
@@ -25,6 +25,7 @@ export async function get<T>(url: string, query?: { [key: string]: string | numb
 
 export type HttpMethod = "get" | "post" | "put" | "delete"
 
+export type ResponseRefreshToken = { token?: string }
 export async function api<T>(url: string, method: HttpMethod, body?: FormData | URLSearchParams): Promise<T | undefined> {
     const toast = useToast()
     let response: Response
@@ -51,5 +52,8 @@ export async function api<T>(url: string, method: HttpMethod, body?: FormData | 
         toast.error(`Server error`)
         return undefined
     }
-    return await response.json() as T
+    const responseJson = await response.json() as T & ResponseRefreshToken
+    if (responseJson.token)
+        refreshToken(responseJson.token)
+    return responseJson
 }

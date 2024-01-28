@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import PostView from '@/views/PostView.vue'
 import UserView from '@/views/UserView.vue'
 import WIPView from '@/views/WIPView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import ReloadOnRouteChange from '@/components/ReloadOnRouteChange.vue'
@@ -45,7 +46,7 @@ const router = createRouter({
         {
             path: '/profile',
             name: 'profile',
-            component: WIPView
+            component: ProfileView
         },
         {
             path: '/login',
