@@ -1,6 +1,7 @@
 import { store } from "@/store/store"
 import { BackendError } from "@/types/http"
 import { getAuthorization } from "./auth"
+import { useToast } from "vue-toastification"
 
 export async function get<T>(url: string, query?: { [key: string]: string | number | boolean }): Promise<T | undefined> {
 
@@ -23,37 +24,22 @@ export async function get<T>(url: string, query?: { [key: string]: string | numb
 }
 
 export async function post<T>(url: string, body?: FormData | URLSearchParams): Promise<T | undefined> {
-    // const response = await fetch(import.meta.env.VITE_API_URL + url, {
-    //     method: "POST",
-    //     body,
-    //     headers: getAuthorization()
-    // })
-    const response = {
-        status: 200,
-        headers: { 'content-type': 'application/json' },
-        json: async () => ({
-            id: 'test-id',
-            token: 'test-token',
-        })
+    const response = await fetch(import.meta.env.VITE_API_URL + url, {
+        method: "POST",
+        body,
+        headers: getAuthorization()
+    })
+    if (response.status !== 200) {
+        if (response.headers.get('content-type') === 'application/json') {
+            const jsonError = await response.json()
+            const error = new BackendError(
+                jsonError.code ?? 500,
+                jsonError.error ?? 'Unknown'
+            );
+            const toast = useToast()
+            toast.error(`${error.code} - ${error.error}`)
+        }
+        return undefined
     }
-    // if (response.status !== 200) {
-    //     if (response.headers.get('content-type') === 'application/json') {
-    //         const jsonError = await response.json()
-    //         const error = new BackendError(
-    //             jsonError.code ?? 500,
-    //             jsonError.error ?? 'Unknown'
-    //         );
-    //     }
-    //     return undefined
-    // }
     return await response.json() as T
-
-    // if (url.startsWith('login')) {
-    //     store.userAuth = {
-    //         token: 'test-token',
-    //         id: 'qwerty'
-    //     }
-    //     return store.userAuth as T
-    // }
-    // else if (url.startsWith('register')) {}
 }

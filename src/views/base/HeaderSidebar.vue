@@ -73,6 +73,11 @@ aside.closed {
 
 .arrow:hover {
     cursor: pointer;
+    filter: none;
+
+    svg {
+        filter: opacity(80%)
+    }
 }
 
 .arrow.closed {
