@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { logout } from '@/composables/api/auth/logout';
+import { logout } from '@/composables/api/auth';
 import router from '@/router';
 import type { UserAuth } from '@/types/auth';
 import { ref } from 'vue';

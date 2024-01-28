@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { login } from '@/composables/api/auth/login'
+import { login } from '@/composables/api/auth'
 import router from '@/router';
 
 let identifier = ref<string>('')
