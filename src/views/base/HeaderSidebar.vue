@@ -5,9 +5,9 @@ import SubscriptionSidebar from '@/components/sections/SubscriptionSidebar.vue'
 import ArrowIcon from '@/components/icons/ArrowIcon.vue'
 import { boolify } from '@/utils';
 
-const sidebarClosed = ref(false)
+const sidebarClosed = ref(true)
 
-function toggleClosed() {
+function toggleSidebarClosed() {
     sidebarClosed.value = !sidebarClosed.value;
     localStorage.setItem('sidebarClosed', sidebarClosed.value.toString());
 }
@@ -22,7 +22,7 @@ onBeforeMount(async () => {
 
 <template>
     <SubscriptionSidebar :class="{ closed: sidebarClosed }" />
-    <button class="arrow" :class="{ closed: sidebarClosed }" :onClick="toggleClosed">
+    <button class="arrow" :class="{ closed: sidebarClosed }" :onClick="toggleSidebarClosed">
         <ArrowIcon class="arrow-icon" />
     </button>
     <SearchHeader />

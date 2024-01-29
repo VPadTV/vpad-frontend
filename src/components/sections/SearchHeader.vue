@@ -7,11 +7,10 @@ import SearchIcon from '../icons/SearchIcon.vue';
 import PenIcon from '../icons/PenIcon.vue';
 import MailIcon from '../icons/MailIcon.vue';
 
-import { getUserAuth } from '@/composables/api/auth';
+import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
 
-const userAuth = getUserAuth()
-
-function toggleProfile() {
+let user = loadOrGetUserRef(false)
+function toggleProfileDropdown() {
     profileDropdownClosed.value = !profileDropdownClosed.value
 }
 
@@ -40,11 +39,11 @@ const profileDropdownClosed = ref(true)
             <RouterLink class="nt" to="/notifications">
                 <MailIcon />
             </RouterLink>
-            <div class="profile-wrap nt" v-if="userAuth">
-                <button class="profile" @click="toggleProfile">
+            <div class="profile-wrap nt" v-if="user">
+                <button class="profile" @click="toggleProfileDropdown">
                     <UserProfilePicture :id="''" />
                 </button>
-                <ProfileDropdown :userAuth="userAuth" :closed="profileDropdownClosed" />
+                <ProfileDropdown :user="user" :closed="profileDropdownClosed" />
             </div>
             <RouterLink v-else to="/login">
                 <span>Login</span>

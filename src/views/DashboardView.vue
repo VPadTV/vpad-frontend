@@ -10,7 +10,9 @@ const user = loadOrGetUserRef()
 
 <template>
     <BaseHeaderSidebar v-if="user">
-        <UserHeader :user="user" />
+        <UserHeader :user="user">
+            <h1>Dashboard</h1>
+        </UserHeader>
         <section class="user-data">
             <h2>About me</h2>
             <p v-if="user.about" class="about">
@@ -26,6 +28,10 @@ const user = loadOrGetUserRef()
 </template>
 
 <style scoped lang="scss">
+h1 {
+    font-size: 2.5rem;
+}
+
 .user-data {
     padding: 0 3rem 3rem;
 
