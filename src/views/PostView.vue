@@ -4,20 +4,20 @@ import SeePost from '@/components/sections/SeePost.vue'
 import type { Post } from '@/types/entities';
 import { formatNumber, numify } from '@/utils';
 import { get } from '@/composables/api/base'
-import { type Ref, ref, onMounted } from 'vue';
+import { type Ref, ref, onMounted, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
 import PostList from '@/components/sections/PostList.vue';
 import LoadingIcon from '@/components/icons/LoadingIcon.vue';
 import slider from 'vue3-slider'
 
 let post: Ref<Post | undefined> = ref(undefined)
-let postScale = ref((100+30)/2)
+let postScale = ref((100 + 30) / 2)
 
 function updatePostscale(value: number) {
     localStorage.setItem('postScale', value.toString())
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
     const loadedPostScale = numify(localStorage.getItem('postScale'))
     if (loadedPostScale && loadedPostScale >= 30 && loadedPostScale <= 100)
         postScale.value = loadedPostScale
@@ -41,12 +41,13 @@ onMounted(async () => {
 
 <template>
     <BaseHeaderSidebar>
-        <slider width="20rem" height="12" class="scaling-slider" orientation="vertical" v-model="postScale" color="#4C9BD4" trackColor="#202427" :min="30" @change="updatePostscale"></slider>
-        <SeePost v-if="post" :post="post" :postScale="postScale"/>
+        <slider width="20rem" height="12" class="scaling-slider" orientation="vertical" v-model="postScale" color="#4C9BD4"
+            trackColor="#202427" :min="30" @change="updatePostscale"></slider>
+        <SeePost v-if="post" :post="post" :postScale="postScale" />
         <div v-else class="notfound">
-            <LoadingIcon/>
+            <LoadingIcon />
         </div>
-        <PostList/>
+        <PostList />
     </BaseHeaderSidebar>
 </template>
 
@@ -85,5 +86,4 @@ onMounted(async () => {
         display: none;
     }
 }
-
 </style>

@@ -1,6 +1,7 @@
 import { store } from "@/store/store"
 import { BackendError } from "@/types/http"
-import { getAuthorization } from "./auth"
+import { getAuthorization, refreshToken } from "./auth"
+import { useToast } from "vue-toastification"
 
 export async function get<T>(url: string, query?: { [key: string]: string | number | boolean }): Promise<T | undefined> {
 
@@ -22,38 +23,37 @@ export async function get<T>(url: string, query?: { [key: string]: string | numb
     return undefined
 }
 
-export async function post<T>(url: string, body?: FormData | URLSearchParams): Promise<T | undefined> {
-    // const response = await fetch(import.meta.env.VITE_API_URL + url, {
-    //     method: "POST",
-    //     body,
-    //     headers: getAuthorization()
-    // })
-    const response = {
-        status: 200,
-        headers: { 'content-type': 'application/json' },
-        json: async () => ({
-            id: 'test-id',
-            token: 'test-token',
-        })
-    }
-    // if (response.status !== 200) {
-    //     if (response.headers.get('content-type') === 'application/json') {
-    //         const jsonError = await response.json()
-    //         const error = new BackendError(
-    //             jsonError.code ?? 500,
-    //             jsonError.error ?? 'Unknown'
-    //         );
-    //     }
-    //     return undefined
-    // }
-    return await response.json() as T
+export type HttpMethod = "get" | "post" | "put" | "delete"
 
-    // if (url.startsWith('login')) {
-    //     store.userAuth = {
-    //         token: 'test-token',
-    //         id: 'qwerty'
-    //     }
-    //     return store.userAuth as T
-    // }
-    // else if (url.startsWith('register')) {}
+export type ResponseRefreshToken = { token?: string }
+export async function api<T>(url: string, method: HttpMethod, body?: FormData | URLSearchParams): Promise<T | undefined> {
+    const toast = useToast()
+    let response: Response
+    try {
+        response = await fetch(import.meta.env.VITE_API_URL + url, {
+            method,
+            body,
+            headers: getAuthorization()
+        })
+    } catch (e) {
+        toast.error('Error reaching the server')
+        return undefined
+    }
+    if (response.status !== 200) {
+        if (response.headers.get('content-type')?.startsWith('application/json')) {
+            const jsonError = await response.json()
+            const error = new BackendError(
+                jsonError.code ?? 500,
+                jsonError.error ?? 'Unknown'
+            );
+            toast.error(`${error.code} - ${error.error}`)
+            return undefined
+        }
+        toast.error(`Server error`)
+        return undefined
+    }
+    const responseJson = await response.json() as T & ResponseRefreshToken
+    if (responseJson.token)
+        refreshToken(responseJson.token)
+    return responseJson
 }

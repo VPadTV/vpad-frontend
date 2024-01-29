@@ -1,6 +1,12 @@
 export type User = {
-    id: string,
+    id: string
+    username: string
     nickname: string
+    email: string
+    profilePhotoUrl?: string
+    about?: string
+    contact?: string
+    admin: boolean
 }
 
 export type Post = {
@@ -11,4 +17,10 @@ export type Post = {
     likes: number | string,
     dislikes: number | string
     createdAt: Date,
+}
+
+export type SubscriptionTier = {
+    id: string,
+    name: string,
+    price: string
 }

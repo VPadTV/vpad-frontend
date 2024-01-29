@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { logout } from '@/composables/api/auth/logout';
+import { logout } from '@/composables/api/auth';
+import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
 import router from '@/router';
-import type { UserAuth } from '@/types/auth';
 import { ref } from 'vue';
-const { userAuth, closed } = defineProps<{ userAuth: UserAuth, closed: boolean }>()
+const { closed } = defineProps<{ closed: boolean }>()
 const refreshToggle = ref(0);
 
+const user = loadOrGetUserRef()
 async function clickLogout() {
     logout()
     router.go(0)
@@ -14,10 +15,13 @@ async function clickLogout() {
 </script>
 
 <template>
-    <ul v-if="userAuth" :class="{ closed }" :key="refreshToggle">
+    <ul v-if="user" :class="{ closed }" :key="refreshToggle">
         <div class="arrow-up"></div>
         <li>
-            <RouterLink to="/">Profile</RouterLink>
+            <RouterLink :to='`/user/${user.id}`'>Profile</RouterLink>
+        </li>
+        <li>
+            <RouterLink to="/dashboard">Dashboard</RouterLink>
         </li>
         <li>
             <RouterLink to="/">Settings</RouterLink>
@@ -38,13 +42,13 @@ async function clickLogout() {
 @import '@/assets/style/base.scss';
 
 ul {
+    $width: 140px;
     $padding: 12px;
     position: absolute;
-    top: 5.4rem;
-    right: 1rem;
+    transform: translateX(-95px) translateY(10px);
     border-radius: $padding;
     background-color: $main-light;
-    width: 140px;
+    width: $width;
     padding: $padding;
     display: flex;
     flex-direction: column;
@@ -97,8 +101,7 @@ ul {
 
 @media screen and (max-width: $mobile-width-large) {
     ul {
-        top: 5rem;
-        transform: translateX(-5px);
+        transform: translateX(-85px) translateY(10px);
     }
 }
 

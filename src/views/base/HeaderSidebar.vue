@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import SearchHeader from '@/components/sections/SearchHeader.vue'
 import SubscriptionSidebar from '@/components/sections/SubscriptionSidebar.vue'
 import ArrowIcon from '@/components/icons/ArrowIcon.vue'
 import { boolify } from '@/utils';
 
-const sidebarClosed = ref(false)
+const sidebarClosed = ref(true)
 
-function toggleClosed() {
+function toggleSidebarClosed() {
     sidebarClosed.value = !sidebarClosed.value;
     localStorage.setItem('sidebarClosed', sidebarClosed.value.toString());
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
     const loadedClosed = boolify(localStorage.getItem('sidebarClosed'));
     if (loadedClosed != null)
         sidebarClosed.value = loadedClosed;
@@ -22,7 +22,7 @@ onMounted(async () => {
 
 <template>
     <SubscriptionSidebar :class="{ closed: sidebarClosed }" />
-    <button class="arrow" :class="{ closed: sidebarClosed }" :onClick="toggleClosed">
+    <button class="arrow" :class="{ closed: sidebarClosed }" :onClick="toggleSidebarClosed">
         <ArrowIcon class="arrow-icon" />
     </button>
     <SearchHeader />
@@ -73,6 +73,11 @@ aside.closed {
 
 .arrow:hover {
     cursor: pointer;
+    filter: none;
+
+    svg {
+        filter: opacity(80%)
+    }
 }
 
 .arrow.closed {
@@ -85,7 +90,7 @@ aside.closed {
 
 .scroll {
     position: relative;
-    margin-top: $header-height;
+    top: $header-height;
     height: calc(100vh - $header-height);
     overflow: auto;
 
@@ -123,6 +128,11 @@ aside.closed {
         .arrow-icon {
             transform: scaleX(-1);
         }
+    }
+
+    .scroll {
+        top: $header-height-width-large;
+        height: calc(100vh - $header-height-width-large);
     }
 }
 </style>

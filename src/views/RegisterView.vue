@@ -1,17 +1,24 @@
 <script setup lang="ts">
 import TextInput from '@/components/TextInput.vue'
+import TextAreaInput from '@/components/TextAreaInput.vue'
 
 import { ref } from 'vue';
-import { login } from '@/composables/api/auth'
+import { register } from '@/composables/api/auth'
 import router from '@/router';
 
-let emailOrUsername = ref<string>('')
+let username = ref<string>('')
+let nickname = ref<string>('')
+let email = ref<string>('')
 let password = ref<string>('')
+let about = ref<string>('')
 
 async function onSubmit() {
-    const response = await login({
-        emailOrUsername: emailOrUsername.value!,
-        password: password.value!,
+    const response = await register({
+        username: username.value,
+        nickname: nickname.value.trim().length > 0 ? nickname.value : '',
+        email: email.value,
+        password: password.value,
+        about: about.value.length > 0 ? about.value : '',
     })
     if (response != null)
         router.push({ name: 'home' })
@@ -24,18 +31,27 @@ async function onSubmit() {
             <RouterLink to="/" class="logo">
                 <img alt="VPad" src="@/assets/logo_whitebg.png" />
             </RouterLink>
-            <span>Welcome back!</span>
+            <span>Welcome to VPad!</span>
         </h1>
         <form method="post" @submit.prevent="onSubmit" autocomplete="off">
-            <TextInput v-model="emailOrUsername">
-                Email or username
+            <TextInput required v-model="username">
+                <span class="req">*</span>Username <small>(Must be unique)</small>
             </TextInput>
-            <TextInput type="password" v-model="password">
-                Password
+            <TextInput v-model="nickname">
+                Nickname
             </TextInput>
+            <TextInput required type="email" v-model="email">
+                <span class="req">*</span>Email
+            </TextInput>
+            <TextInput required type="password" v-model="password">
+                <span class="req">*</span>Password
+            </TextInput>
+            <TextAreaInput v-model="about">
+                About
+            </TextAreaInput>
             <section class="submit">
-                <button type="submit">Login</button>
-                <RouterLink to="/register">Register instead</RouterLink>
+                <button type="submit">Register</button>
+                <RouterLink to="/login">Login instead</RouterLink>
             </section>
         </form>
     </main>
@@ -87,12 +103,20 @@ form {
         color: $link;
     }
 
+    .req {
+        color: $light-red;
+    }
+
     button {
         font-size: inherit;
         background-color: $main;
         border: 0;
         border-radius: .5rem;
-        padding: .5rem 1.2rem;
+        padding: .8rem;
+    }
+
+    small {
+        color: $text-faded;
     }
 
     .submit {
