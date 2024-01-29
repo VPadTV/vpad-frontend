@@ -10,7 +10,6 @@
 svg {
     background: none;
     display: inline-block;
-    width: 100%;
     height: 100%;
     aspect-ratio: 1/1;
 
