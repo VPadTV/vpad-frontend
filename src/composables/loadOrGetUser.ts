@@ -13,7 +13,7 @@ export function loadOrGetUserRef(reload: boolean = true, fallbackRoute: string =
     return user;
 }
 
-async function loadOrGetUser(reload: boolean, fallbackRoute: string): Promise<User | undefined> {
+export async function loadOrGetUser(reload: boolean, fallbackRoute: string): Promise<User | undefined> {
     let user: User | undefined
     const userAuth = getUserAuth()
     if (!userAuth) {

@@ -53,3 +53,12 @@ svg {
     display: inline-block;
     shape-rendering: auto;
 }
+
+input, textarea {
+    border: 1px solid transparent;
+}
+
+input:focus, textarea:focus {
+    border: 1px solid $main-light;
+    outline: none;
+}

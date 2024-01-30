@@ -1,5 +1,5 @@
 export type User = {
-    id: string
+    id?: string
     username: string
     nickname: string
     email: string
@@ -10,7 +10,7 @@ export type User = {
 }
 
 export type Post = {
-    id: string,
+    id?: string,
     url: string,
     title: string,
     author: User,
@@ -20,7 +20,7 @@ export type Post = {
 }
 
 export type SubscriptionTier = {
-    id: string,
+    id?: string,
     name: string,
     price: string
 }

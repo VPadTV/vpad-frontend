@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { required } = defineProps<{
     required?: boolean,
+    minWidth?: string
 }>()
 const model = defineModel<string>()
 </script>
@@ -26,10 +27,12 @@ const model = defineModel<string>()
         padding: .5rem;
 
         resize: both;
-        min-width: 24ch;
+        min-width: v-bind('minWidth ?? "24ch"');
         min-height: 2lh;
-        max-width: 50vw;
-        max-height: 20vh;
+        max-width: 100%;
+        max-height: 16lh;
+
+        width: 100%;
     }
 
     label {

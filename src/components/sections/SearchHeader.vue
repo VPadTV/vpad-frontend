@@ -97,10 +97,6 @@ header {
         background-color: $main;
     }
 
-    input:focus {
-        outline: none;
-    }
-
     button {
         height: 100%;
         padding: 0.22rem 0.8rem;

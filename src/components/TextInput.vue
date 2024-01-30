@@ -30,7 +30,6 @@ const model = defineModel<string>()
         width: 100%;
         font-size: inherit;
         background-color: $main;
-        border: 0;
         border-radius: .5rem;
         padding: .5rem;
     }

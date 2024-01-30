@@ -2,10 +2,19 @@
 import BaseHeaderSidebar from '@/views/base/HeaderSidebar.vue'
 import PostList from '@/components/sections/PostList.vue';
 import LoadingIcon from '@/components/icons/LoadingIcon.vue';
-import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
 import UserHeader from '@/components/sections/UserHeader.vue';
+import { onBeforeMount, ref } from 'vue';
+import type { User } from '@/types/entities';
+import { getUser } from '@/composables/api/user';
+import { useRoute } from 'vue-router';
+const route = useRoute()
 
-const user = loadOrGetUserRef()
+const user = ref<User | undefined>()
+onBeforeMount(async () => {
+    const id = route.params.userId
+    if (id && typeof id === 'string')
+        user.value = await getUser(id)
+})
 </script>
 
 <template>
