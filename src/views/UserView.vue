@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BaseHeaderSidebar from '@/views/base/HeaderSidebar.vue'
 import PostList from '@/components/sections/PostList.vue';
-import LoadingIcon from '@/components/icons/LoadingIcon.vue';
+import LoadingPage from '@/components/sections/LoadingPage.vue';
 import UserHeader from '@/components/sections/UserHeader.vue';
 import { onBeforeMount, ref } from 'vue';
 import type { User } from '@/types/entities';
@@ -21,7 +21,7 @@ onBeforeMount(async () => {
     <BaseHeaderSidebar v-if="user">
         <UserHeader :user="user" />
         <section class="user-data">
-            <h2>About me</h2>
+            <h2>About</h2>
             <p v-if="user.about" class="about">
                 {{ user.about }}
             </p>
@@ -29,9 +29,7 @@ onBeforeMount(async () => {
             <PostList />
         </section>
     </BaseHeaderSidebar>
-    <div class="loading" v-else>
-        <LoadingIcon></LoadingIcon>
-    </div>
+    <LoadingPage v-else />
 </template>
 
 <style scoped lang="scss">
@@ -50,13 +48,5 @@ onBeforeMount(async () => {
     .posts {
         margin-top: 1rem;
     }
-}
-
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height: 100%;
 }
 </style>

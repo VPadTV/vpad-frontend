@@ -92,6 +92,7 @@ aside.closed {
     position: relative;
     top: $header-height;
     height: calc(100vh - $header-height);
+    padding-bottom: 1rem;
     overflow: auto;
 
     >main {

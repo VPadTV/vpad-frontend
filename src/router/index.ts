@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import PostView from '@/views/PostView.vue'
 import UserView from '@/views/UserView.vue'
+import CreatePostView from '@/views/CreatePostView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import WIPView from '@/views/WIPView.vue'
 import LoginView from '@/views/LoginView.vue'
@@ -36,7 +37,7 @@ const router = createRouter({
         {
             path: '/create',
             name: 'create',
-            component: WIPView
+            component: CreatePostView
         },
         {
             path: '/notifications',

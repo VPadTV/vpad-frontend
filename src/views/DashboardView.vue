@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import BaseHeaderSidebar from '@/views/base/HeaderSidebar.vue'
 import PostList from '@/components/sections/PostList.vue';
-import LoadingIcon from '@/components/icons/LoadingIcon.vue';
+import LoadingPage from '@/components/sections/LoadingPage.vue';
 import { loadOrGetUser } from '@/composables/loadOrGetUser';
-import TextAreaInput from '@/components/TextAreaInput.vue';
-import TextInput from '@/components/TextInput.vue';
+import TextAreaInput from '@/components/forms/TextAreaInputField.vue';
+import InputField from '@/components/forms/InputField.vue';
 import UserHeader from '@/components/sections/UserHeader.vue';
-import { onBeforeMount, ref, toRaw, type Ref } from 'vue';
+import { ref, toRaw, type Ref } from 'vue';
 import type { User } from '@/types/entities';
 import CheckIcon from '@/components/icons/CheckIcon.vue';
 import { updateUser } from '@/composables/api/user';
@@ -16,13 +16,6 @@ import { useToast } from 'vue-toastification';
 function checkEqual() {
     return JSON.stringify(toRaw(original.value)) !== JSON.stringify(toRaw(editedUser.value))
 }
-const original: Ref<User | undefined> = ref()
-let editedUser: Ref<User | undefined> = ref()
-onBeforeMount(async () => {
-    original.value = await loadOrGetUser(true, '/')
-    if (!editedUser.value && original.value)
-        editedUser.value = { ...original.value }
-})
 
 async function saveClicked() {
     const response = await updateUser(original.value!.id!, {
@@ -40,38 +33,46 @@ async function cancelClicked() {
 
 </script>
 
+<script lang="ts">
+const original: Ref<User | undefined> = ref()
+let editedUser: Ref<User | undefined> = ref()
+
+original.value = await loadOrGetUser(true, '/')
+if (original.value)
+    editedUser.value = { ...original.value }
+
+</script>
+
 <template>
     <BaseHeaderSidebar v-if="editedUser">
         <UserHeader :user="editedUser">
             <h1>Dashboard</h1>
         </UserHeader>
-        <section class="user-data">
+        <form>
             <section class="action-buttons">
-                <button class="save" :class="{ disabled: !checkEqual() }" @click="saveClicked">
+                <button class="save" :class="{ disabled: !checkEqual() }" @click.prevent="saveClicked">
                     <span>Save</span>
                     <CheckIcon />
                 </button>
-                <button class="cancel" :class="{ disabled: !checkEqual() }" @click="cancelClicked">
+                <button class="cancel" :class="{ disabled: !checkEqual() }" @click.prevent="cancelClicked">
                     <span>Cancel</span>
                     <XIcon />
                 </button>
             </section>
-            <TextInput v-model="editedUser.nickname">
+            <InputField v-model="editedUser.nickname">
                 <h2>Nickname</h2>
-            </TextInput>
-            <TextInput v-model="editedUser.username">
+            </InputField>
+            <InputField v-model="editedUser.username">
                 <h2>Username</h2>
-            </TextInput>
+            </InputField>
             <TextAreaInput class="about" v-model="editedUser.about" min-width="100%">
                 <h2>About</h2>
             </TextAreaInput>
             <h2>My Posts</h2>
             <PostList />
-        </section>
+        </form>
     </BaseHeaderSidebar>
-    <div class="loading" v-else>
-        <LoadingIcon></LoadingIcon>
-    </div>
+    <LoadingPage v-else />
 </template>
 
 <style scoped lang="scss">
@@ -81,7 +82,7 @@ h1 {
     font-size: 2.5rem;
 }
 
-.user-data {
+form {
     padding: 0 3rem 3rem;
 
     .action-buttons {
@@ -126,7 +127,7 @@ h1 {
         }
     }
 
-    .text-input {
+    .input-field {
         max-width: 80%;
     }
 
@@ -144,11 +145,31 @@ h1 {
     }
 }
 
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height: 100%;
+@media screen and (max-width: $mobile-width-large) {
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+
+        .action-buttons {
+            button {
+                padding: .6rem 1rem;
+            }
+
+            justify-content: center;
+        }
+
+        .input-field,
+        .file-field {
+            width: 100%;
+            max-width: 100%;
+        }
+    }
+
+    .radio-field {
+        max-width: unset;
+        width: unset;
+    }
 }
 </style>

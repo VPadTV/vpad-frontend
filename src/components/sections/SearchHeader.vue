@@ -80,7 +80,7 @@ header {
 }
 
 .search-box {
-    height: 40%;
+    height: 35%;
     border: 2px solid $main-light;
     border-radius: 1rem;
     overflow: hidden;
@@ -129,7 +129,7 @@ header {
     margin-left: auto;
     justify-content: flex-end;
     align-items: center;
-    gap: 0.5rem;
+    gap: 2rem;
 
     .nt {
         height: 100%;
@@ -140,6 +140,7 @@ header {
     }
 
     .profile-wrap {
+        aspect-ratio: 1;
         height: 100%;
         left: 1px;
 

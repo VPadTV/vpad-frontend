@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { link, required, type } = defineProps<{
+    name?: string,
     type?: string,
     required?: boolean,
     link?: {
@@ -7,15 +8,15 @@ const { link, required, type } = defineProps<{
         url: string
     }
 }>()
-const model = defineModel<string>()
+const model = defineModel<string | number>()
 </script>
 
 <template>
-    <div class="text-input">
+    <div class="input-field">
         <label>
             <slot></slot>
         </label>
-        <input :required="required ?? false" :type="type ?? 'text'" v-model="model">
+        <input :name="name" :required="required ?? false" :type="type ?? 'text'" v-model="model">
         <RouterLink v-if="link" :to="link.url">{{ link.text }}</RouterLink>
     </div>
 </template>
@@ -23,7 +24,7 @@ const model = defineModel<string>()
 <style scoped lang="scss">
 @import '@/assets/style/base.scss';
 
-.text-input {
+.input-field {
     width: 100%;
 
     input {

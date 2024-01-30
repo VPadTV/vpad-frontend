@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TextInput from '@/components/TextInput.vue'
+import InputField from '@/components/forms/InputField.vue'
 
 import { ref } from 'vue';
 import { login } from '@/composables/api/auth'
@@ -27,12 +27,12 @@ async function onSubmit() {
             <span>Welcome back!</span>
         </h1>
         <form method="post" @submit.prevent="onSubmit" autocomplete="off">
-            <TextInput v-model="emailOrUsername">
+            <InputField v-model="emailOrUsername">
                 Email or username
-            </TextInput>
-            <TextInput type="password" v-model="password">
+            </InputField>
+            <InputField type="password" v-model="password">
                 Password
-            </TextInput>
+            </InputField>
             <section class="submit">
                 <button type="submit">Login</button>
                 <RouterLink to="/register">Register instead</RouterLink>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import TextInput from '@/components/TextInput.vue'
-import TextAreaInput from '@/components/TextAreaInput.vue'
+import InputField from '@/components/forms/InputField.vue'
+import TextAreaInput from '@/components/forms/TextAreaInputField.vue'
 
 import { ref } from 'vue';
 import { register } from '@/composables/api/auth'
@@ -34,18 +34,18 @@ async function onSubmit() {
             <span>Welcome to VPad!</span>
         </h1>
         <form method="post" @submit.prevent="onSubmit" autocomplete="off">
-            <TextInput required v-model="username">
+            <InputField required v-model="username">
                 <span class="req">*</span>Username <small>(Must be unique)</small>
-            </TextInput>
-            <TextInput v-model="nickname">
+            </InputField>
+            <InputField v-model="nickname">
                 Nickname
-            </TextInput>
-            <TextInput required type="email" v-model="email">
+            </InputField>
+            <InputField required type="email" v-model="email">
                 <span class="req">*</span>Email
-            </TextInput>
-            <TextInput required type="password" v-model="password">
+            </InputField>
+            <InputField required type="password" v-model="password">
                 <span class="req">*</span>Password
-            </TextInput>
+            </InputField>
             <TextAreaInput v-model="about">
                 About
             </TextAreaInput>
@@ -101,10 +101,6 @@ form {
         display: block;
         font-size: .8em;
         color: $link;
-    }
-
-    .req {
-        color: $light-red;
     }
 
     button {

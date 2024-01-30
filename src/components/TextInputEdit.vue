@@ -13,7 +13,7 @@ const original = ref(model.value)
 </script>
 
 <template>
-    <div class="text-input">
+    <div class="input-field">
         <label>
             <slot></slot>
         </label>
@@ -34,7 +34,7 @@ const original = ref(model.value)
 <style scoped lang="scss">
 @import '@/assets/style/base.scss';
 
-.text-input {
+.input-field {
     width: 100%;
 
     label {

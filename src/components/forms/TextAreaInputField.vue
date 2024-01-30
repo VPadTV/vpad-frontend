@@ -7,7 +7,7 @@ const model = defineModel<string>()
 </script>
 
 <template>
-    <div class="text-input">
+    <div class="input-field">
         <label>
             <slot></slot>
         </label>
@@ -18,7 +18,7 @@ const model = defineModel<string>()
 <style scoped lang="scss">
 @import '@/assets/style/base.scss';
 
-.text-input {
+.input-field {
     textarea {
         font-size: inherit;
         background-color: $main;
