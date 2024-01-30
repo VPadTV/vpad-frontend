@@ -9,6 +9,8 @@ import UserHeader from '@/components/sections/UserHeader.vue';
 import { ref, toRaw } from 'vue';
 import FileFieldPreview from '@/components/forms/FileFieldPreview.vue';
 import RequiredStar from '@/components/RequiredStar.vue';
+import { createPost } from '@/composables/api/post';
+import { useToast } from 'vue-toastification';
 
 const user = loadOrGetUserRef()
 
@@ -18,15 +20,20 @@ let formBody = ref<{
     media?: File,
     thumb?: File,
     nsfw: boolean,
-    tags?: string[]
+    tags: string[]
 }>({
     title: "",
     text: "",
     nsfw: false,
+    tags: [],
 })
 
-async function createPost(e: Event) {
-    console.log(toRaw(formBody.value))
+async function createClicked(e: Event) {
+    const toast = useToast()
+    if (!formBody.value.media) return;
+    const response = await createPost({ ...formBody.value as any, tags: "sometag" })
+    if (response)
+        toast.success('Post created!')
 }
 
 </script>
@@ -56,7 +63,7 @@ async function createPost(e: Event) {
             <RadioField name="nsfw" v-model="formBody.nsfw">
                 <h2>NSFW?</h2>
             </RadioField>
-            <button class="save" @click.prevent="createPost">
+            <button class="save" @click.prevent="createClicked">
                 <span>Create Post</span>
             </button>
         </form>

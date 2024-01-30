@@ -9,7 +9,7 @@ export type PostCreateBody = {
     nsfw?: boolean
     tags: string[]
 }
-export async function createPost(id: string, body: PostCreateBody): Promise<boolean> {
+export async function createPost(body: PostCreateBody): Promise<boolean> {
     const response = await api<{}>(`post`, 'post', asFormData(body))
     if (response) return true;
     return false;
