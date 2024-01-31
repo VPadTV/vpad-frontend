@@ -21,10 +21,17 @@ const randomCasing = (str: string): string => {
 export const post = (id?: string) => ({
     id: id ?? faker.string.nanoid(),
     title: randomCasing(faker.lorem.words({ min: 2, max: 6 })),
-    url: pickRandom(ExampleHorizontal, ExampleVertical),
-    author: user(),
-    likes: faker.number.int(1e4),
-    dislikes: faker.number.int(1e4),
-    createdAt: faker.date.recent({ days: 300 }),
-    updatedAt: faker.date.recent({ days: 300 }),
+    text: randomCasing(faker.lorem.words({ min: 4, max: 10 })),
+    mediaUrl: pickRandom(ExampleHorizontal, ExampleVertical),
+    mediaType: "IMAGE",
+    meta: {
+        authors: [user()],
+        tags: ["tag"],
+        nsfw: false,
+        views: faker.number.int(1e4),
+        likes: faker.number.int(1e4),
+        dislikes: faker.number.int(1e4),
+        createdAt: faker.date.recent({ days: 300 }),
+        updatedAt: faker.date.recent({ days: 300 }),
+    },
 }) as Post

@@ -11,16 +11,38 @@ export type User = {
 
 export type Post = {
     id?: string,
-    url: string,
     title: string,
-    author: User,
-    likes: number | string,
-    dislikes: number | string
-    createdAt: Date,
+    text: string,
+    mediaUrl: string,
+    mediaType: "IMAGE" | "VIDEO",
+    meta: {
+        authors: {
+            id: string,
+            nickname: string,
+            profilePhotoUrl?: string
+        }[],
+
+        createdAt: Date | string,
+        updatedAt: Date | string,
+        nsfw: boolean,
+        likes: number | string,
+        dislikes: number | string
+        tags: string[],
+        views: number,
+    }
 }
 
 export type SubscriptionTier = {
     id?: string,
     name: string,
     price: string
+}
+
+export type Paginate<T> = {
+    total: number
+    to: number
+    from: number
+    currentPage: number
+    lastPage: number
+    data: T[]
 }

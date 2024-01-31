@@ -2,42 +2,47 @@
 import UserProfilePicture from '../UserProfilePicture.vue';
 
 import { onMounted, ref, type Ref } from 'vue';
-import { get } from '@/composables/api/base'
-import { formatNumber } from '@/utils';
-import type { Post } from '@/types/entities';
+import { getManyPosts } from '@/composables/api/post';
+import { formatDate } from '@/utils';
+import type { PostGetManyResponse } from '@/types/responses';
 
-let posts: Ref<Post[] | undefined> = ref(undefined)
+let posts: Ref<PostGetManyResponse[] | undefined> = ref(undefined)
 
 onMounted(async () => {
-    posts.value = (await get<Post[]>('posts'))?.map(post => ({
+    const postsResponse = await getManyPosts({
+        sortBy: 'latest',
+        page: 1,
+        size: 100,
+    })
+    posts.value = postsResponse?.data.map(post => ({
         ...post,
-        likes: formatNumber(post.likes),
-        dislikes: formatNumber(post.dislikes),
-    })).splice(0, 20)
+        meta: {
+            ...post.meta,
+            createdAt: formatDate(post.meta.createdAt),
+        }
+    }))
 })
 
-function rand(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+function getThumbnailUrl(post: PostGetManyResponse): string {
+    if (post.mediaType === 'IMAGE') {
+        return post.thumbUrl ?? post.mediaUrl
+    }
+    return post.thumbUrl ?? ""
 }
 
-function getRandomHeight() {
-    return {
-        height: `${rand(200, 500)}px`,
-    }
-}
 </script>
 
 <template>
     <section class="posts">
         <RouterLink :to="`/post/${post.id}`" class="post" v-for="post in posts" :key="post.id">
-            <div class="thumbnail" :style="getRandomHeight()"></div>
+            <img class="thumbnail" :src="getThumbnailUrl(post)" />
             <p class="text">
                 <span class="title">{{ post.title }}</span>
-                <RouterLink :to="`/user/${post.author.id}`" class="author">
-                    <UserProfilePicture :id="post.author.id" />
-                    <span>{{ post.author.nickname }}</span>
+                <RouterLink :to="`/user/${post.meta.authors[0].id}`" class="author">
+                    <UserProfilePicture :id="post.meta.authors[0].id" />
+                    <span>{{ post.meta.authors[0].nickname }}</span>
                 </RouterLink>
-                <span class="date">{{ post.createdAt.toLocaleDateString() }}</span>
+                <span class="date">{{ post.meta.createdAt }}</span>
             </p>
         </RouterLink>
     </section>
@@ -54,15 +59,15 @@ section {
 
     .post {
         width: 100%;
-        display: inline-block;
+        display: inline-flex;
         margin-bottom: $gap;
+        flex-direction: column;
 
         .thumbnail {
-            min-width: 100%;
+            align-self: center;
             max-width: 100%;
             height: auto;
             background-color: gray;
-            margin: auto;
         }
 
         .text {

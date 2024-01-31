@@ -2,16 +2,18 @@
 import BaseHeaderSidebar from '@/views/base/HeaderSidebar.vue'
 import SeePost from '@/components/sections/SeePost.vue'
 import type { Post } from '@/types/entities';
-import { formatNumber, numify } from '@/utils';
-import { get } from '@/composables/api/base'
-import { type Ref, ref, onMounted, onBeforeMount } from 'vue';
+import { formatDate, formatNumber, numify } from '@/utils';
+import { type Ref, ref, onMounted, onBeforeMount, toRaw } from 'vue';
 import { useRoute } from 'vue-router';
 import PostList from '@/components/sections/PostList.vue';
 import LoadingIcon from '@/components/icons/LoadingIcon.vue';
 import slider from 'vue3-slider'
+import { getPost } from '@/composables/api/post';
+
+const MIN_SCALE = 10;
 
 let post: Ref<Post | undefined> = ref(undefined)
-let postScale = ref((100 + 30) / 2)
+let postScale = ref((100 + MIN_SCALE) / 2)
 
 function updatePostscale(value: number) {
     localStorage.setItem('postScale', value.toString())
@@ -19,21 +21,25 @@ function updatePostscale(value: number) {
 
 onBeforeMount(async () => {
     const loadedPostScale = numify(localStorage.getItem('postScale'))
-    if (loadedPostScale && loadedPostScale >= 30 && loadedPostScale <= 100)
+    if (loadedPostScale && loadedPostScale >= MIN_SCALE && loadedPostScale <= 100)
         postScale.value = loadedPostScale
 })
 
 onMounted(async () => {
     const route = ref(useRoute())
-    const postRaw = await get<Post>('post', {
-        id: route.value.params.postId as string
-    })
+    const postRaw = await getPost(route.value.params.postId as string)
     if (postRaw) {
         post.value = ({
             ...postRaw,
-            likes: formatNumber(postRaw.likes),
-            dislikes: formatNumber(postRaw.dislikes),
+            meta: {
+                ...postRaw.meta,
+                likes: formatNumber(postRaw.meta.likes),
+                dislikes: formatNumber(postRaw.meta.dislikes),
+                createdAt: formatDate(postRaw.meta.createdAt),
+                updatedAt: formatDate(postRaw.meta.updatedAt)
+            }
         })
+        console.log(toRaw(post.value))
     }
 })
 </script>
@@ -41,8 +47,8 @@ onMounted(async () => {
 
 <template>
     <BaseHeaderSidebar>
-        <slider width="20rem" height="12" class="scaling-slider" orientation="vertical" v-model="postScale" color="#4C9BD4"
-            trackColor="#202427" :min="30" @change="updatePostscale"></slider>
+        <slider width="20rem" :height="12" class="scaling-slider" orientation="vertical" v-model="postScale" color="#4C9BD4"
+            trackColor="#202427" :min="MIN_SCALE" @change="updatePostscale"></slider>
         <SeePost v-if="post" :post="post" :postScale="postScale" />
         <div v-else class="notfound">
             <LoadingIcon />

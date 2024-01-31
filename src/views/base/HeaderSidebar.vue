@@ -89,9 +89,8 @@ aside.closed {
 }
 
 .scroll {
-    position: relative;
-    top: $header-height;
-    height: calc(100vh - $header-height);
+    height: 100%;
+    padding-top: $header-height;
     padding-bottom: 1rem;
     overflow: auto;
 

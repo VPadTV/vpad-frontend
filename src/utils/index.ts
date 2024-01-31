@@ -8,6 +8,12 @@ export function formatNumber(n: number | string): string {
     return formatter.format(n)
 }
 
+export function formatDate(d: Date | string): string {
+    if (!(d instanceof Date))
+        d = new Date(d)
+    return d.toISOString().slice(0, 10)
+}
+
 export const numify = (val: unknown): number | undefined => {
     if (typeof val === 'number') return val;
     else if (typeof val === 'string') {

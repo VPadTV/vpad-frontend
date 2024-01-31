@@ -19,22 +19,24 @@ function hideLoading() {
 <template>
     <section class="post">
         <section class="content-background">
-            <LoadingIcon :class="{ hidden: !loading }"/>
-            <img :class="{ hidden: loading }" @load="hideLoading()" :src="post.url" class="content" :style="{ width: `${postScale}%` }"/>
+            <LoadingIcon :class="{ hidden: !loading }" />
+            <img :class="{ hidden: loading }" @load="hideLoading()" :src="post.mediaUrl" class="content"
+                :style="{ width: `${postScale}%` }" />
         </section>
         <p class="text">
             <span class="title">{{ post?.title }}</span>
-            <RouterLink :to="`/user/${post.author.id}`" class="author">
-                <UserProfilePicture class="pfp" :id="post.author.id" />
-                <span>{{ post.author.nickname }}</span>
+            <RouterLink :to="`/user/${post.meta.authors[0]}`" class="author">
+                <UserProfilePicture class="pfp" :id="post.meta.authors[0].id" />
+                <span>{{ post.meta.authors[0].nickname }}</span>
             </RouterLink>
-            <span class="date">{{ post.createdAt.toLocaleDateString() }}</span>
+            <span class="date">{{ post.meta.createdAt }}</span>
         </p>
     </section>
 </template> 
   
 <style scoped lang="scss">
 @import '@/assets/style/base.scss';
+
 .content-background {
     width: 100%;
     background-color: $main;
@@ -44,14 +46,13 @@ function hideLoading() {
 
     .content {
         max-width: 100%;
-        min-width: 30%;
 
         img {
             width: 100%;
             text-align: center;
         }
     }
-    }
+}
 
 .loading-spinner {
     padding: 1rem;
@@ -63,7 +64,8 @@ function hideLoading() {
     flex-direction: column;
     align-items: flex-start;
 
-    .title, .author {
+    .title,
+    .author {
         margin-bottom: .2rem;
     }
 
@@ -76,29 +78,31 @@ function hideLoading() {
         font-size: 1.2rem;
         display: flex;
         align-items: center;
+
         .pfp {
             width: .9lh;
             height: .9lh;
             vertical-align: middle;
             margin-right: .4rem;
         }
+
         span {
             height: 1lh;
             vertical-align: middle;
             display: inline-block;
         }
     }
-    
+
     .date {
         color: $text-faded;
     }
 
-* {
-    text-align: left;
-    overflow: hidden;
-    max-height: 2lh;    
-    max-width: 100%;
-}
+    * {
+        text-align: left;
+        overflow: hidden;
+        max-height: 2lh;
+        max-width: 100%;
+    }
 }
 
 @media screen and (max-width: $mobile-width-large) {
@@ -106,8 +110,9 @@ function hideLoading() {
         max-height: 700px;
         overflow: hidden;
     }
+
     .content {
-        width: 100%!important;
+        width: 100% !important;
     }
 
     .post {

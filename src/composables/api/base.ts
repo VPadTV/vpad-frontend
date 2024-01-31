@@ -17,9 +17,9 @@ export async function get<T>(url: string, query?: { [key: string]: string | numb
     else if (url.startsWith('post'))
         return store.posts.find(p => p.id === query!.id) as T
     else if (url.startsWith('users'))
-        return store.posts.map(p => p.author) as T
+        return store.posts.map(p => p.meta.authors[0].nickname) as T
     else if (url.startsWith('user'))
-        return store.posts.find(p => p.author.id === query!.id)?.author as T
+        return store.posts.find(p => p.meta.authors[0].id === query!.id)?.meta.authors[0] as T
     return undefined
 }
 
@@ -30,9 +30,9 @@ export async function api<T>(url: string, method: HttpMethod, body?: FormData | 
     const toast = useToast()
     let response: Response
     try {
-        response = await fetch(import.meta.env.VITE_API_URL + url, {
+        response = await fetch(import.meta.env.VITE_API_URL + url + (method === "get" ? "?" + body : ""), {
             method,
-            body,
+            body: method === "get" ? undefined : body,
             headers: getAuthorization()
         })
     } catch (e) {
