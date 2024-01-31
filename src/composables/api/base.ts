@@ -43,7 +43,7 @@ export async function api<T>(url: string, method: HttpMethod, body?: FormData | 
         if (response.headers.get('content-type')?.startsWith('application/json')) {
             const jsonError = await response.json()
             const error = new BackendError(
-                jsonError.code ?? 500,
+                response.status ?? 500,
                 jsonError.error ?? 'Unknown'
             );
             toast.error(`${error.code} - ${error.error}`)

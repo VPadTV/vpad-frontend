@@ -25,7 +25,7 @@ function hideLoading() {
         </section>
         <p class="text">
             <span class="title">{{ post?.title }}</span>
-            <RouterLink :to="`/user/${post.meta.authors[0]}`" class="author">
+            <RouterLink :to="`/user/${post.meta.authors[0].id}`" class="author">
                 <UserProfilePicture class="pfp" :id="post.meta.authors[0].id" />
                 <span>{{ post.meta.authors[0].nickname }}</span>
             </RouterLink>

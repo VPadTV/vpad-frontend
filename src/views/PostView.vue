@@ -39,7 +39,6 @@ onMounted(async () => {
                 updatedAt: formatDate(postRaw.meta.updatedAt)
             }
         })
-        console.log(toRaw(post.value))
     }
 })
 </script>

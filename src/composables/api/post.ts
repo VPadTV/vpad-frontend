@@ -26,12 +26,14 @@ export type PostGetManyBody = {
     creatorId?: string
     sortBy: 'latest' | 'oldest' | 'high-views' | 'low-views'
     titleSearch?: string
+    nsfw: boolean
     page: number
     size: number
 }
 export async function getManyPosts(body: PostGetManyBody): Promise<Paginate<PostGetManyResponse> | undefined> {
     return api<Paginate<PostGetManyResponse>>(`post`, 'get', new URLSearchParams({
         ...body,
+        nsfw: `${body.nsfw}`,
         page: `${body.page}`,
         size: `${body.size}`,
     }));

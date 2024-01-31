@@ -1,6 +1,7 @@
 import './assets/style/main.scss'
 import "vue-toastification/dist/index.css";
 
+import VueLazyLoad from 'vue3-lazyload'
 import Toast, { POSITION, type PluginOptions } from "vue-toastification";
 
 import { createApp } from 'vue'
@@ -16,4 +17,5 @@ const app = createApp(App)
 
 app.use(router)
 app.use(Toast, toastOptions)
+app.use(VueLazyLoad, {})
 app.mount('#app')

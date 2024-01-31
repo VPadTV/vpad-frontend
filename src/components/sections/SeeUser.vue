@@ -21,6 +21,7 @@ const { user } = defineProps<{
   
 <style scoped lang="scss">
 @import '@/assets/style/base.scss';
+
 .user {
     margin: 1rem 4rem;
 }
@@ -33,12 +34,14 @@ const { user } = defineProps<{
 
     .identity {
         font-size: 1.5rem;
+
         .pfp {
             width: 1lh;
             height: 1lh;
             vertical-align: middle;
             margin-right: .3rem;
         }
+
         span {
             height: 1lh;
             vertical-align: middle;

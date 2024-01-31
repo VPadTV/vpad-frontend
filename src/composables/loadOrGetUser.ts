@@ -15,7 +15,6 @@ export async function loadOrGetUser(router: Router, reload: boolean = true, fall
     } else if (store.user) {
         user = store.user;
     } else {
-        console.log(store.user)
         store.user = await getUser(userAuth?.id)
         user = store.user
     }

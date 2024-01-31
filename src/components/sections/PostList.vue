@@ -5,12 +5,19 @@ import { onMounted, ref, type Ref } from 'vue';
 import { getManyPosts } from '@/composables/api/post';
 import { formatDate } from '@/utils';
 import type { PostGetManyResponse } from '@/types/responses';
+import { useRoute } from 'vue-router';
 
+let { creatorId } = defineProps<{ creatorId?: string }>();
 let posts: Ref<PostGetManyResponse[] | undefined> = ref(undefined)
 
 onMounted(async () => {
+    const route = useRoute()
+    console.log(route.query)
     const postsResponse = await getManyPosts({
+        creatorId,
         sortBy: 'latest',
+        titleSearch: route.query.search as string ?? undefined,
+        nsfw: route.query.nsfw as string === "true" ? true : false,
         page: 1,
         size: 100,
     })
@@ -30,12 +37,14 @@ function getThumbnailUrl(post: PostGetManyResponse): string {
     return post.thumbUrl ?? ""
 }
 
+console.log(posts)
+
 </script>
 
 <template>
     <section class="posts">
         <RouterLink :to="`/post/${post.id}`" class="post" v-for="post in posts" :key="post.id">
-            <img class="thumbnail" :src="getThumbnailUrl(post)" />
+            <img class="thumbnail" v-lazy="getThumbnailUrl(post)" />
             <p class="text">
                 <span class="title">{{ post.title }}</span>
                 <RouterLink :to="`/user/${post.meta.authors[0].id}`" class="author">
