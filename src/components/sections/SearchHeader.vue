@@ -1,21 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import UserProfilePicture from '../UserProfilePicture.vue';
 import ProfileDropdown from '../ProfileDropdown.vue';
 import SearchIcon from '../icons/SearchIcon.vue';
 import PenIcon from '../icons/PenIcon.vue';
 import MailIcon from '../icons/MailIcon.vue';
+import { getUserAuth } from '@/composables/api/auth';
+import type { UserAuth } from '@/types/auth';
 
-import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
-
-let user = loadOrGetUserRef(false)
 function toggleProfileDropdown() {
     profileDropdownClosed.value = !profileDropdownClosed.value
 }
 
 const profileDropdownClosed = ref(true)
 
+let userAuth = ref<UserAuth | undefined>()
+onMounted(() => {
+    userAuth.value = getUserAuth()
+})
 </script>
 
 <template>
@@ -39,11 +42,11 @@ const profileDropdownClosed = ref(true)
             <RouterLink class="nt" to="/notifications">
                 <MailIcon />
             </RouterLink>
-            <div class="profile-wrap nt" v-if="user">
+            <div class="profile-wrap nt" v-if="userAuth">
                 <button class="profile" @click="toggleProfileDropdown">
                     <UserProfilePicture :id="''" />
                 </button>
-                <ProfileDropdown :user="user" :closed="profileDropdownClosed" />
+                <ProfileDropdown :userId="userAuth.id" :closed="profileDropdownClosed" />
             </div>
             <RouterLink v-else to="/login">
                 <span>Login</span>

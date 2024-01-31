@@ -40,7 +40,6 @@ function fileChanged(ev: Event) {
 @import '@/assets/style/base.scss';
 
 .file-label {
-    margin: .5rem 0 0;
     display: inline-flex;
     align-items: center;
     user-select: none;

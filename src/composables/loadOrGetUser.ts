@@ -1,19 +1,11 @@
-import { ref, type Ref, onBeforeMount } from "vue";
+import { ref, type Ref, onMounted } from "vue";
 import { getUserAuth } from "./api/auth";
 import { getUser } from './api/user'
-import router from "@/router";
 import type { User } from "@/types/entities";
 import { store } from "@/store/store";
+import type { Router } from "vue-router";
 
-export function loadOrGetUserRef(reload: boolean = true, fallbackRoute: string = '/') {
-    const user: Ref<User | undefined> = ref()
-    onBeforeMount(async () => {
-        user.value = await loadOrGetUser(reload, fallbackRoute)
-    })
-    return user;
-}
-
-export async function loadOrGetUser(reload: boolean, fallbackRoute: string): Promise<User | undefined> {
+export async function loadOrGetUser(router: Router, reload: boolean = true, fallbackRoute: string = '/'): Promise<User | undefined> {
     let user: User | undefined
     const userAuth = getUserAuth()
     if (!userAuth) {
@@ -23,8 +15,16 @@ export async function loadOrGetUser(reload: boolean, fallbackRoute: string): Pro
     } else if (store.user) {
         user = store.user;
     } else {
+        console.log(store.user)
         store.user = await getUser(userAuth?.id)
         user = store.user
     }
     return user
+}
+export function loadOrGetUserRef(router: Router, reload: boolean = true, fallbackRoute: string = '/') {
+    const user: Ref<User | undefined> = ref()
+    onMounted(async () => {
+        user.value = await loadOrGetUser(router, reload, fallbackRoute)
+    })
+    return user;
 }

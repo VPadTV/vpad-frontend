@@ -5,7 +5,8 @@ import XIcon from '@/components/icons/XIcon.vue'
 const model = defineModel<File>({});
 const { name } = defineProps<{
     name: string,
-    inputRef?: VNodeRef
+    inputRef?: VNodeRef,
+    required?: boolean
 }>();
 
 const finput = ref()
@@ -41,7 +42,7 @@ function fileChanged(ev: Event) {
                 </span>
             </div>
         </label>
-        <input accept="image/*,video/*" ref="finput" class="hidden" :name="name" :id="name" type="file"
+        <input :required="required" accept="image/*,video/*" ref="finput" class="hidden" :name="name" :id="name" type="file"
             @change="fileChanged">
     </div>
 </template>
@@ -49,21 +50,23 @@ function fileChanged(ev: Event) {
 <style scoped lang="scss">
 @import '@/assets/style/base.scss';
 
-.file-field {
-    width: 80%;
-}
-
 .media-input {
+
     padding: .5rem;
     width: 100%;
     min-height: 200px;
     background-color: $main;
     border-radius: .5rem;
 
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template: 1fr / 1fr;
     align-items: center;
-    justify-content: center;
+    justify-items: center;
+
+    >* {
+        grid-column-start: 1;
+        grid-row-start: 1;
+    }
 
     img {
         max-width: 100%;
@@ -78,14 +81,19 @@ function fileChanged(ev: Event) {
 }
 
 .rm-image {
-    position: absolute;
     z-index: 1;
     height: 3rem;
-    left: 4rem;
+    width: 3rem;
     background-color: $light-red;
     border-radius: 100%;
     border: 0;
     opacity: .2;
+    justify-self: flex-start;
+
+    svg {
+        vertical-align: middle;
+        height: unset;
+    }
 }
 
 .rm-image:hover {

@@ -25,8 +25,6 @@ const model = defineModel<string | number>()
 @import '@/assets/style/base.scss';
 
 .input-field {
-    width: 100%;
-
     input {
         width: 100%;
         font-size: inherit;
@@ -37,7 +35,7 @@ const model = defineModel<string | number>()
 
     label {
         display: block;
-        margin-bottom: 2px;
+        margin-bottom: .1rem;
         text-align: left;
     }
 }

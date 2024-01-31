@@ -23,7 +23,6 @@ const { name } = defineProps<{ name: string }>();
 @import '@/assets/style/base.scss';
 
 .radio-label {
-    margin: .5rem 0;
     display: inline-flex;
     align-items: center;
     user-select: none;

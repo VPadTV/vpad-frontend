@@ -6,36 +6,43 @@ import InputField from '@/components/forms/InputField.vue';
 import RadioField from '@/components/forms/RadioField.vue';
 import LoadingPage from '@/components/sections/LoadingPage.vue';
 import UserHeader from '@/components/sections/UserHeader.vue';
-import { ref, toRaw } from 'vue';
+import { ref } from 'vue';
 import FileFieldPreview from '@/components/forms/FileFieldPreview.vue';
 import RequiredStar from '@/components/RequiredStar.vue';
 import { createPost } from '@/composables/api/post';
 import { useToast } from 'vue-toastification';
+import router from '@/router';
+import { useRouter } from 'vue-router';
 
-const user = loadOrGetUserRef()
-
+const user = loadOrGetUserRef(useRouter())
+let form = ref<HTMLFormElement>()
 let formBody = ref<{
     title: string,
     text: string,
     media?: File,
     thumb?: File,
     nsfw: boolean,
-    tags: string[]
+    tags: string
 }>({
     title: "",
     text: "",
     nsfw: false,
-    tags: [],
+    tags: "",
 })
 
-async function createClicked(e: Event) {
+async function createClicked() {
     const toast = useToast()
-    if (!formBody.value.media) return;
+    if (!form.value?.checkValidity()) {
+        form.value?.reportValidity()
+        toast.error("Missing required fields");
+        return;
+    }
     const response = await createPost({ ...formBody.value as any, tags: "sometag" })
-    if (response)
+    if (response) {
         toast.success('Post created!')
+        router.push({ 'name': 'home' })
+    }
 }
-
 </script>
 
 <template>
@@ -43,23 +50,28 @@ async function createClicked(e: Event) {
         <UserHeader :user="user">
             <h1>Create Post</h1>
         </UserHeader>
-        <form>
-            <InputField name="title" v-model="formBody.title">
+        <form ref="form">
+            <InputField required name="title" v-model="formBody.title">
                 <h2>
                     <RequiredStar />Title
                 </h2>
             </InputField>
-            <FileFieldPreview name="media" v-model="formBody.media">
+            <FileFieldPreview required name="media" v-model="formBody.media">
                 <RequiredStar />Drop your file here
             </FileFieldPreview>
             <FileFieldPreview name="thumb" v-model="formBody.thumb">
                 Drop your thumbnail here
             </FileFieldPreview>
-            <TextAreaInput name="text" v-model="formBody.text" min-width="100%">
+            <TextAreaInput required name="text" v-model="formBody.text" min-width="100%">
                 <h2>
                     <RequiredStar />Text
                 </h2>
             </TextAreaInput>
+            <InputField required name="tags" v-model="formBody.tags">
+                <h2>
+                    <RequiredStar />Tags (separated by commas)
+                </h2>
+            </InputField>
             <RadioField name="nsfw" v-model="formBody.nsfw">
                 <h2>NSFW?</h2>
             </RadioField>
@@ -91,11 +103,17 @@ h1 {
 }
 
 form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 0 3rem;
-}
+    row-gap: .5rem;
 
-.input-field {
-    max-width: 80%;
+    >* {
+        max-width: 50rem;
+        width: 80%;
+    }
 }
 
 h2 {
@@ -104,16 +122,11 @@ h2 {
 
 @media screen and (max-width: $mobile-width-large) {
     form {
-        display: flex;
-        flex-direction: column;
         align-items: stretch;
-        justify-content: center;
-    }
 
-    .input-field,
-    .file-field {
-        max-width: 100%;
-        width: 100%;
+        >* {
+            width: unset;
+        }
     }
 
     .radio-field {

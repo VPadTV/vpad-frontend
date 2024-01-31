@@ -2,16 +2,18 @@
 import BaseHeaderSidebar from '@/views/base/HeaderSidebar.vue'
 import PostList from '@/components/sections/PostList.vue';
 import LoadingPage from '@/components/sections/LoadingPage.vue';
-import { loadOrGetUser } from '@/composables/loadOrGetUser';
+import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
 import TextAreaInput from '@/components/forms/TextAreaInputField.vue';
 import InputField from '@/components/forms/InputField.vue';
 import UserHeader from '@/components/sections/UserHeader.vue';
-import { ref, toRaw, type Ref } from 'vue';
+import { ref, toRaw, watchEffect } from 'vue';
 import type { User } from '@/types/entities';
 import CheckIcon from '@/components/icons/CheckIcon.vue';
 import { updateUser } from '@/composables/api/user';
 import XIcon from '@/components/icons/XIcon.vue';
 import { useToast } from 'vue-toastification';
+import { useRouter } from 'vue-router';
+import { store } from '@/store/store';
 
 function checkEqual() {
     return JSON.stringify(toRaw(original.value)) !== JSON.stringify(toRaw(editedUser.value))
@@ -23,6 +25,7 @@ async function saveClicked() {
     });
     if (response) {
         original.value = { ...editedUser.value! }
+        store.user = original.value
         const toast = useToast()
         toast.success('Saved')
     }
@@ -31,16 +34,13 @@ async function cancelClicked() {
     editedUser.value = { ...original.value! }
 }
 
-</script>
+const original = loadOrGetUserRef(useRouter())
+let editedUser = ref<User | undefined>()
 
-<script lang="ts">
-const original: Ref<User | undefined> = ref()
-let editedUser: Ref<User | undefined> = ref()
-
-original.value = await loadOrGetUser(true, '/')
-if (original.value)
-    editedUser.value = { ...original.value }
-
+watchEffect(() => {
+    if (original.value)
+        editedUser.value = { ...original.value }
+})
 </script>
 
 <template>
@@ -122,7 +122,7 @@ form {
         }
 
         button.disabled:hover {
-            filter: none;
+            opacity: 1;
             cursor: default;
         }
     }

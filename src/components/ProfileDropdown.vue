@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { logout } from '@/composables/api/auth';
-import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
 import router from '@/router';
 import { ref } from 'vue';
-const { closed } = defineProps<{ closed: boolean }>()
+const { userId, closed } = defineProps<{ userId: string, closed: boolean }>()
 const refreshToggle = ref(0);
 
-const user = loadOrGetUserRef()
 async function clickLogout() {
     logout()
     router.go(0)
@@ -15,10 +13,10 @@ async function clickLogout() {
 </script>
 
 <template>
-    <ul v-if="user" :class="{ closed }" :key="refreshToggle">
+    <ul v-if="userId" :class="{ closed }" :key="refreshToggle">
         <div class="arrow-up"></div>
         <li>
-            <RouterLink :to='`/user/${user.id}`'>Profile</RouterLink>
+            <RouterLink :to='`/user/${userId}`'>Profile</RouterLink>
         </li>
         <li>
             <RouterLink to="/dashboard">Dashboard</RouterLink>
