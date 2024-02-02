@@ -21,10 +21,11 @@ export async function getPost(id: string): Promise<Post | undefined> {
     return api<Post>(`post/${id}`, 'get');
 }
 
+export type SortBy = 'latest' | 'oldest' | 'high-views' | 'low-views'
 export type PostGetManyBody = {
     userTierId?: string
     creatorId?: string
-    sortBy: 'latest' | 'oldest' | 'high-views' | 'low-views'
+    sortBy: SortBy
     titleSearch?: string
     nsfw: boolean
     page: number

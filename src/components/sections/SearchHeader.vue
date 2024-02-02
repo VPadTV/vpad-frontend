@@ -8,26 +8,42 @@ import PenIcon from '../icons/PenIcon.vue';
 import MailIcon from '../icons/MailIcon.vue';
 import { getUserAuth } from '@/composables/api/auth';
 import type { UserAuth } from '@/types/auth';
+import { useRoute, useRouter } from 'vue-router';
 
+const route = useRoute()
+const router = useRouter()
+
+const profileDropdownClosed = ref(true)
 function toggleProfileDropdown() {
     profileDropdownClosed.value = !profileDropdownClosed.value
 }
 
-const profileDropdownClosed = ref(true)
-
-let userAuth = ref<UserAuth | undefined>()
+const userAuth = ref<UserAuth | undefined>()
 onMounted(() => {
     userAuth.value = getUserAuth()
 })
+
+function onClickLogo() {
+    router.push({
+        path: '/',
+        query: {
+            search: ''
+        }
+    });
+}
+const search = ref<string>('')
+function onSearch() {
+    router.replace({ query: { ...route.query, search: search.value } })
+}
 </script>
 
 <template>
     <header>
-        <RouterLink to="/" class="logo">
+        <button class="logo" @click.prevent="onClickLogo">
             <img alt="VPad" src="@/assets/logo_whitebg.png" height="60" />
-        </RouterLink>
-        <form class="search-box" method="get">
-            <input name="search" type="text">
+        </button>
+        <form class="search-box" @submit.prevent="onSearch">
+            <input name="search" type="text" v-model="search">
             <button>
                 <SearchIcon />
             </button>
@@ -66,12 +82,18 @@ header {
     background-color: $main;
     width: 100vw;
     height: $header-height;
+    column-gap: 1rem;
 
-    .logo {
-        margin: 0 1rem 0 0;
+    button {
+        background: none;
+        border: none;
 
-        img {
-            vertical-align: middle;
+        .logo {
+            margin: 0 1rem 0 0;
+
+            img {
+                vertical-align: middle;
+            }
         }
     }
 }
@@ -132,7 +154,7 @@ header {
     margin-left: auto;
     justify-content: flex-end;
     align-items: center;
-    gap: 2rem;
+    column-gap: 2rem;
 
     .nt {
         height: 100%;
@@ -212,6 +234,8 @@ header {
     }
 
     .user-area {
+        column-gap: 1rem;
+
         .nt {
             aspect-ratio: 1;
 

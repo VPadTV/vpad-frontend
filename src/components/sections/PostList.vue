@@ -1,33 +1,48 @@
 <script setup lang="ts">
 import UserProfilePicture from '../UserProfilePicture.vue';
 
-import { onMounted, ref, type Ref } from 'vue';
-import { getManyPosts } from '@/composables/api/post';
+import { ref, watchEffect } from 'vue';
+import { getManyPosts, type SortBy } from '@/composables/api/post';
 import { formatDate } from '@/utils';
 import type { PostGetManyResponse } from '@/types/responses';
 import { useRoute } from 'vue-router';
 
-let { creatorId } = defineProps<{ creatorId?: string }>();
-let posts: Ref<PostGetManyResponse[] | undefined> = ref(undefined)
+let search = ref<string>()
 
-onMounted(async () => {
-    const route = useRoute()
-    console.log(route.query)
+let { filter } = defineProps<{
+    filter?: {
+        creatorId?: string,
+        sortBy?: SortBy,
+        nsfw?: boolean,
+        page?: number
+    }
+}>();
+let posts = ref<PostGetManyResponse[]>()
+
+const route = ref(useRoute())
+watchEffect(() => {
+    const querySearch = route.value.query.search;
+    if (typeof querySearch === 'string')
+        search.value = querySearch
+})
+
+watchEffect(async () => {
     const postsResponse = await getManyPosts({
-        creatorId,
         sortBy: 'latest',
-        titleSearch: route.query.search as string ?? undefined,
-        nsfw: route.query.nsfw as string === "true" ? true : false,
+        titleSearch: search.value,
+        nsfw: filter?.nsfw ?? false,
         page: 1,
-        size: 100,
+        size: 30,
+        ...filter,
     })
-    posts.value = postsResponse?.data.map(post => ({
-        ...post,
-        meta: {
-            ...post.meta,
-            createdAt: formatDate(post.meta.createdAt),
-        }
-    }))
+    if (postsResponse)
+        posts.value = postsResponse?.data.map(post => ({
+            ...post,
+            meta: {
+                ...post.meta,
+                createdAt: formatDate(post.meta.createdAt),
+            }
+        }))
 })
 
 function getThumbnailUrl(post: PostGetManyResponse): string {
@@ -36,8 +51,6 @@ function getThumbnailUrl(post: PostGetManyResponse): string {
     }
     return post.thumbUrl ?? ""
 }
-
-console.log(posts)
 
 </script>
 
@@ -62,7 +75,7 @@ console.log(posts)
 
 section {
     $gap: 2.8rem;
-    columns: 14rem;
+    columns: 300px;
     gap: $gap;
     overflow-y: scroll;
 

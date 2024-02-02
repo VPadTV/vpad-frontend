@@ -26,7 +26,7 @@ onBeforeMount(async () => {
                 {{ user.about }}
             </p>
             <h2>My Posts</h2>
-            <PostList :creator-id="user.id" />
+            <PostList :filter="{ creatorId: user.id }" />
         </section>
     </BaseHeaderSidebar>
     <LoadingPage v-else />

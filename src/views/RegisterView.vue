@@ -5,6 +5,7 @@ import TextAreaInput from '@/components/forms/TextAreaInputField.vue'
 import { ref } from 'vue';
 import { register } from '@/composables/api/auth'
 import router from '@/router';
+import RequiredStar from '@/components/RequiredStar.vue';
 
 let username = ref<string>('')
 let nickname = ref<string>('')
@@ -35,16 +36,16 @@ async function onSubmit() {
         </h1>
         <form method="post" @submit.prevent="onSubmit" autocomplete="off">
             <InputField required v-model="username">
-                <span class="req">*</span>Username <small>(Must be unique)</small>
+                <RequiredStar />Username <small>(Must be unique)</small>
             </InputField>
             <InputField v-model="nickname">
                 Nickname
             </InputField>
             <InputField required type="email" v-model="email">
-                <span class="req">*</span>Email
+                <RequiredStar />Email
             </InputField>
             <InputField required type="password" v-model="password">
-                <span class="req">*</span>Password
+                <RequiredStar />Password
             </InputField>
             <TextAreaInput v-model="about">
                 About
