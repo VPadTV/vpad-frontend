@@ -1,32 +1,52 @@
 <script setup lang="ts">
-import { type User } from '@/lib/types'
-import { ref } from 'vue';
+import { type User } from '@/types/entities'
+import { onBeforeMount, ref } from 'vue';
 import UserProfilePicture from './UserProfilePicture.vue';
-defineProps<{
+import CloseableComponent from './CloseableComponent.vue';
+import ArrowIcon from './icons/ArrowIcon.vue';
+import { boolify } from '@/utils';
+const { title, users } = defineProps<{
     title: string,
     users: User[]
 }>()
 
-const collapsed = ref(false)
+const closed = ref(false)
+
+function toggleClosed() {
+    closed.value = !closed.value;
+    localStorage.setItem(`${title}-userListClosed`, closed.value.toString());
+}
+
+onBeforeMount(async () => {
+    const loadedClosed = boolify(localStorage.getItem(`${title}-userListClosed`));
+    if (loadedClosed != null)
+        closed.value = loadedClosed;
+})
 
 </script>
 
 <template>
     <div>
-        <button class="title" :onClick="() => collapsed = !collapsed">
-            <h2>{{ title }}</h2><img :class="{ collapsed }" src="@/assets/arrow.png" alt="">
+        <button class="title" :onClick="toggleClosed">
+            <h2>{{ title }}</h2>
+            <span class="arrow" :class="{ closed }">
+                <ArrowIcon />
+            </span>
         </button>
-        <section :class="{ collapsed }">
-            <RouterLink :to="`/user/${user.id}`" class="video" v-for="user in users" :key="user.id">
-                <UserProfilePicture :userId="user.id"/>
-                <span>{{ user.nickname }}</span>
-            </RouterLink>
-        </section>
+        <CloseableComponent :closed="closed">
+            <section>
+                <RouterLink :to="`/user/${user.id}`" v-for="user in users" :key="user.id">
+                    <UserProfilePicture :id="user.id" />
+                    <span>{{ user.nickname }}</span>
+                </RouterLink>
+            </section>
+        </CloseableComponent>
     </div>
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/base.scss';
+@import '@/assets/style/base.scss';
+
 div {
     overflow: hidden;
     width: 100%;
@@ -54,15 +74,14 @@ div {
         display: inline;
     }
 
-    img {
-        height: 100%;
-        vertical-align: middle;
-        text-align: center;
+    .arrow {
+        height: 1.2rem;
+        width: 1.2rem;
         rotate: 90deg;
     }
 
-    img.collapsed {
-        transform: rotate(180deg);
+    .arrow.closed {
+        rotate: -90deg;
     }
 }
 
@@ -78,8 +97,9 @@ section {
         border: 1px solid $main-light;
         padding: .6rem;
         width: 100%;
-        
-        img {
+
+        svg {
+            width: 1lh;
             height: 1lh;
             vertical-align: middle;
             margin-right: .6rem;
@@ -90,9 +110,4 @@ section {
         }
     }
 }
-
-section.collapsed {
-    display: none;
-}
-
 </style>

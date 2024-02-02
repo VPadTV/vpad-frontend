@@ -1,35 +1,28 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
-import { get } from '@/lib/api';
-import type { User, Video } from '@/lib/types';
+import { get } from '@/composables/api/base';
+import type { User } from '@/types/entities';
 import CollapsibleUserList from '../CollapsibleUserList.vue'
 
 let subs: Ref<User[]> = ref([])
 let follows: Ref<User[]> = ref([])
 
 onMounted(async () => {
-    subs.value = (await get<Video[]>('url', {})).map(video => ({
-        id: video.id,
-        nickname: video.author
-    })).splice(10, 20)
-
-    follows.value = (await get<Video[]>('url', {})).map(video => ({
-        id: video.id,
-        nickname: video.author
-    })).splice(22, 30)
+    subs.value = (await get<User[]>('users'))?.splice(10, 20) ?? []
+    follows.value = (await get<User[]>('users'))?.splice(20, 30) ?? []
 })
 
 </script>
 
 <template>
     <aside>
-        <CollapsibleUserList title="Subscriptions" class="subs" :users="subs"/>
-        <CollapsibleUserList title="Follows" class="follow" :users="follows"/>
+        <CollapsibleUserList title="Subscriptions" class="subs" :users="subs" />
+        <CollapsibleUserList title="Follows" class="follow" :users="follows" />
     </aside>
 </template>
   
 <style scoped lang="scss">
-@import '@/assets/base.scss';
+@import '@/assets/style/base.scss';
 
 aside {
     background-color: $main;
@@ -43,10 +36,13 @@ aside {
     overflow-y: scroll;
     overflow-x: hidden;
 
+    >div {
+        margin-bottom: 1rem;
+    }
+
     * {
         flex-shrink: 0;
     }
-    
-}
 
+}
 </style>

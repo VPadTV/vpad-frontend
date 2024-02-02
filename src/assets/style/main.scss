@@ -1,0 +1,26 @@
+@import './base.scss';
+
+body {
+    color: $text;
+    background-color: $background;
+    font-size: 15px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-color: $main-light transparent;
+}
+
+html, body, #app {
+    height: 100vh;
+    overflow: hidden;
+}
+
+a {
+    text-decoration: none;
+    transition: 0.2s color;
+}
+
+a:hover, button:hover {
+    cursor: pointer;
+    opacity: .8;
+}
