@@ -26,10 +26,8 @@ onBeforeMount(async () => {
         <ArrowIcon class="arrow-icon" />
     </button>
     <SearchHeader />
-    <div class="scroll">
-        <main :class="{ 'aside-margin': !sidebarClosed }">
-            <slot></slot>
-        </main>
+    <div class="scroll" :class="{ 'aside-margin': !sidebarClosed }">
+        <slot></slot>
     </div>
 </template>
 
@@ -93,10 +91,7 @@ aside.closed {
     padding-top: $header-height;
     padding-bottom: 1rem;
     overflow: auto;
-
-    >main {
-        transition: margin-left $sidebar-transition-time;
-    }
+    transition: margin-left $sidebar-transition-time;
 }
 
 .aside-margin {

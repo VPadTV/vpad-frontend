@@ -1,27 +1,19 @@
 <script setup lang="ts">
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
-import LoadingIcon from '@/components/icons/LoadingIcon.vue';
-import { ref } from 'vue';
 import type { Post } from '@/types/entities';
+import ViewImage from '../ViewImage.vue';
 
 const { post, postScale } = defineProps<{
     post: Post,
     postScale: number
 }>()
 
-let loading = ref(true)
-function hideLoading() {
-    loading.value = false
-}
-
 </script>
 
 <template>
     <section class="post">
         <section class="content-background">
-            <LoadingIcon :class="{ hidden: !loading }" />
-            <img :class="{ hidden: loading }" @load="hideLoading()" :src="post.mediaUrl" class="content"
-                :style="{ width: `${postScale}%` }" />
+            <ViewImage :post="post" :style="{ width: `${postScale}%` }" />
         </section>
         <p class="text">
             <span class="title">{{ post?.title }}</span>

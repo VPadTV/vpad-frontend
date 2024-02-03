@@ -16,6 +16,10 @@ const filter = ref<{
 </template>
 
 <style scoped lang="scss">
+main {
+    height: 100%;
+}
+
 .posts {
     padding: 4rem 6rem 0;
 

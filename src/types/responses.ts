@@ -6,6 +6,8 @@ export type PostGetManyResponse = {
     mediaType: "IMAGE" | "VIDEO"
     thumbUrl?: string
     meta: {
+        width?: number,
+        height?: number,
         nsfw: boolean
         tags: string[]
         authors: SimpleUser[]

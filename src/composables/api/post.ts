@@ -26,7 +26,7 @@ export type PostGetManyBody = {
     userTierId?: string
     creatorId?: string
     sortBy: SortBy
-    titleSearch?: string
+    titleSearch?: string,
     nsfw: boolean
     page: number
     size: number

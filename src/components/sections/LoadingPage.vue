@@ -15,5 +15,7 @@ import LoadingIcon from '@/components/icons/LoadingIcon.vue';
     align-items: center;
     text-align: center;
     height: 100%;
+    width: 100%;
+    padding: 2rem;
 }
 </style>

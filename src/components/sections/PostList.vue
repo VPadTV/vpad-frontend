@@ -6,6 +6,8 @@ import { getManyPosts, type SortBy } from '@/composables/api/post';
 import { formatDate } from '@/utils';
 import type { PostGetManyResponse } from '@/types/responses';
 import { useRoute } from 'vue-router';
+import LoadingPage from './LoadingPage.vue';
+import ViewThumbnail from '../ViewThumbnail.vue';
 
 let search = ref<string>()
 
@@ -27,6 +29,7 @@ watchEffect(() => {
 })
 
 watchEffect(async () => {
+    posts.value = undefined
     const postsResponse = await getManyPosts({
         sortBy: 'latest',
         titleSearch: search.value,
@@ -45,19 +48,12 @@ watchEffect(async () => {
         }))
 })
 
-function getThumbnailUrl(post: PostGetManyResponse): string {
-    if (post.mediaType === 'IMAGE') {
-        return post.thumbUrl ?? post.mediaUrl
-    }
-    return post.thumbUrl ?? ""
-}
-
 </script>
 
 <template>
-    <section class="posts">
+    <section class="posts" v-if="posts != null">
         <RouterLink :to="`/post/${post.id}`" class="post" v-for="post in posts" :key="post.id">
-            <img class="thumbnail" v-lazy="getThumbnailUrl(post)" />
+            <ViewThumbnail :post="post" />
             <p class="text">
                 <span class="title">{{ post.title }}</span>
                 <RouterLink :to="`/user/${post.meta.authors[0].id}`" class="author">
@@ -68,29 +64,27 @@ function getThumbnailUrl(post: PostGetManyResponse): string {
             </p>
         </RouterLink>
     </section>
+    <section v-else>
+        <LoadingPage />
+    </section>
 </template>
   
 <style scoped lang="scss">
 @import '@/assets/style/base.scss';
 
-section {
+.posts {
     $gap: 2.8rem;
-    columns: 300px;
     gap: $gap;
+    columns: 300px;
     overflow-y: scroll;
+    height: 100%;
+    width: 100%;
 
     .post {
         width: 100%;
         display: inline-flex;
         margin-bottom: $gap;
         flex-direction: column;
-
-        .thumbnail {
-            align-self: center;
-            max-width: 100%;
-            height: auto;
-            background-color: gray;
-        }
 
         .text {
             max-width: 100%;

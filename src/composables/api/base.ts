@@ -55,5 +55,8 @@ export async function api<T>(url: string, method: HttpMethod, body?: FormData | 
     const responseJson = await response.json() as T & ResponseRefreshToken
     if (responseJson.token)
         refreshToken(responseJson.token)
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     return responseJson
 }

@@ -49,9 +49,6 @@ onMounted(async () => {
         <slider width="20rem" :height="12" class="scaling-slider" orientation="vertical" v-model="postScale" color="#4C9BD4"
             trackColor="#202427" :min="MIN_SCALE" @change="updatePostscale"></slider>
         <SeePost v-if="post" :post="post" :postScale="postScale" />
-        <div v-else class="notfound">
-            <LoadingIcon />
-        </div>
         <PostList />
     </BaseHeaderSidebar>
 </template>
