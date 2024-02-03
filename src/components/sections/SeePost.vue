@@ -4,11 +4,12 @@ import type { Post } from '@/types/entities';
 import ViewImage from '../ViewImage.vue';
 import LikeIcon from '../icons/LikeIcon.vue';
 import { formatDate, formatNumber, numify } from '@/utils';
-import { onMounted, ref, toRaw } from 'vue';
+import { onMounted, ref } from 'vue';
 import { voteOnPost } from '@/composables/api/post';
 import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
+import { store } from '@/store/store';
 
 const { post, postScale } = defineProps<{
     post: Post,
@@ -35,23 +36,31 @@ async function vote(v: number) {
     }
     const previousVote = likeData.value.myVote
     if (!post.id || previousVote === v) return
+    const oldLikeData = { ...likeData.value }
+    editLikeData(v)
+    store.cursor = 'progress'
     const r = await voteOnPost(post.id, { vote: v })
-    if (r) {
-        if (previousVote === 0) {
-            if (v === 1) likeData.value.likes += 1
-            if (v === -1) likeData.value.dislikes += 1
-        } else {
-            likeData.value.dislikes -= v
-            likeData.value.likes += v
-        }
-        likeData.value.myVote = v
+    if (!r)
+        likeData.value = { ...oldLikeData }
+    store.cursor = undefined
+}
+
+function editLikeData(v: number) {
+    const previousVote = likeData.value.myVote
+    if (previousVote === 0) {
+        if (v === 1) likeData.value.likes += 1
+        if (v === -1) likeData.value.dislikes += 1
+    } else {
+        likeData.value.dislikes -= v
+        likeData.value.likes += v
     }
+    likeData.value.myVote = v
 }
 
 </script>
 
 <template>
-    <section class="post">
+    <section class="post" :style="{ cursor: store.cursor }">
         <section class="content-background">
             <ViewImage :post="post" :style="{ width: `${postScale}%` }" />
         </section>

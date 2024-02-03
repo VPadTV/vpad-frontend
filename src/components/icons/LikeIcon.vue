@@ -11,10 +11,13 @@ svg {
     background: none;
     display: inline-block;
     height: 100%;
+}
 
-    path:hover {
-        stroke: white;
-        cursor: pointer;
+svg:hover {
+    cursor: pointer;
+
+    path {
+        stroke: white !important;
     }
 }
 </style>

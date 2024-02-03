@@ -37,14 +37,14 @@ onBeforeMount(async () => {
 header {
     position: fixed;
     top: 0;
-    z-index: 1;
+    z-index: 10;
 }
 
 aside {
     position: fixed;
     top: $header-height;
     height: calc(100vh - $header-height);
-    z-index: 1;
+    z-index: 9;
 }
 
 aside.closed {
