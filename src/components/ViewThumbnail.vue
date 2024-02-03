@@ -12,8 +12,7 @@ function getThumbnailUrl(post: MediaPost): string {
 </script>
 
 <template>
-    <img class="thumbnail" v-lazy="{ src: getThumbnailUrl(post), delay: 6000 }" :width="post.meta.width"
-        :height="post.meta.height" />
+    <img class="thumbnail" v-lazy="{ src: getThumbnailUrl(post) }" :width="post.meta.width" :height="post.meta.height" />
 </template>
 
 <style scoped lang="scss">

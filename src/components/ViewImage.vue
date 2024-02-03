@@ -4,7 +4,7 @@ const { post } = defineProps<{ post: MediaPost }>()
 </script>
 
 <template>
-    <img class="content" v-lazy="{ src: post.mediaUrl, delay: 2000 }" />
+    <img class="content" v-lazy="{ src: post.mediaUrl }" />
 </template>
 
 <style scoped lang="scss">

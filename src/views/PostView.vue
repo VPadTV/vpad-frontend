@@ -3,10 +3,9 @@ import BaseHeaderSidebar from '@/views/base/HeaderSidebar.vue'
 import SeePost from '@/components/sections/SeePost.vue'
 import type { Post } from '@/types/entities';
 import { formatDate, formatNumber, numify } from '@/utils';
-import { type Ref, ref, onMounted, onBeforeMount, toRaw } from 'vue';
+import { type Ref, ref, onMounted, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
 import PostList from '@/components/sections/PostList.vue';
-import LoadingIcon from '@/components/icons/LoadingIcon.vue';
 import slider from 'vue3-slider'
 import { getPost } from '@/composables/api/post';
 

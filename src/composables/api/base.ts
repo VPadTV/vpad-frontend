@@ -1,27 +1,6 @@
-import { store } from "@/store/store"
 import { BackendError } from "@/types/http"
 import { getAuthorization, refreshToken } from "./auth"
 import { useToast } from "vue-toastification"
-
-export async function get<T>(url: string, query?: { [key: string]: string | number | boolean }): Promise<T | undefined> {
-
-    if (query)
-        url += '?' + new URLSearchParams(query as any)
-
-    // fetch(url, {
-    //     method: "GET",
-    // })
-
-    if (url.startsWith('posts'))
-        return store.posts as T
-    else if (url.startsWith('post'))
-        return store.posts.find(p => p.id === query!.id) as T
-    else if (url.startsWith('users'))
-        return store.posts.map(p => p.meta.authors[0].nickname) as T
-    else if (url.startsWith('user'))
-        return store.posts.find(p => p.meta.authors[0].id === query!.id)?.meta.authors[0] as T
-    return undefined
-}
 
 export type HttpMethod = "get" | "post" | "put" | "delete"
 
@@ -55,8 +34,6 @@ export async function api<T>(url: string, method: HttpMethod, body?: FormData | 
     const responseJson = await response.json() as T & ResponseRefreshToken
     if (responseJson.token)
         refreshToken(responseJson.token)
-
-    await new Promise(resolve => setTimeout(resolve, 1000));
 
     return responseJson
 }
