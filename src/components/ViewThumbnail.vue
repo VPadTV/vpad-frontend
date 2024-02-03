@@ -12,7 +12,8 @@ function getThumbnailUrl(post: MediaPost): string {
 </script>
 
 <template>
-    <img class="thumbnail" v-lazy="{ src: getThumbnailUrl(post) }" :width="post.meta.width" :height="post.meta.height" />
+    <img class="thumbnail" v-lazy="{ src: getThumbnailUrl(post) }"
+        :style="{ aspectRatio: (post.meta.width ?? 1) / (post.meta.height ?? 1) }" />
 </template>
 
 <style scoped lang="scss">
@@ -20,7 +21,7 @@ function getThumbnailUrl(post: MediaPost): string {
 
 .thumbnail {
     align-self: center;
-    max-width: 100%;
     background-color: $main;
+    max-width: 100%;
 }
 </style>

@@ -77,8 +77,7 @@ watchEffect(async () => {
     gap: $gap;
     columns: 300px;
     overflow-y: scroll;
-    height: 100%;
-    width: 100%;
+    min-height: 100%;
 
     .post {
         width: 100%;
