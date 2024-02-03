@@ -2,11 +2,51 @@
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
 import type { Post } from '@/types/entities';
 import ViewImage from '../ViewImage.vue';
+import LikeIcon from '../icons/LikeIcon.vue';
+import { formatDate, formatNumber, numify } from '@/utils';
+import { onMounted, ref, toRaw } from 'vue';
+import { voteOnPost } from '@/composables/api/post';
+import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
+import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
 
 const { post, postScale } = defineProps<{
     post: Post,
     postScale: number
 }>()
+
+const user = loadOrGetUserRef(useRouter(), false)
+
+let likeData = ref({
+    likes: numify(post.meta.likes)!,
+    dislikes: numify(post.meta.dislikes)!,
+    myVote: numify(post.meta.myVote ?? 0)
+})
+
+onMounted(async () => {
+    if (!user.value) return;
+    if (!post.meta.myVote)
+        await vote(0)
+})
+
+async function vote(v: number) {
+    if (!user.value) {
+        return useToast().error('Please login first')
+    }
+    const previousVote = likeData.value.myVote
+    if (!post.id || previousVote === v) return
+    const r = await voteOnPost(post.id, { vote: v })
+    if (r) {
+        if (previousVote === 0) {
+            if (v === 1) likeData.value.likes += 1
+            if (v === -1) likeData.value.dislikes += 1
+        } else {
+            likeData.value.dislikes -= v
+            likeData.value.likes += v
+        }
+        likeData.value.myVote = v
+    }
+}
 
 </script>
 
@@ -15,14 +55,30 @@ const { post, postScale } = defineProps<{
         <section class="content-background">
             <ViewImage :post="post" :style="{ width: `${postScale}%` }" />
         </section>
-        <p class="text">
-            <span class="title">{{ post?.title }}</span>
-            <RouterLink :to="`/user/${post.meta.authors[0].id}`" class="author">
-                <UserProfilePicture class="pfp" :id="post.meta.authors[0].id" />
-                <span>{{ post.meta.authors[0].nickname }}</span>
-            </RouterLink>
-            <span class="date">{{ post.meta.createdAt }}</span>
-        </p>
+        <div class="data">
+            <aside class="left">
+                <span class="title">{{ post?.title }}</span>
+                <ul class="authors">
+                    <RouterLink v-for="author in post.meta.authors" :key="author.id" :to="`/user/${author.id}`"
+                        class="author">
+                        <UserProfilePicture class="pfp" :id="author.id" />
+                        <span>{{ author.nickname }}</span>
+                    </RouterLink>
+                </ul>
+            </aside>
+            <aside class="right">
+                <p class="date">{{ formatDate(post.meta.createdAt) }}</p>
+                <p class="views"><span>{{ formatNumber(post.meta.views) }}</span> Views</p>
+                <p class="likes">
+                    <span>{{ formatNumber(likeData.likes) }}</span>
+                    <LikeIcon class="like" @click="vote(1)" />
+                </p>
+                <p class="dislikes">
+                    <span>{{ formatNumber(likeData.dislikes) }}</span>
+                    <LikeIcon class="dislike" @click="vote(-1)" />
+                </p>
+            </aside>
+        </div>
     </section>
 </template> 
   
@@ -50,15 +106,22 @@ const { post, postScale } = defineProps<{
     padding: 1rem;
 }
 
-.text {
+.data {
     max-width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
+    justify-content: space-between;
 
     .title,
-    .author {
+    .authors {
         margin-bottom: .2rem;
+    }
+
+    .authors {
+        display: flex;
+        flex-direction: column;
+        row-gap: .2rem;
     }
 
     .title {
@@ -89,10 +152,46 @@ const { post, postScale } = defineProps<{
         color: $text-faded;
     }
 
+    .left,
+    .right {
+        width: 100%;
+    }
+
+    .right {
+        * {
+            text-align: right;
+        }
+    }
+
+    .likes,
+    .dislikes {
+        display: flex;
+        gap: 1rem;
+        font-size: 2rem;
+        align-items: center;
+        justify-content: flex-end;
+
+        .like,
+        .dislike {
+            max-height: .8lh;
+        }
+
+        .like {
+            fill: green;
+        }
+
+        .dislike {
+            position: relative;
+            top: 6px;
+            fill: red;
+            rotate: 180deg;
+            transform: scaleX(-1);
+        }
+    }
+
     * {
         text-align: left;
         overflow: hidden;
-        max-height: 2lh;
         max-width: 100%;
     }
 }
@@ -108,7 +207,7 @@ const { post, postScale } = defineProps<{
     }
 
     .post {
-        .text {
+        .data {
             margin: 0rem 1rem 1rem;
         }
     }

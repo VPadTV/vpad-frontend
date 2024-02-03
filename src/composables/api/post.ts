@@ -16,6 +16,13 @@ export async function createPost(body: PostCreateBody): Promise<boolean> {
     if (response) return true;
     return false;
 }
+export async function voteOnPost(id: string, body: { vote: number }): Promise<boolean> {
+    const response = await api<{}>(`vote/${id}`, 'put', new URLSearchParams({
+        vote: body.vote.toString(),
+    }));
+    if (response) return true;
+    return false;
+}
 
 export async function getPost(id: string): Promise<Post | undefined> {
     return api<Post>(`post/${id}`, 'get');

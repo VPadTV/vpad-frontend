@@ -25,10 +25,11 @@ export type Post = {
         createdAt: Date | string,
         updatedAt: Date | string,
         nsfw: boolean,
+        views: number | string,
         likes: number | string,
-        dislikes: number | string
+        dislikes: number | string,
+        myVote?: number
         tags: string[],
-        views: number,
     }
 }
 

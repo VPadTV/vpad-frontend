@@ -28,16 +28,7 @@ onMounted(async () => {
     const route = ref(useRoute())
     const postRaw = await getPost(route.value.params.postId as string)
     if (postRaw) {
-        post.value = ({
-            ...postRaw,
-            meta: {
-                ...postRaw.meta,
-                likes: formatNumber(postRaw.meta.likes),
-                dislikes: formatNumber(postRaw.meta.dislikes),
-                createdAt: formatDate(postRaw.meta.createdAt),
-                updatedAt: formatDate(postRaw.meta.updatedAt)
-            }
-        })
+        post.value = postRaw
     }
 })
 </script>
@@ -47,7 +38,7 @@ onMounted(async () => {
     <BaseHeaderSidebar>
         <slider width="20rem" :height="12" class="scaling-slider" orientation="vertical" v-model="postScale" color="#4C9BD4"
             trackColor="#202427" :min="MIN_SCALE" @change="updatePostscale"></slider>
-        <SeePost v-if="post" :post="post" :postScale="postScale" />
+        <SeePost v-if="post" :post="{ ...post, id: $route.params.postId as string }" :postScale="postScale" />
         <PostList />
     </BaseHeaderSidebar>
 </template>

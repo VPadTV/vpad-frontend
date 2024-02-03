@@ -9,10 +9,13 @@ export async function api<T>(url: string, method: HttpMethod, body?: FormData | 
     const toast = useToast()
     let response: Response
     try {
-        response = await fetch(import.meta.env.VITE_API_URL + url + (method === "get" ? "?" + body : ""), {
+        response = await fetch(import.meta.env.VITE_API_URL + url + (method === "get" && body ? "?" + body : ""), {
             method,
             body: method === "get" ? undefined : body,
-            headers: getAuthorization()
+            headers: {
+                ...getAuthorization(),
+                'Expires': ''
+            }
         })
     } catch (e) {
         toast.error('Error reaching the server')

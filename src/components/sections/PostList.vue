@@ -56,11 +56,13 @@ watchEffect(async () => {
             <ViewThumbnail :post="post" />
             <p class="text">
                 <span class="title">{{ post.title }}</span>
-                <RouterLink :to="`/user/${post.meta.authors[0].id}`" class="author">
-                    <UserProfilePicture :id="post.meta.authors[0].id" />
-                    <span>{{ post.meta.authors[0].nickname }}</span>
+            <ul class="authors">
+                <RouterLink v-for="author in post.meta.authors" :key="author.id" :to="`/user/${author.id}`" class="author">
+                    <UserProfilePicture class="pfp" :id="author.id" />
+                    <span>{{ author.nickname }}</span>
                 </RouterLink>
-                <span class="date">{{ post.meta.createdAt }}</span>
+            </ul>
+            <span class="date">{{ post.meta.createdAt }}</span>
             </p>
         </RouterLink>
     </section>
@@ -93,7 +95,7 @@ watchEffect(async () => {
             align-items: flex-start;
 
             .title,
-            .author {
+            .authors {
                 margin-bottom: .1rem;
             }
 
