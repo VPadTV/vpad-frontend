@@ -69,7 +69,7 @@ watchEffect(() => {
                 <h2>About</h2>
             </TextAreaInput>
             <h2>My Posts</h2>
-            <PostList />
+            <PostList v-if="original" :filter="{ creatorId: original.id }" />
         </form>
     </BaseHeaderSidebar>
     <LoadingPage v-else />

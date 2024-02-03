@@ -12,7 +12,7 @@ function getThumbnailUrl(post: MediaPost): string {
 </script>
 
 <template>
-    <img class="thumbnail" v-lazy="{ src: getThumbnailUrl(post) }"
+    <img class="thumbnail" v-lazy="{ src: getThumbnailUrl(post) }" :width="post.meta.width"
         :style="{ aspectRatio: (post.meta.width ?? 1) / (post.meta.height ?? 1) }" />
 </template>
 
