@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
-import type { Post } from '@/types/entities';
+import { MediaType, type Post } from '@/types/entities';
 import ViewImage from '../ViewImage.vue';
 import LikeIcon from '../icons/LikeIcon.vue';
 import { formatDate, formatNumber, numify } from '@/utils';
 import { onMounted, ref } from 'vue';
-import { voteOnPost } from '@/composables/api/post';
+import { PostDeleteStatus, deletePost, voteOnPost } from '@/composables/api/post';
 import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { store } from '@/store/store';
+import ViewVideo from '../ViewVideo.vue';
+import router from '@/router';
 
 const { post, postScale } = defineProps<{
     post: Post,
@@ -57,12 +59,29 @@ function editLikeData(v: number) {
     likeData.value.myVote = v
 }
 
+async function deleteClicked() {
+    const response = await deletePost(post.id!)
+    if (response) {
+        const toast = useToast()
+        if (response.status === PostDeleteStatus.AUTHOR_REMOVED) {
+            toast.success('Removed you from this post\'s authors')
+        } else if (response.status === PostDeleteStatus.POST_DELETED) {
+            toast.success('Post deleted')
+            router.go(-1)
+        }
+    }
+}
+
 </script>
 
 <template>
     <section class="post" :style="{ cursor: store.cursor }">
+        <div class="post-actions" v-if="user && post.meta.authors.some((author) => author.id === user!.id)">
+            <button class="delete" @click="deleteClicked">Delete</button>
+        </div>
         <section class="content-background">
-            <ViewImage :post="post" :style="{ width: `${postScale}%` }" />
+            <ViewImage v-if="post.mediaType === MediaType.IMAGE" :post="post" :style="{ width: `${postScale}%` }" />
+            <ViewVideo v-else-if="post.mediaType === MediaType.VIDEO" :post="post" :style="{ width: `${postScale}%` }" />
         </section>
         <div class="data">
             <aside class="left">
@@ -113,6 +132,21 @@ function editLikeData(v: number) {
 
 .loading-spinner {
     padding: 1rem;
+}
+
+.post-actions {
+    display: flex;
+    flex-direction: row;
+    padding: .75rem;
+    justify-content: flex-end;
+
+    .delete {
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 1rem;
+        padding: .6rem;
+        background-color: $light-red;
+    }
 }
 
 .data {

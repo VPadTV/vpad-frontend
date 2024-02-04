@@ -126,8 +126,7 @@ aside.closed {
     }
 
     .scroll {
-        top: $header-height-width-large;
-        height: calc(100vh - $header-height-width-large);
+        padding-top: $header-height-width-large;
     }
 }
 </style>

@@ -9,12 +9,16 @@ export type User = {
     admin: boolean
 }
 
+export enum MediaType {
+    VIDEO = "VIDEO",
+    IMAGE = "IMAGE"
+}
 export type Post = {
     id?: string,
     title: string,
     text: string,
     mediaUrl: string,
-    mediaType: "IMAGE" | "VIDEO",
+    mediaType: MediaType,
     meta: {
         authors: {
             id: string,

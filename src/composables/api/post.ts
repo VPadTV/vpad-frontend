@@ -16,6 +16,18 @@ export async function createPost(body: PostCreateBody): Promise<boolean> {
     if (response) return true;
     return false;
 }
+
+export enum PostDeleteStatus {
+    POST_DELETED = 'Post Deleted',
+    AUTHOR_REMOVED = 'Author Removed'
+}
+export type PostDeleteResponse = {
+    status: PostDeleteStatus
+}
+export async function deletePost(id: string): Promise<PostDeleteResponse | undefined> {
+    return await api<PostDeleteResponse>(`post/${id}`, 'delete');
+}
+
 export async function voteOnPost(id: string, body: { vote: number }): Promise<boolean> {
     const response = await api<{}>(`vote/${id}`, 'put', new URLSearchParams({
         vote: body.vote.toString(),

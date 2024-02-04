@@ -3,10 +3,15 @@ import type { MediaType } from '@/types/entities';
 
 type MediaPost = { mediaType: MediaType, mediaUrl: string }
 const { post } = defineProps<{ post: MediaPost }>()
+
+function getStreamUrl() {
+    const spl = post.mediaUrl.split('/')
+    return import.meta.env.VITE_API_URL + 'post/stream/' + spl[spl.length - 1]
+}
 </script>
 
 <template>
-    <img class="content" v-lazy="{ src: post.mediaUrl }" />
+    <video class="content" controls="true" :src="getStreamUrl()"></video>
 </template>
 
 <style scoped lang="scss">
