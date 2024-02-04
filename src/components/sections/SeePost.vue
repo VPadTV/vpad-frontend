@@ -5,13 +5,14 @@ import ViewImage from '../ViewImage.vue';
 import LikeIcon from '../icons/LikeIcon.vue';
 import { formatDate, formatNumber, numify } from '@/utils';
 import { onMounted, ref } from 'vue';
-import { PostDeleteStatus, deletePost, voteOnPost } from '@/composables/api/post';
+import { PostDeleteStatus, PostAPI } from '@/composables/api/post';
 import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { store } from '@/store/store';
 import ViewVideo from '../ViewVideo.vue';
 import router from '@/router';
+import { VoteAPI } from '@/composables/api/vote';
 
 const { post, postScale } = defineProps<{
     post: Post,
@@ -41,7 +42,7 @@ async function vote(v: number) {
     const oldLikeData = { ...likeData.value }
     editLikeData(v)
     store.cursor = 'progress'
-    const r = await voteOnPost(post.id, { vote: v })
+    const r = await VoteAPI.vote(post.id, v)
     if (!r)
         likeData.value = { ...oldLikeData }
     store.cursor = undefined
@@ -60,7 +61,7 @@ function editLikeData(v: number) {
 }
 
 async function deleteClicked() {
-    const response = await deletePost(post.id!)
+    const response = await PostAPI.delete(post.id!)
     if (response) {
         const toast = useToast()
         if (response.status === PostDeleteStatus.AUTHOR_REMOVED) {

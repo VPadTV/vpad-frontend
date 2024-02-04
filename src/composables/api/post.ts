@@ -1,7 +1,14 @@
-import { asFormData } from "@/utils"
-import { api } from "./base"
+import { HTTP, api } from "./base"
 import type { Paginate, Post } from "@/types/entities"
-import type { PostGetManyResponse } from "@/types/responses"
+import type { SimplePost } from "@/types/responses"
+
+export abstract class PostAPI {
+    static create = (body: PostCreateBody) => api<{}>('post', HTTP.POST, body)
+    static get = (id: string) => api<Post>(`post/${id}`, HTTP.GET)
+    static getMany = (body: PostGetManyBody) => api<Paginate<SimplePost>>(`post`, HTTP.GET, body)
+    static update = (id: string, body: UpdatePostBody) => api<{}>(`post/${id}`, HTTP.PUT, body)
+    static delete = (id: string) => api<PostDeleteResponse>(`post/${id}`, HTTP.DELETE)
+}
 
 export type PostCreateBody = {
     title: string
@@ -10,34 +17,6 @@ export type PostCreateBody = {
     thumb?: File
     nsfw?: boolean
     tags: string[]
-}
-export async function createPost(body: PostCreateBody): Promise<boolean> {
-    const response = await api<{}>(`post`, 'post', asFormData(body));
-    if (response) return true;
-    return false;
-}
-
-export enum PostDeleteStatus {
-    POST_DELETED = 'Post Deleted',
-    AUTHOR_REMOVED = 'Author Removed'
-}
-export type PostDeleteResponse = {
-    status: PostDeleteStatus
-}
-export async function deletePost(id: string): Promise<PostDeleteResponse | undefined> {
-    return await api<PostDeleteResponse>(`post/${id}`, 'delete');
-}
-
-export async function voteOnPost(id: string, body: { vote: number }): Promise<boolean> {
-    const response = await api<{}>(`vote/${id}`, 'put', new URLSearchParams({
-        vote: body.vote.toString(),
-    }));
-    if (response) return true;
-    return false;
-}
-
-export async function getPost(id: string): Promise<Post | undefined> {
-    return api<Post>(`post/${id}`, 'get');
 }
 
 export type SortBy = 'latest' | 'oldest' | 'high-views' | 'low-views'
@@ -50,11 +29,11 @@ export type PostGetManyBody = {
     page: number
     size: number
 }
-export async function getManyPosts(body: PostGetManyBody): Promise<Paginate<PostGetManyResponse> | undefined> {
-    return api<Paginate<PostGetManyResponse>>(`post`, 'get', new URLSearchParams({
-        ...body,
-        nsfw: `${body.nsfw}`,
-        page: `${body.page}`,
-        size: `${body.size}`,
-    }));
+
+export type UpdatePostBody = {}
+
+export enum PostDeleteStatus {
+    POST_DELETED,
+    AUTHOR_REMOVED
 }
+export type PostDeleteResponse = { status: PostDeleteStatus }

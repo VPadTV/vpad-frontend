@@ -5,7 +5,7 @@ import LoadingPage from '@/components/sections/LoadingPage.vue';
 import UserHeader from '@/components/sections/UserHeader.vue';
 import { onBeforeMount, ref } from 'vue';
 import type { User } from '@/types/entities';
-import { getUser } from '@/composables/api/user';
+import { UserAPI } from '@/composables/api/user';
 import { useRoute } from 'vue-router';
 const route = useRoute()
 
@@ -13,7 +13,7 @@ const user = ref<User | undefined>()
 onBeforeMount(async () => {
     const id = route.params.userId
     if (id && typeof id === 'string')
-        user.value = await getUser(id)
+        user.value = await UserAPI.get(id)
 })
 </script>
 
@@ -34,6 +34,7 @@ onBeforeMount(async () => {
 
 <style scoped lang="scss">
 .user-data {
+    margin: .5rem 0 0;
     padding: 0 3rem 3rem;
 
     h2 {

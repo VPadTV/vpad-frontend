@@ -2,12 +2,12 @@
 import BaseHeaderSidebar from '@/views/base/HeaderSidebar.vue'
 import SeePost from '@/components/sections/SeePost.vue'
 import type { Post } from '@/types/entities';
-import { formatDate, formatNumber, numify } from '@/utils';
+import { numify } from '@/utils';
 import { type Ref, ref, onMounted, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
 import PostList from '@/components/sections/PostList.vue';
 import slider from 'vue3-slider'
-import { getPost } from '@/composables/api/post';
+import { PostAPI } from '@/composables/api/post';
 
 const MIN_SCALE = 10;
 
@@ -26,7 +26,7 @@ onBeforeMount(async () => {
 
 onMounted(async () => {
     const route = ref(useRoute())
-    const postRaw = await getPost(route.value.params.postId as string)
+    const postRaw = await PostAPI.get(route.value.params.postId as string)
     if (postRaw) {
         post.value = postRaw
     }

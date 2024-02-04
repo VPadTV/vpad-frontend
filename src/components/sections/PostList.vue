@@ -2,9 +2,8 @@
 import UserProfilePicture from '../UserProfilePicture.vue';
 
 import { ref, watchEffect } from 'vue';
-import { getManyPosts, type SortBy } from '@/composables/api/post';
+import { PostAPI, type SortBy } from '@/composables/api/post';
 import { formatDate } from '@/utils';
-import type { PostGetManyResponse } from '@/types/responses';
 import { useRoute } from 'vue-router';
 import LoadingPage from './LoadingPage.vue';
 import ViewThumbnail from '../ViewThumbnail.vue';
@@ -19,7 +18,7 @@ let { filter } = defineProps<{
         page?: number
     }
 }>();
-let posts = ref<PostGetManyResponse[]>()
+let posts = ref()
 
 const route = ref(useRoute())
 watchEffect(() => {
@@ -30,7 +29,7 @@ watchEffect(() => {
 
 watchEffect(async () => {
     posts.value = undefined
-    const postsResponse = await getManyPosts({
+    const postsResponse = await PostAPI.getMany({
         sortBy: 'latest',
         titleSearch: search.value,
         nsfw: filter?.nsfw ?? false,

@@ -1,4 +1,4 @@
-export type PostGetManyResponse = {
+export type SimplePost = {
     id: string
     title: string
     text: string

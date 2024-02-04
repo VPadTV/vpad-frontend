@@ -22,10 +22,8 @@ const { user } = defineProps<{ user: User }>()
 @import '@/assets/style/base.scss';
 
 header {
-    padding: 0 3rem;
+    padding: 3rem;
     border-bottom: 5px solid $main;
-    margin: 0 0 1rem;
-    height: $user-header-height;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

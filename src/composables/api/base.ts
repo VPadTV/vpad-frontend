@@ -1,13 +1,30 @@
 import { BackendError } from "@/types/http"
 import { getAuthorization, refreshToken } from "./auth"
 import { useToast } from "vue-toastification"
+import { asFormData } from "@/utils"
 
-export type HttpMethod = "get" | "post" | "put" | "delete"
+export enum HTTP {
+    GET = "get",
+    POST = "post",
+    PUT = "put",
+    DELETE = "delete"
+}
 
 export type ResponseRefreshToken = { token?: string }
-export async function api<T>(url: string, method: HttpMethod, body?: FormData | URLSearchParams): Promise<T | undefined> {
+type BodyItem = string | number | boolean
+
+export type APIArgs = { [key: string]: BodyItem | BodyItem[] | File } | URLSearchParams | FormData
+function parseArguments(args?: APIArgs) {
+    if (!args || args instanceof URLSearchParams || args instanceof FormData) return args;
+    if (Object.values(args).some(v => v instanceof File)) return asFormData(args)
+    return new URLSearchParams(args as any)
+}
+
+export async function api<T>(url: string, method: HTTP, args?: APIArgs): Promise<T | undefined> {
     const toast = useToast()
     let response: Response
+    const body = parseArguments(args)
+
     try {
         response = await fetch(import.meta.env.VITE_API_URL + url + (method === "get" && body ? "?" + body : ""), {
             method,
