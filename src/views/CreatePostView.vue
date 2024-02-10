@@ -37,7 +37,7 @@ async function createClicked() {
         toast.error("Missing required fields");
         return;
     }
-    const response = await PostAPI.create({ ...formBody.value as any, tags: "sometag" })
+    const response = await PostAPI.create({ ...formBody.value as any })
     if (response) {
         toast.success('Post created!')
         router.push({ 'name': 'home' })

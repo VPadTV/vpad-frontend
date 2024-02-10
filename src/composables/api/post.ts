@@ -33,7 +33,7 @@ export type PostGetManyBody = {
 export type UpdatePostBody = {}
 
 export enum PostDeleteStatus {
-    POST_DELETED,
-    AUTHOR_REMOVED
+    POST_DELETED = 'Post Deleted',
+    AUTHOR_REMOVED = 'Author Removed'
 }
 export type PostDeleteResponse = { status: PostDeleteStatus }

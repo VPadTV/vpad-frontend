@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
-import { MediaType, type Post } from '@/types/entities';
+import { MediaType, type Post, type User } from '@/types/entities';
 import ViewImage from '../ViewImage.vue';
 import LikeIcon from '../icons/LikeIcon.vue';
 import { formatDate, formatNumber, numify } from '@/utils';
-import { onMounted, ref } from 'vue';
-import { PostDeleteStatus, PostAPI } from '@/composables/api/post';
+import { onMounted, ref, type Ref } from 'vue';
+import { PostAPI } from '@/composables/api/post';
 import { loadOrGetUserRef } from '@/composables/loadOrGetUser';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { store } from '@/store/store';
 import ViewVideo from '../ViewVideo.vue';
 import router from '@/router';
+import ArrowIcon from '@/components/icons/ArrowIcon.vue'
 import { VoteAPI } from '@/composables/api/vote';
 
 const { post, postScale } = defineProps<{
@@ -20,11 +21,10 @@ const { post, postScale } = defineProps<{
 }>()
 
 const user = loadOrGetUserRef(useRouter(), false)
-
-let likeData = ref({
-    likes: numify(post.meta.likes)!,
-    dislikes: numify(post.meta.dislikes)!,
-    myVote: numify(post.meta.myVote ?? 0)
+const likeData = ref({
+    likes: numify(post.meta.likes) ?? 0,
+    dislikes: numify(post.meta.dislikes) ?? 0,
+    myVote: numify(post.meta.myVote) ?? 0
 })
 
 onMounted(async () => {
@@ -38,7 +38,8 @@ async function vote(v: number) {
         return useToast().error('Please login first')
     }
     const previousVote = likeData.value.myVote
-    if (!post.id || previousVote === v) return
+    if (!post.id) return
+    if (previousVote === v) v = 0
     const oldLikeData = { ...likeData.value }
     editLikeData(v)
     store.cursor = 'progress'
@@ -50,10 +51,16 @@ async function vote(v: number) {
 
 function editLikeData(v: number) {
     const previousVote = likeData.value.myVote
-    if (previousVote === 0) {
+    if (previousVote === 0 || !previousVote) {
         if (v === 1) likeData.value.likes += 1
         if (v === -1) likeData.value.dislikes += 1
-    } else {
+    } else if (v === 0) {
+        if (previousVote === 1)
+            likeData.value.likes -= 1
+        else if (previousVote === -1)
+            likeData.value.dislikes -= 1
+    }
+    else {
         likeData.value.dislikes -= v
         likeData.value.likes += v
     }
@@ -62,16 +69,20 @@ function editLikeData(v: number) {
 
 async function deleteClicked() {
     const response = await PostAPI.delete(post.id!)
+    const toast = useToast()
     if (response) {
-        const toast = useToast()
-        if (response.status === PostDeleteStatus.AUTHOR_REMOVED) {
-            toast.success('Removed you from this post\'s authors')
-        } else if (response.status === PostDeleteStatus.POST_DELETED) {
-            toast.success('Post deleted')
-            router.go(-1)
-        }
+        toast.success(response.status)
+        router.go(-1)
+    } else {
+        toast.error('Something went wrong')
     }
 }
+
+const comments = [
+    { id: 0, body: "sex" },
+    { id: 1, body: "penis" },
+    { id: 2, body: "vagina" },
+]
 
 </script>
 
@@ -84,9 +95,13 @@ async function deleteClicked() {
             <ViewImage v-if="post.mediaType === MediaType.IMAGE" :post="post" :style="{ width: `${postScale}%` }" />
             <ViewVideo v-else-if="post.mediaType === MediaType.VIDEO" :post="post" :style="{ width: `${postScale}%` }" />
         </section>
+        <ul class="comments">
+            <ArrowIcon />
+        </ul>
         <div class="data">
             <aside class="left">
                 <span class="title">{{ post?.title }}</span>
+                <br>
                 <ul class="authors">
                     <RouterLink v-for="author in post.meta.authors" :key="author.id" :to="`/user/${author.id}`"
                         class="author">
@@ -99,11 +114,11 @@ async function deleteClicked() {
                 <p class="date">{{ formatDate(post.meta.createdAt) }}</p>
                 <p class="views"><span>{{ formatNumber(post.meta.views) }}</span> Views</p>
                 <p class="likes">
-                    <span>{{ formatNumber(likeData.likes) }}</span>
+                    <span>{{ formatNumber(likeData.likes ?? 0) }}</span>
                     <LikeIcon class="like" @click="vote(1)" />
                 </p>
                 <p class="dislikes">
-                    <span>{{ formatNumber(likeData.dislikes) }}</span>
+                    <span>{{ formatNumber(likeData.dislikes ?? 0) }}</span>
                     <LikeIcon class="dislike" @click="vote(-1)" />
                 </p>
             </aside>
@@ -113,6 +128,8 @@ async function deleteClicked() {
   
 <style scoped lang="scss">
 @import '@/assets/style/base.scss';
+
+$comment-btn-size: 32px;
 
 .content-background {
     width: 100%;
@@ -128,6 +145,27 @@ async function deleteClicked() {
             width: 100%;
             text-align: center;
         }
+    }
+}
+
+.comments {
+    width: 100%;
+    // background-color: $main-light;
+    // padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    >svg {
+        position: relative;
+        rotate: -90deg;
+        height: $comment-btn-size;
+        width: $comment-btn-size;
+        z-index: 99;
+    }
+
+    >svg:hover {
+        cursor: pointer;
     }
 }
 
@@ -156,6 +194,7 @@ async function deleteClicked() {
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
+    translate: 0 (-$comment-btn-size);
 
     .title,
     .authors {
@@ -163,7 +202,7 @@ async function deleteClicked() {
     }
 
     .authors {
-        display: flex;
+        display: inline-flex;
         flex-direction: column;
         row-gap: .2rem;
     }

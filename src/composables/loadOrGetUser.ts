@@ -1,6 +1,6 @@
 import { ref, type Ref, onMounted } from "vue";
 import { getUserAuth } from "./api/auth";
-import { getUser } from './api/user'
+import { UserAPI } from './api/user'
 import type { User } from "@/types/entities";
 import { store } from "@/store/store";
 import type { Router } from "vue-router";
@@ -15,7 +15,7 @@ export async function loadOrGetUser(router: Router, reload: boolean = true, fall
     } else if (store.user) {
         user = store.user;
     } else {
-        store.user = await getUser(userAuth?.id)
+        store.user = await UserAPI.get(userAuth?.id)
         user = store.user
     }
     return user
