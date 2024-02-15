@@ -94,7 +94,7 @@ section {
     transition: transform $sidebar-transition-time;
 
     a {
-        border: 1px solid $main-light;
+        border: 1px solid $main-lighter;
         padding: .6rem;
         width: 100%;
 

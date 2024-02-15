@@ -106,7 +106,7 @@ header {
 
 .search-box {
     height: 35%;
-    border: 2px solid $main-light;
+    border: 2px solid $main-lighter;
     border-radius: 1rem;
     overflow: hidden;
     transition: background-color 0.08s, border 0.08s;

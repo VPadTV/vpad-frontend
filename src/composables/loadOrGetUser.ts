@@ -1,4 +1,4 @@
-import { ref, type Ref, onMounted } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { getUserAuth } from "./api/auth";
 import { UserAPI } from './api/user'
 import type { User } from "@/types/entities";
@@ -11,7 +11,8 @@ export async function loadOrGetUser(router: Router, reload: boolean = true, fall
     if (!userAuth) {
         store.user = undefined
         if (reload)
-            router.push(fallbackRoute);
+            router.push(fallbackRoute)
+        return undefined
     } else if (store.user) {
         user = store.user;
     } else {
@@ -21,8 +22,8 @@ export async function loadOrGetUser(router: Router, reload: boolean = true, fall
     return user
 }
 export function loadOrGetUserRef(router: Router, reload: boolean = true, fallbackRoute: string = '/') {
-    const user: Ref<User | undefined> = ref()
-    onMounted(async () => {
+    const user = ref<User>()
+    onBeforeMount(async () => {
         user.value = await loadOrGetUser(router, reload, fallbackRoute)
     })
     return user;

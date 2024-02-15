@@ -1,7 +1,9 @@
 import { BackendError } from "@/types/http"
-import { getAuthorization, refreshToken } from "./auth"
+import { getAuthorization, logout, refreshToken } from "./auth"
 import { useToast } from "vue-toastification"
 import { asFormData } from "@/utils"
+import { ErrorMessage, getErrorMessage, isCode } from "./errorMessage"
+import { useRouter } from "vue-router"
 
 export enum HTTP {
     GET = "get",
@@ -43,9 +45,14 @@ export async function api<T>(url: string, method: HTTP, args?: APIArgs): Promise
             const jsonError = await response.json()
             const error = new BackendError(
                 response.status ?? 500,
-                jsonError.error ?? 'Unknown'
+                getErrorMessage(jsonError.error) ?? 'Unknown'
             );
             toast.error(`${error.code} - ${error.error}`)
+            if (isCode(jsonError.error, ErrorMessage.EXPIRED_TOKEN)) {
+                const router = useRouter()
+                logout()
+                router.go(0)
+            }
             return undefined
         }
         toast.error(`Server error`)

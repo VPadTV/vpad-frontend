@@ -1,72 +1,58 @@
-import { store } from "@/store/store";
-import { onMounted, ref, type Ref } from "vue";
 import { useToast } from "vue-toastification";
 import { VoteAPI } from "./api/vote";
 import type { Post, User } from "@/types/entities";
 import { numify } from "@/utils";
 
+export type LikeData = {
+    likes: number, dislikes: number, myVote: number
+}
+
 export class Voting {
-    user: User
+    user: User | undefined
     post: Post
-    public likeData = ref<{ likes?: number, dislikes?: number, myVote?: number }>()
+    likeData: LikeData
 
-
-    public get likes(): number | undefined {
-        return this.likeData.value?.likes;
-    }
-    public get dislikes(): number | undefined {
-        return this.likeData.value?.dislikes;
-    }
-    public get myVote(): number | undefined {
-        return this.likeData.value?.myVote;
-    }
-
-
-    constructor(user: User, post: Post) {
+    constructor(user: User | undefined, post: Post) {
         this.user = user
         this.post = post
-        this.likeData = ref({
+        this.likeData = {
             likes: numify(post.meta.likes)!,
             dislikes: numify(post.meta.dislikes)!,
             myVote: numify(post.meta.myVote ?? 0)!
-        })
-        onMounted(async () => {
-            if (!post.meta.myVote)
-                await this.vote(0)
-        })
+        }
+        if (!post.meta.myVote)
+            this.vote(0)
     }
 
     public async vote(v: number) {
-        if (!this.user) {
+        if (!this.user && v !== 0) {
             return useToast().error('Please login first')
         }
-        const previousVote = this.likeData.value!.myVote
+        const previousVote = this.likeData.myVote
         if (!this.post.id) return
         if (previousVote === v) v = 0
-        const oldLikeData = { ...this.likeData.value }
+        const oldLikeData = { ...this.likeData }
         this.editLikeData(v)
-        store.cursor = 'progress'
         const r = await VoteAPI.vote(this.post.id, v)
         if (!r)
-            this.likeData.value = { ...oldLikeData }
-        store.cursor = undefined
+            this.likeData = { ...oldLikeData }
     }
 
     async editLikeData(v: number) {
-        const previousVote = this.likeData.value!.myVote
+        const previousVote = this.likeData.myVote
         if (previousVote === 0 || !previousVote) {
-            if (v === 1) this.likeData.value!.likes! += 1
-            if (v === -1) this.likeData.value!.dislikes! += 1
+            if (v === 1) this.likeData.likes! += 1
+            if (v === -1) this.likeData.dislikes! += 1
         } else if (v === 0) {
             if (previousVote === 1)
-                this.likeData.value!.likes! -= 1
+                this.likeData.likes! -= 1
             else if (previousVote === -1)
-                this.likeData.value!.dislikes! -= 1
+                this.likeData.dislikes! -= 1
         }
         else {
-            this.likeData.value!.dislikes! -= v
-            this.likeData.value!.likes! += v
+            this.likeData.dislikes! -= v
+            this.likeData.likes! += v
         }
-        this.likeData.value!.myVote = v
+        this.likeData.myVote = v
     }
 }

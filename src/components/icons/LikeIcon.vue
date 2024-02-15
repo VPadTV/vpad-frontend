@@ -15,9 +15,19 @@ svg {
 
 svg:hover {
     cursor: pointer;
+}
 
+svg:hover {
     path {
         stroke: white !important;
     }
+}
+
+svg:not(.active) {
+    filter: saturate(.8);
+}
+
+svg.active {
+    filter: saturate(3);
 }
 </style>

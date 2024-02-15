@@ -59,7 +59,7 @@ aside.closed {
     padding: .5rem 1rem 1rem .5rem;
     top: calc($header-height);
     left: calc($sidebar-width);
-    z-index: 1;
+    z-index: 10;
 
     transition: transform $sidebar-transition-time;
 

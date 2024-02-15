@@ -1,7 +1,9 @@
 <script setup lang="ts">
 const { required } = defineProps<{
     required?: boolean,
-    minWidth?: string
+    minWidth?: string,
+    maxWidth?: string,
+    resize?: "vertical" | "horizontal"
 }>()
 const model = defineModel<string>()
 </script>
@@ -11,7 +13,11 @@ const model = defineModel<string>()
         <label>
             <slot></slot>
         </label>
-        <textarea :required="required ?? false" v-model="model"></textarea>
+        <textarea :style="{
+            maxWidth,
+            minWidth,
+            resize
+        }" :required="required ?? false" v-model="model"></textarea>
     </div>
 </template>
 
@@ -27,7 +33,7 @@ const model = defineModel<string>()
         padding: .5rem;
 
         resize: both;
-        min-width: v-bind('minWidth ?? "24ch"');
+        min-width: 24ch;
         min-height: 2lh;
         max-width: 100%;
         max-height: 16lh;

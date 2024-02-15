@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import CheckIcon from './icons/CheckIcon.vue';
-import XIcon from './icons/XIcon.vue';
+import CheckIcon from '@/components/icons/CheckIcon.vue';
+import XIcon from '@/components/icons/XIcon.vue';
 
 const { type } = defineProps<{
     type?: string,

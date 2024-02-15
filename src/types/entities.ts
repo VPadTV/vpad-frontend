@@ -13,6 +13,7 @@ export enum MediaType {
     VIDEO = "VIDEO",
     IMAGE = "IMAGE"
 }
+
 export type Post = {
     id?: string,
     title: string,
@@ -35,6 +36,12 @@ export type Post = {
         myVote?: number
         tags: string[],
     }
+}
+
+export type UserComment = {
+    id: string
+    body: string
+    children: UserComment[]
 }
 
 export type SubscriptionTier = {

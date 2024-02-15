@@ -1,14 +1,17 @@
 $accent: #4C9BD4;
+$main-dark: #171A1C;
 $main: #202427;
+$main-light: #242C33;
+$main-lighter: #3D454A;
 $background: #0E0F10;
-$main-light: #3D454A;
+$background-light: #1D1F21;
 $extra: #FFFFFF;
 $text: #FFFFFF;
 $text-faded: #AAAAAA;
 $text-dark: #000000;
 $link: #7bc8fc;
-$red: #A20025;
-$light-red: #f66;
+$red: #D44C4C;
+$light-red: #F66;
 
 $header-height: 100px;
 $header-height-width-large: 120px;
@@ -60,6 +63,6 @@ input, textarea {
 }
 
 input:focus, textarea:focus {
-    border: 1px solid $main-light;
+    border: 1px solid $main-lighter;
     outline: none;
 }
