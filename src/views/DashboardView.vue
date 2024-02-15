@@ -45,9 +45,7 @@ watchEffect(() => {
 
 <template>
     <BaseHeaderSidebar v-if="editedUser">
-        <UserHeader :user="editedUser">
-            <h1>Dashboard</h1>
-        </UserHeader>
+        <UserHeader :user="editedUser" subtitle="Dashboard" />
         <form>
             <section class="action-buttons">
                 <button class="save" :class="{ disabled: !checkEqual() }" @click.prevent="saveClicked">

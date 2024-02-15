@@ -11,6 +11,7 @@ export enum ErrorMessage {
     LOW_TIER = 'Low Tier',
 
     INVALID_TOKEN = 'Invalid Token',
+    INVALID_ID = 'Invalid ID',
     INVALID_USERNAME = 'Invalid Username',
     USERNAME_ALREADY_EXISTS = 'Username Already Exists',
     INVALID_NICKNAME = 'Invalid Nickname',

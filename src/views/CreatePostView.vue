@@ -47,9 +47,7 @@ async function createClicked() {
 
 <template>
     <BaseHeaderSidebar v-if="user">
-        <UserHeader :user="user">
-            <h1>Create Post</h1>
-        </UserHeader>
+        <UserHeader :user="user" subtitle="Create Post" />
         <form ref="form">
             <InputField required name="title" v-model="formBody.title">
                 <h2>

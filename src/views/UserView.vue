@@ -19,7 +19,7 @@ onBeforeMount(async () => {
 
 <template>
     <BaseHeaderSidebar v-if="user">
-        <UserHeader :user="user" />
+        <UserHeader :user="user" subtitle="Profile" />
         <section class="user-data">
             <h2>About</h2>
             <p v-if="user.about" class="about">

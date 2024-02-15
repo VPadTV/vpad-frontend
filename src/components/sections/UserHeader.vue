@@ -2,19 +2,15 @@
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
 import type { User } from '@/types/entities';
 
-const { user } = defineProps<{ user: User }>()
+defineProps<{ user: User, subtitle: string }>()
 </script>
 
 <template>
     <header>
-        <div class="identity">
-            <UserProfilePicture :pfpUrl="user.profilePhotoUrl"></UserProfilePicture>
-            <h1>
-                <span>{{ user.nickname }}</span>
-                <small>{{ user.username }}</small>
-            </h1>
-        </div>
-        <slot></slot>
+        <UserProfilePicture :pfpUrl="user.profilePhotoUrl"></UserProfilePicture>
+        <span class="nickname">{{ user.nickname }}</span>
+        <small class="username">{{ user.username }}</small>
+        <h1>{{ subtitle }}</h1>
     </header>
 </template>
 
@@ -24,34 +20,34 @@ const { user } = defineProps<{ user: User }>()
 header {
     padding: 3rem;
     border-bottom: 5px solid $main;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template: auto auto / min-content auto 1fr;
+    justify-content: start;
     align-items: center;
+    width: 100%;
+    gap: .2rem .5rem;
 
-    h1 {
-        font-size: 2.5rem;
+    svg {
+        grid-row: 1 / 3;
+        width: 4rem;
     }
 
-    .identity {
-        display: inline-flex;
-        align-items: center;
-        column-gap: .6rem;
-        height: 4.5rem;
+    .nickname {
+        font-size: 1.5rem;
+        align-self: end;
+    }
 
-        svg {
-            width: unset;
-        }
+    .username {
+        align-self: start;
+        font-size: 1.2rem;
+        color: $text-faded;
+    }
 
-        h1 {
-            font-size: 2rem;
-
-            small {
-                display: block;
-                font-size: 1.2rem;
-                color: $text-faded;
-            }
-        }
+    h1 {
+        font-size: 2rem;
+        grid-row: 1 / 3;
+        grid-column: 3;
+        justify-self: flex-end;
     }
 }
 
