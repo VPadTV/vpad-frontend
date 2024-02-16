@@ -15,26 +15,14 @@ import { Voting } from '@/composables/voting';
 import CommentList from './CommentList.vue';
 import TrashIcon from '../icons/TrashIcon.vue';
 import TextAreaInputField from '../forms/TextAreaInputField.vue';
+import TextInputHidden from '../forms/TextInputHidden.vue';
 
 const { post, postScale } = defineProps<{
     post: Post,
     postScale: number
 }>()
 
-const testAuthors = [
-    {
-        id: "a",
-        nickname: "hello"
-    },
-    {
-        id: "b",
-        nickname: "world"
-    },
-    {
-        id: "c",
-        nickname: "from authors"
-    },
-]
+let postEdited = ref({ ...post })
 
 async function deleteClicked() {
     const response = await PostAPI.delete(post.id!)
@@ -47,11 +35,13 @@ async function deleteClicked() {
     }
 }
 
+const iAmAuthor = ref(false)
 const user = ref<User>()
 const voting = ref<Voting>()
 loadOrGetUser(useRouter(), false).then(u => {
     user.value = u
     if (!user.value) return
+    iAmAuthor.value = user.value && post.meta.authors.some((author) => author.id === user.value!.id)
     voting.value = new Voting(user.value, post)
 })
 
@@ -86,7 +76,7 @@ function cancelComment() {
 
 <template>
     <section class="post">
-        <div class="post-actions" v-if="user && post.meta.authors.some((author) => author.id === user!.id)">
+        <div class="post-actions" v-if="iAmAuthor">
             <button class="delete" @click="deleteClicked">
                 <TrashIcon />
             </button>
@@ -96,9 +86,12 @@ function cancelComment() {
             <ViewVideo v-else-if="post.mediaType === MediaType.VIDEO" :post="post" :style="{ width: `${postScale}%` }" />
         </section>
         <div class="data">
-            <span class="title">{{ post?.title }}</span>
+            <h1 class="title">
+                <TextInputHidden v-if="iAmAuthor" v-model="postEdited.title" />
+                <span v-else>{{ post?.title }}</span>
+            </h1>
             <ul class="authors">
-                <RouterLink v-for="author in testAuthors" :key="author.id" :to="`/user/${author.id}`" class="author">
+                <RouterLink v-for="author in post.meta.authors" :key="author.id" :to="`/user/${author.id}`" class="author">
                     <UserProfilePicture class="pfp" :id="author.id" />
                     <span>{{ author.nickname }}</span>
                 </RouterLink>

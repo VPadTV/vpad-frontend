@@ -12,11 +12,7 @@ export function formatDate(d: Date | string): string {
     if (!(d instanceof Date))
         d = new Date(d)
     const str = d.toLocaleString()
-    console.log(str);
-
-
     const matched = Array.from(str.match(/(\d+\/\d+\/\d+), (\d+:\d+):\d+( [AP]M)?/) ?? [])
-    console.log(matched);
 
     const date = matched[1]
     const time = matched[2]
