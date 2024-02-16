@@ -44,6 +44,9 @@ export enum ErrorMessage {
     BANNED = 'Banned',
 
     INTERNAL_SERVER_ERROR = 'Internal Server Error',
+
+    SERVER_READ_ONLY = 'Server is read-only right now',
+    ROUTE_LOCKED = 'Route locked',
 }
 
 export function getErrorMessage(error: string) {
