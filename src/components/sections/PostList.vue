@@ -76,14 +76,15 @@ watchEffect(async () => {
 .posts {
     $gap: 2.8rem;
     gap: $gap;
-    columns: 300px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     overflow-y: scroll;
     min-height: 100%;
+    justify-content: space-between;
 
     .post {
-        width: 100%;
         display: inline-flex;
-        margin-bottom: $gap;
         flex-direction: column;
 
         .text {
