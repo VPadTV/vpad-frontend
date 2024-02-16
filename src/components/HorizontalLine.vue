@@ -7,7 +7,7 @@
 @import '@/assets/style/base.scss';
 
 div {
-    background-color: $main-light;
+    background-color: $main-lighter;
     height: 2px;
     width: 100%;
     margin: 1px;

@@ -45,7 +45,7 @@ ul {
     position: absolute;
     transform: translateX(-95px) translateY(10px);
     border-radius: $padding;
-    background-color: $main-light;
+    background-color: $main-lighter;
     width: $width;
     padding: $padding;
     display: flex;
@@ -67,7 +67,7 @@ ul {
         border-left: $size solid transparent;
         border-right: $size solid transparent;
 
-        border-bottom: $size solid $main-light;
+        border-bottom: $size solid $main-lighter;
     }
 
     li {

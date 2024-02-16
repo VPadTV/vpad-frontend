@@ -11,7 +11,13 @@ export function formatNumber(n: number | string): string {
 export function formatDate(d: Date | string): string {
     if (!(d instanceof Date))
         d = new Date(d)
-    return d.toISOString().slice(0, 10)
+    const str = d.toLocaleString()
+    const matched = Array.from(str.match(/(\d+\/\d+\/\d+), (\d+:\d+):\d+( [AP]M)?/) ?? [])
+
+    const date = matched[1]
+    const time = matched[2]
+    const ampm = matched[3] ?? ''
+    return time + ' ' + date + ampm
 }
 
 export const numify = (val: unknown): number | undefined => {

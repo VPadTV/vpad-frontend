@@ -9,7 +9,7 @@ import UserHeader from '@/components/sections/UserHeader.vue';
 import { ref } from 'vue';
 import FileFieldPreview from '@/components/forms/FileFieldPreview.vue';
 import RequiredStar from '@/components/RequiredStar.vue';
-import { createPost } from '@/composables/api/post';
+import { PostAPI } from '@/composables/api/post';
 import { useToast } from 'vue-toastification';
 import router from '@/router';
 import { useRouter } from 'vue-router';
@@ -37,7 +37,7 @@ async function createClicked() {
         toast.error("Missing required fields");
         return;
     }
-    const response = await createPost({ ...formBody.value as any, tags: "sometag" })
+    const response = await PostAPI.create({ ...formBody.value as any })
     if (response) {
         toast.success('Post created!')
         router.push({ 'name': 'home' })
@@ -47,9 +47,7 @@ async function createClicked() {
 
 <template>
     <BaseHeaderSidebar v-if="user">
-        <UserHeader :user="user">
-            <h1>Create Post</h1>
-        </UserHeader>
+        <UserHeader :user="user" subtitle="Create Post" />
         <form ref="form">
             <InputField required name="title" v-model="formBody.title">
                 <h2>
@@ -107,6 +105,7 @@ form {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 1rem;
     padding: 0 3rem;
     row-gap: .5rem;
 

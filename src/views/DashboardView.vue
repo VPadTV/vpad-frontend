@@ -9,7 +9,7 @@ import UserHeader from '@/components/sections/UserHeader.vue';
 import { ref, toRaw, watchEffect } from 'vue';
 import type { User } from '@/types/entities';
 import CheckIcon from '@/components/icons/CheckIcon.vue';
-import { updateUser } from '@/composables/api/user';
+import { UserAPI } from '@/composables/api/user';
 import XIcon from '@/components/icons/XIcon.vue';
 import { useToast } from 'vue-toastification';
 import { useRouter } from 'vue-router';
@@ -20,7 +20,7 @@ function checkEqual() {
 }
 
 async function saveClicked() {
-    const response = await updateUser(original.value!.id!, {
+    const response = await UserAPI.update(original.value!.id!, {
         ...editedUser.value
     });
     if (response) {
@@ -45,9 +45,7 @@ watchEffect(() => {
 
 <template>
     <BaseHeaderSidebar v-if="editedUser">
-        <UserHeader :user="editedUser">
-            <h1>Dashboard</h1>
-        </UserHeader>
+        <UserHeader :user="editedUser" subtitle="Dashboard" />
         <form>
             <section class="action-buttons">
                 <button class="save" :class="{ disabled: !checkEqual() }" @click.prevent="saveClicked">
@@ -83,6 +81,7 @@ h1 {
 }
 
 form {
+    margin: 1rem 0 0;
     padding: 0 3rem 3rem;
 
     .action-buttons {

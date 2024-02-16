@@ -40,7 +40,7 @@ function onSearch() {
 <template>
     <header>
         <button class="logo" @click.prevent="onClickLogo">
-            <img alt="VPad" src="@/assets/logo_whitebg.png" height="60" />
+            <img alt="VPad" src="@/assets/logonew.png" height="60" />
         </button>
         <form class="search-box" @submit.prevent="onSearch">
             <input name="search" type="text" v-model="search">
@@ -106,7 +106,7 @@ header {
 
 .search-box {
     height: 35%;
-    border: 2px solid $main-light;
+    border: 2px solid $main-lighter;
     border-radius: 1rem;
     overflow: hidden;
     transition: background-color 0.08s, border 0.08s;

@@ -2,12 +2,13 @@
 import BaseHeaderSidebar from '@/views/base/HeaderSidebar.vue'
 import SeePost from '@/components/sections/SeePost.vue'
 import type { Post } from '@/types/entities';
-import { formatDate, formatNumber, numify } from '@/utils';
+import { numify } from '@/utils';
 import { type Ref, ref, onMounted, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
 import PostList from '@/components/sections/PostList.vue';
 import slider from 'vue3-slider'
-import { getPost } from '@/composables/api/post';
+import { PostAPI } from '@/composables/api/post';
+import LoadingPage from '@/components/sections/LoadingPage.vue';
 
 const MIN_SCALE = 10;
 
@@ -26,29 +27,24 @@ onBeforeMount(async () => {
 
 onMounted(async () => {
     const route = ref(useRoute())
-    const postRaw = await getPost(route.value.params.postId as string)
+    const postRaw = await PostAPI.get(route.value.params.postId as string)
     if (postRaw) {
-        post.value = ({
-            ...postRaw,
-            meta: {
-                ...postRaw.meta,
-                likes: formatNumber(postRaw.meta.likes),
-                dislikes: formatNumber(postRaw.meta.dislikes),
-                createdAt: formatDate(postRaw.meta.createdAt),
-                updatedAt: formatDate(postRaw.meta.updatedAt)
-            }
-        })
+        post.value = postRaw
     }
 })
 </script>
 
 
 <template>
-    <BaseHeaderSidebar>
+    <BaseHeaderSidebar v-if="post">
         <slider width="20rem" :height="12" class="scaling-slider" orientation="vertical" v-model="postScale" color="#4C9BD4"
             trackColor="#202427" :min="MIN_SCALE" @change="updatePostscale"></slider>
-        <SeePost v-if="post" :post="post" :postScale="postScale" />
+
+        <SeePost :post="{ ...post, id: $route.params.postId as string }" :postScale="postScale" />
         <PostList />
+    </BaseHeaderSidebar>
+    <BaseHeaderSidebar v-else>
+        <LoadingPage />
     </BaseHeaderSidebar>
 </template>
 

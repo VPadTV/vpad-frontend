@@ -9,12 +9,17 @@ export type User = {
     admin: boolean
 }
 
+export enum MediaType {
+    VIDEO = "VIDEO",
+    IMAGE = "IMAGE"
+}
+
 export type Post = {
     id?: string,
     title: string,
     text: string,
     mediaUrl: string,
-    mediaType: "IMAGE" | "VIDEO",
+    mediaType: MediaType,
     meta: {
         authors: {
             id: string,
@@ -25,11 +30,18 @@ export type Post = {
         createdAt: Date | string,
         updatedAt: Date | string,
         nsfw: boolean,
+        views: number | string,
         likes: number | string,
-        dislikes: number | string
+        dislikes: number | string,
+        myVote?: number
         tags: string[],
-        views: number,
     }
+}
+
+export type UserComment = {
+    id: string
+    body: string
+    children: UserComment[]
 }
 
 export type SubscriptionTier = {

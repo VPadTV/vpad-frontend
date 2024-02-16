@@ -2,19 +2,15 @@
 import UserProfilePicture from '@/components/UserProfilePicture.vue';
 import type { User } from '@/types/entities';
 
-const { user } = defineProps<{ user: User }>()
+defineProps<{ user: User, subtitle: string }>()
 </script>
 
 <template>
     <header>
-        <div class="identity">
-            <UserProfilePicture :pfpUrl="user.profilePhotoUrl"></UserProfilePicture>
-            <h1>
-                <span>{{ user.nickname }}</span>
-                <small>{{ user.username }}</small>
-            </h1>
-        </div>
-        <slot></slot>
+        <UserProfilePicture :pfpUrl="user.profilePhotoUrl"></UserProfilePicture>
+        <span class="nickname">{{ user.nickname }}</span>
+        <small class="username">{{ user.username }}</small>
+        <h1>{{ subtitle }}</h1>
     </header>
 </template>
 
@@ -22,45 +18,64 @@ const { user } = defineProps<{ user: User }>()
 @import '@/assets/style/base.scss';
 
 header {
-    padding: 0 3rem;
+    padding: 3rem;
     border-bottom: 5px solid $main;
-    margin: 0 0 1rem;
-    height: $user-header-height;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template: auto auto / min-content auto 1fr;
+    justify-content: start;
     align-items: center;
+    width: 100%;
+    gap: .2rem .5rem;
 
-    h1 {
-        font-size: 2.5rem;
+    svg {
+        grid-row: 1 / 3;
+        width: 4rem;
     }
 
-    .identity {
-        display: inline-flex;
-        align-items: center;
-        column-gap: .6rem;
-        height: 4.5rem;
+    .nickname {
+        font-size: 1.5rem;
+        align-self: end;
+    }
 
-        svg {
-            width: unset;
-        }
+    .username {
+        align-self: start;
+        font-size: 1.2rem;
+        color: $text-faded;
+    }
 
-        h1 {
-            font-size: 2rem;
-
-            small {
-                display: block;
-                font-size: 1.2rem;
-                color: $text-faded;
-            }
-        }
+    h1 {
+        font-size: 2rem;
+        grid-row: 1 / 3;
+        grid-column: 3;
+        justify-self: flex-end;
     }
 }
 
 @media screen and (max-width: $mobile-width-large) {
     header {
-        flex-direction: column;
         padding: 1rem 0;
+        grid-template: auto auto auto / 1fr min-content auto 1fr;
+        justify-items: center;
+
+        svg {
+            grid-column: 2;
+        }
+
+        .nickname {
+            grid-column: 3;
+        }
+
+        .username {
+            grid-column: 3;
+            grid-row: 2;
+        }
+
+        h1 {
+            font-size: 2rem;
+            grid-row: 3;
+            grid-column: 1 / 6;
+            justify-self: center;
+        }
     }
 }
 </style>

@@ -1,5 +1,5 @@
 import type { UserAuth } from "@/types/auth";
-import { api } from "./base"
+import { HTTP, api } from "./base"
 
 export const getUserAuth = (): UserAuth | undefined => {
     const raw = localStorage.getItem('userAuth')
@@ -24,7 +24,7 @@ type RegisterBody = {
     about?: string
 }
 export async function register(body: RegisterBody): Promise<UserAuth | undefined> {
-    const data = await api<UserAuth>('user/register', 'post', new URLSearchParams(body))
+    const data = await api<UserAuth>('user/register', HTTP.POST, new URLSearchParams(body))
     if (!data) return undefined;
     localStorage.setItem('userAuth', `${data.id} ${data.token}`)
     return data;
@@ -35,7 +35,7 @@ type LoginBody = {
     password: string
 }
 export async function login(body: LoginBody): Promise<UserAuth | undefined> {
-    const data = await api<UserAuth>('user/login', 'post', new URLSearchParams(body))
+    const data = await api<UserAuth>('user/login', HTTP.POST, new URLSearchParams(body))
     if (!data) return undefined;
     localStorage.setItem('userAuth', `${data.id} ${data.token}`)
     return data;

@@ -2,9 +2,8 @@
 import UserProfilePicture from '../UserProfilePicture.vue';
 
 import { ref, watchEffect } from 'vue';
-import { getManyPosts, type SortBy } from '@/composables/api/post';
+import { PostAPI, type SortBy } from '@/composables/api/post';
 import { formatDate } from '@/utils';
-import type { PostGetManyResponse } from '@/types/responses';
 import { useRoute } from 'vue-router';
 import LoadingPage from './LoadingPage.vue';
 import ViewThumbnail from '../ViewThumbnail.vue';
@@ -19,7 +18,7 @@ let { filter } = defineProps<{
         page?: number
     }
 }>();
-let posts = ref<PostGetManyResponse[]>()
+let posts = ref()
 
 const route = ref(useRoute())
 watchEffect(() => {
@@ -30,7 +29,7 @@ watchEffect(() => {
 
 watchEffect(async () => {
     posts.value = undefined
-    const postsResponse = await getManyPosts({
+    const postsResponse = await PostAPI.getMany({
         sortBy: 'latest',
         titleSearch: search.value,
         nsfw: filter?.nsfw ?? false,
@@ -56,11 +55,13 @@ watchEffect(async () => {
             <ViewThumbnail :post="post" />
             <p class="text">
                 <span class="title">{{ post.title }}</span>
-                <RouterLink :to="`/user/${post.meta.authors[0].id}`" class="author">
-                    <UserProfilePicture :id="post.meta.authors[0].id" />
-                    <span>{{ post.meta.authors[0].nickname }}</span>
+            <ul class="authors">
+                <RouterLink v-for="author in post.meta.authors" :key="author.id" :to="`/user/${author.id}`" class="author">
+                    <UserProfilePicture class="pfp" :id="author.id" />
+                    <span>{{ author.nickname }}</span>
                 </RouterLink>
-                <span class="date">{{ post.meta.createdAt }}</span>
+            </ul>
+            <span class="date">{{ post.meta.createdAt }}</span>
             </p>
         </RouterLink>
     </section>
@@ -75,14 +76,14 @@ watchEffect(async () => {
 .posts {
     $gap: 2.8rem;
     gap: $gap;
-    columns: 300px;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     overflow-y: scroll;
-    min-height: 100%;
+    justify-content: space-between;
 
     .post {
-        width: 100%;
         display: inline-flex;
-        margin-bottom: $gap;
         flex-direction: column;
 
         .text {
@@ -93,7 +94,7 @@ watchEffect(async () => {
             align-items: flex-start;
 
             .title,
-            .author {
+            .authors {
                 margin-bottom: .1rem;
             }
 
@@ -122,6 +123,14 @@ watchEffect(async () => {
                 color: $text-faded;
             }
         }
+    }
+}
+
+@media screen and (max-width: $mobile-width-large) {
+    .posts {
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
     }
 }
 </style>
