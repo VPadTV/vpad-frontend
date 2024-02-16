@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, type VNodeRef } from 'vue';
-import XIcon from '@/components/icons/XIcon.vue'
+import TrashIcon from '@/components/icons/TrashIcon.vue'
 
 const model = defineModel<File>({});
 const { name } = defineProps<{
@@ -34,7 +34,7 @@ function fileChanged(ev: Event) {
         <label class="file-label" :for="name">
             <div class="media-input">
                 <button v-if="model?.name" @click.prevent="cancelFile" class="rm-image">
-                    <XIcon />
+                    <TrashIcon />
                 </button>
                 <img v-if="previewUrl" :src="previewUrl" />
                 <span v-else>
@@ -51,7 +51,6 @@ function fileChanged(ev: Event) {
 @import '@/assets/style/base.scss';
 
 .media-input {
-
     padding: .5rem;
     width: 100%;
     min-height: 200px;
@@ -59,7 +58,7 @@ function fileChanged(ev: Event) {
     border-radius: .5rem;
 
     display: grid;
-    grid-template: 1fr / 1fr;
+    grid-template: auto / auto;
     align-items: center;
     justify-items: center;
 
@@ -82,13 +81,16 @@ function fileChanged(ev: Event) {
 
 .rm-image {
     z-index: 1;
-    height: 3rem;
-    width: 3rem;
+    height: 2rem;
+    width: 2rem;
     background-color: $light-red;
     border-radius: 100%;
     border: 0;
-    opacity: .2;
-    justify-self: flex-start;
+    opacity: .6;
+    margin: 1rem;
+    align-self: flex-start;
+    justify-self: flex-end;
+    padding: 4px;
 
     svg {
         vertical-align: middle;

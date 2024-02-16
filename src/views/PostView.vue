@@ -8,6 +8,7 @@ import { useRoute } from 'vue-router';
 import PostList from '@/components/sections/PostList.vue';
 import slider from 'vue3-slider'
 import { PostAPI } from '@/composables/api/post';
+import LoadingPage from '@/components/sections/LoadingPage.vue';
 
 const MIN_SCALE = 10;
 
@@ -35,11 +36,15 @@ onMounted(async () => {
 
 
 <template>
-    <BaseHeaderSidebar>
+    <BaseHeaderSidebar v-if="post">
         <slider width="20rem" :height="12" class="scaling-slider" orientation="vertical" v-model="postScale" color="#4C9BD4"
             trackColor="#202427" :min="MIN_SCALE" @change="updatePostscale"></slider>
-        <SeePost v-if="post" :post="{ ...post, id: $route.params.postId as string }" :postScale="postScale" />
+
+        <SeePost :post="{ ...post, id: $route.params.postId as string }" :postScale="postScale" />
         <PostList />
+    </BaseHeaderSidebar>
+    <BaseHeaderSidebar v-else>
+        <LoadingPage />
     </BaseHeaderSidebar>
 </template>
 

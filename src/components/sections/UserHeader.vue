@@ -53,8 +53,29 @@ header {
 
 @media screen and (max-width: $mobile-width-large) {
     header {
-        flex-direction: column;
         padding: 1rem 0;
+        grid-template: auto auto auto / 1fr min-content auto 1fr;
+        justify-items: center;
+
+        svg {
+            grid-column: 2;
+        }
+
+        .nickname {
+            grid-column: 3;
+        }
+
+        .username {
+            grid-column: 3;
+            grid-row: 2;
+        }
+
+        h1 {
+            font-size: 2rem;
+            grid-row: 3;
+            grid-column: 1 / 6;
+            justify-self: center;
+        }
     }
 }
 </style>

@@ -105,6 +105,7 @@ form {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 1rem;
     padding: 0 3rem;
     row-gap: .5rem;
 

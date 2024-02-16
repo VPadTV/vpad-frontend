@@ -97,8 +97,8 @@ function cancelComment() {
                 </RouterLink>
             </ul>
             <p class="date">{{ formatDate(post.meta.createdAt) }}</p>
-            <p class="views"><span>{{ formatNumber(post.meta.views) }}</span> Views</p>
             <section class="votes">
+                <p class="views"><span>{{ formatNumber(post.meta.views) }}</span> Views</p>
                 <p class="likes">
                     <span>{{ formatNumber(voting?.likeData.likes ?? 0) }}</span>
                     <LikeIcon :class="{ active: voting?.likeData.myVote === 1 }" class="like" @click="voting?.vote(1)" />
@@ -188,12 +188,11 @@ $comment-btn-size: 32px;
     gap: 5px;
 
     .views {
-        justify-self: flex-end;
-        grid-row: 1;
+        text-align: right;
     }
 
     .votes {
-        grid-row: 2 / 4;
+        grid-row: 1 / 4;
         align-self: start;
     }
 
