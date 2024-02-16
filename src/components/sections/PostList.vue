@@ -76,11 +76,10 @@ watchEffect(async () => {
 .posts {
     $gap: 2.8rem;
     gap: $gap;
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
     overflow-y: scroll;
-    min-height: 100%;
     justify-content: space-between;
 
     .post {
@@ -124,6 +123,14 @@ watchEffect(async () => {
                 color: $text-faded;
             }
         }
+    }
+}
+
+@media screen and (max-width: $mobile-width-large) {
+    .posts {
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
     }
 }
 </style>
