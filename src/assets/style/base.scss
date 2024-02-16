@@ -1,18 +1,24 @@
 $accent: #4C9BD4;
+$main-dark: #171A1C;
 $main: #202427;
+$main-light: #242C33;
+$main-lighter: #3D454A;
 $background: #0E0F10;
-$main-light: #3D454A;
+$background-light: #1D1F21;
 $extra: #FFFFFF;
 $text: #FFFFFF;
 $text-faded: #AAAAAA;
 $text-dark: #000000;
 $link: #7bc8fc;
-$red: #A20025;
+$red: #D44C4C;
+$light-red: #F66;
 
 $header-height: 100px;
 $header-height-width-large: 120px;
 $sidebar-width: 300px;
 $sidebar-transition-time: .2s;
+
+$user-header-height: 180px;
 
 $tablet-width: 1200px;
 $mobile-width-large: 750px;
@@ -22,6 +28,7 @@ $mobile-width-small: 500px;
 *::before,
 *::after {
     box-sizing: border-box;
+    padding: 0;
     margin: 0;
     font-weight: normal;
     text-overflow: ellipsis;
@@ -49,4 +56,13 @@ $mobile-width-small: 500px;
 svg {
     display: inline-block;
     shape-rendering: auto;
+}
+
+input, textarea {
+    border: 1px solid transparent;
+}
+
+input:focus, textarea:focus {
+    border: 1px solid $main-lighter;
+    outline: none;
 }

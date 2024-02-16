@@ -8,6 +8,18 @@ export function formatNumber(n: number | string): string {
     return formatter.format(n)
 }
 
+export function formatDate(d: Date | string): string {
+    if (!(d instanceof Date))
+        d = new Date(d)
+    const str = d.toLocaleString()
+    const matched = Array.from(str.match(/(\d+\/\d+\/\d+), (\d+:\d+):\d+( [AP]M)?/) ?? [])
+
+    const date = matched[1]
+    const time = matched[2]
+    const ampm = matched[3] ?? ''
+    return time + ' ' + date + ampm
+}
+
 export const numify = (val: unknown): number | undefined => {
     if (typeof val === 'number') return val;
     else if (typeof val === 'string') {
@@ -25,3 +37,8 @@ export const boolify = (val: unknown): boolean | undefined => {
     }
     return undefined
 }
+
+export const asFormData = (object: { [key: string]: any; }) => Object.keys(object).reduce((formData, key) => {
+    formData.append(key, object[key]);
+    return formData;
+}, new FormData());

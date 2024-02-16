@@ -1,48 +1,53 @@
 <script setup lang="ts">
 import BaseHeaderSidebar from '@/views/base/HeaderSidebar.vue'
-import SeeUser from '@/components/sections/SeeUser.vue'
+import PostList from '@/components/sections/PostList.vue';
+import LoadingPage from '@/components/sections/LoadingPage.vue';
+import UserHeader from '@/components/sections/UserHeader.vue';
+import { onBeforeMount, ref } from 'vue';
 import type { User } from '@/types/entities';
-import { get } from '@/composables/api/base'
-import { type Ref, ref, onMounted } from 'vue';
+import { UserAPI } from '@/composables/api/user';
 import { useRoute } from 'vue-router';
-import LoadingIcon from '@/components/icons/LoadingIcon.vue';
+const route = useRoute()
 
-let user: Ref<User | undefined> = ref(undefined)
-
-onMounted(async () => {
-    const route = ref(useRoute())
-    const userRaw = await get<User>('user', {
-        id: route.value.params.userId as string
-    })
-    if (userRaw) {
-        user.value = userRaw
-    }
+const user = ref<User | undefined>()
+onBeforeMount(async () => {
+    const id = route.params.userId
+    if (id && typeof id === 'string')
+        user.value = await UserAPI.get(id)
 })
 </script>
 
-
 <template>
-    <BaseHeaderSidebar>
-        <SeeUser v-if="user" :user="user"/>
-        <div v-else class="notfound">
-            <LoadingIcon/>
-        </div>
-        <UserList/>
+    <BaseHeaderSidebar v-if="user">
+        <UserHeader :user="user" subtitle="Profile" />
+        <section class="user-data">
+            <h2>About</h2>
+            <p v-if="user.about" class="about">
+                {{ user.about }}
+            </p>
+            <h2>My Posts</h2>
+            <PostList :filter="{ creatorId: user.id }" />
+        </section>
     </BaseHeaderSidebar>
+    <LoadingPage v-else />
 </template>
 
 <style scoped lang="scss">
-.notfound {
-    margin: 2rem 4rem;
-    width: 100%;
-    height: 15rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+.user-data {
+    margin: .5rem 0 0;
+    padding: 0 3rem 3rem;
 
-.users {
-    margin-top: 1rem;
-    margin: 0 4rem;
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    p {
+        margin-top: .2rem;
+        font-size: 1.2rem;
+    }
+
+    .posts {
+        margin-top: 1rem;
+    }
 }
 </style>

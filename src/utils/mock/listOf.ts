@@ -1,1 +1,0 @@
-export const listOf = <T>(func: () => T) => (Array.from({ length: 100 }).map(func) as T[])

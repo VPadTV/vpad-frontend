@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import InputField from '@/components/forms/InputField.vue'
+
 import { ref } from 'vue';
-import { login } from '@/composables/api/auth/login'
+import { login } from '@/composables/api/auth'
 import router from '@/router';
 
-let identifier = ref<string>('')
+let emailOrUsername = ref<string>('')
 let password = ref<string>('')
 
 async function onSubmit() {
-    const response = await login(new URLSearchParams({
-        username: identifier.value!,
+    const response = await login({
+        emailOrUsername: emailOrUsername.value!,
         password: password.value!,
-    }))
+    })
     if (response != null)
         router.push({ name: 'home' })
 }
@@ -25,18 +27,15 @@ async function onSubmit() {
             <span>Welcome back!</span>
         </h1>
         <form method="post" @submit.prevent="onSubmit" autocomplete="off">
-            <section class="text-input">
-                <label for="identifier">Username or Email</label>
-                <input type="text" name="identifier" v-model="identifier">
-            </section>
-            <section class="text-input">
-                <label for="password">Password</label>
-                <input type="password" name="password" v-model="password">
-                <RouterLink to="/">Forgot password</RouterLink>
-            </section>
+            <InputField v-model="emailOrUsername">
+                Email or username
+            </InputField>
+            <InputField type="password" v-model="password">
+                Password
+            </InputField>
             <section class="submit">
                 <button type="submit">Login</button>
-                <RouterLink to="/">Register instead</RouterLink>
+                <RouterLink to="/register">Register instead</RouterLink>
             </section>
         </form>
     </main>
@@ -88,31 +87,12 @@ form {
         color: $link;
     }
 
-    input,
     button {
         font-size: inherit;
         background-color: $main;
         border: 0;
         border-radius: .5rem;
-    }
-
-    button {
-        padding: .8rem;
-    }
-
-    .text-input {
-        label {
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        input {
-            padding: .5rem;
-        }
-
-        a {
-            text-align: right;
-        }
+        padding: .5rem 1.2rem;
     }
 
     .submit {

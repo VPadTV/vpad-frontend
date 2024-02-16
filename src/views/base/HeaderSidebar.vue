@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import SearchHeader from '@/components/sections/SearchHeader.vue'
 import SubscriptionSidebar from '@/components/sections/SubscriptionSidebar.vue'
 import ArrowIcon from '@/components/icons/ArrowIcon.vue'
 import { boolify } from '@/utils';
 
-const sidebarClosed = ref(false)
+const sidebarClosed = ref(true)
 
-function toggleClosed() {
+function toggleSidebarClosed() {
     sidebarClosed.value = !sidebarClosed.value;
     localStorage.setItem('sidebarClosed', sidebarClosed.value.toString());
 }
 
-onMounted(async () => {
+onBeforeMount(async () => {
     const loadedClosed = boolify(localStorage.getItem('sidebarClosed'));
     if (loadedClosed != null)
         sidebarClosed.value = loadedClosed;
@@ -22,14 +22,12 @@ onMounted(async () => {
 
 <template>
     <SubscriptionSidebar :class="{ closed: sidebarClosed }" />
-    <button class="arrow" :class="{ closed: sidebarClosed }" :onClick="toggleClosed">
+    <button class="arrow" :class="{ closed: sidebarClosed }" :onClick="toggleSidebarClosed">
         <ArrowIcon class="arrow-icon" />
     </button>
     <SearchHeader />
-    <div class="scroll">
-        <main :class="{ 'aside-margin': !sidebarClosed }">
-            <slot></slot>
-        </main>
+    <div class="scroll" :class="{ 'aside-margin': !sidebarClosed }">
+        <slot></slot>
     </div>
 </template>
 
@@ -39,14 +37,14 @@ onMounted(async () => {
 header {
     position: fixed;
     top: 0;
-    z-index: 1;
+    z-index: 10;
 }
 
 aside {
     position: fixed;
     top: $header-height;
     height: calc(100vh - $header-height);
-    z-index: 1;
+    z-index: 9;
 }
 
 aside.closed {
@@ -61,7 +59,7 @@ aside.closed {
     padding: .5rem 1rem 1rem .5rem;
     top: calc($header-height);
     left: calc($sidebar-width);
-    z-index: 1;
+    z-index: 10;
 
     transition: transform $sidebar-transition-time;
 
@@ -73,6 +71,11 @@ aside.closed {
 
 .arrow:hover {
     cursor: pointer;
+    opacity: 1;
+
+    svg {
+        opacity: .8;
+    }
 }
 
 .arrow.closed {
@@ -84,14 +87,11 @@ aside.closed {
 }
 
 .scroll {
-    position: relative;
-    margin-top: $header-height;
-    height: calc(100vh - $header-height);
+    height: 100%;
+    padding-top: $header-height;
+    padding-bottom: 1rem;
     overflow: auto;
-
-    >main {
-        transition: margin-left $sidebar-transition-time;
-    }
+    transition: margin-left $sidebar-transition-time;
 }
 
 .aside-margin {
@@ -123,6 +123,10 @@ aside.closed {
         .arrow-icon {
             transform: scaleX(-1);
         }
+    }
+
+    .scroll {
+        padding-top: $header-height-width-large;
     }
 }
 </style>

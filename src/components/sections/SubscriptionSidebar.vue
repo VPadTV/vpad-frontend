@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, ref, type Ref } from 'vue';
-import { get } from '@/composables/api/base';
 import type { User } from '@/types/entities';
 import CollapsibleUserList from '../CollapsibleUserList.vue'
 
@@ -8,8 +7,8 @@ let subs: Ref<User[]> = ref([])
 let follows: Ref<User[]> = ref([])
 
 onMounted(async () => {
-    subs.value = (await get<User[]>('users'))?.splice(10, 20) ?? []
-    follows.value = (await get<User[]>('users'))?.splice(20, 30) ?? []
+    // subs.value = (await get<User[]>('users'))?.splice(10, 20) ?? []
+    // follows.value = (await get<User[]>('users'))?.splice(20, 30) ?? []
 })
 
 </script>

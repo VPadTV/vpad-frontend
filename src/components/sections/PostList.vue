@@ -1,69 +1,90 @@
 <script setup lang="ts">
 import UserProfilePicture from '../UserProfilePicture.vue';
 
-import { onMounted, ref, type Ref } from 'vue';
-import { get } from '@/composables/api/base'
-import { formatNumber } from '@/utils';
-import type { Post } from '@/types/entities';
+import { ref, watchEffect } from 'vue';
+import { PostAPI, type SortBy } from '@/composables/api/post';
+import { formatDate } from '@/utils';
+import { useRoute } from 'vue-router';
+import LoadingPage from './LoadingPage.vue';
+import ViewThumbnail from '../ViewThumbnail.vue';
 
-let posts: Ref<Post[] | undefined> = ref(undefined)
+let search = ref<string>()
 
-onMounted(async () => {
-    posts.value = (await get<Post[]>('posts'))?.map(post => ({
-        ...post,
-        likes: formatNumber(post.likes),
-        dislikes: formatNumber(post.dislikes),
-    })).splice(0, 20)
+let { filter } = defineProps<{
+    filter?: {
+        creatorId?: string,
+        sortBy?: SortBy,
+        nsfw?: boolean,
+        page?: number
+    }
+}>();
+let posts = ref()
+
+const route = ref(useRoute())
+watchEffect(() => {
+    const querySearch = route.value.query.search;
+    if (typeof querySearch === 'string')
+        search.value = querySearch
 })
 
-function rand(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+watchEffect(async () => {
+    posts.value = undefined
+    const postsResponse = await PostAPI.getMany({
+        sortBy: 'latest',
+        titleSearch: search.value,
+        nsfw: filter?.nsfw ?? false,
+        page: 1,
+        size: 30,
+        ...filter,
+    })
+    if (postsResponse)
+        posts.value = postsResponse?.data.map(post => ({
+            ...post,
+            meta: {
+                ...post.meta,
+                createdAt: formatDate(post.meta.createdAt),
+            }
+        }))
+})
 
-function getRandomHeight() {
-    return {
-        height: `${rand(200, 500)}px`,
-    }
-}
 </script>
 
 <template>
-    <section class="posts">
+    <section class="posts" v-if="posts != null">
         <RouterLink :to="`/post/${post.id}`" class="post" v-for="post in posts" :key="post.id">
-            <div class="thumbnail" :style="getRandomHeight()"></div>
+            <ViewThumbnail :post="post" />
             <p class="text">
                 <span class="title">{{ post.title }}</span>
-                <RouterLink :to="`/user/${post.author.id}`" class="author">
-                    <UserProfilePicture :id="post.author.id" />
-                    <span>{{ post.author.nickname }}</span>
+            <ul class="authors">
+                <RouterLink v-for="author in post.meta.authors" :key="author.id" :to="`/user/${author.id}`" class="author">
+                    <UserProfilePicture class="pfp" :id="author.id" />
+                    <span>{{ author.nickname }}</span>
                 </RouterLink>
-                <span class="date">{{ post.createdAt.toLocaleDateString() }}</span>
+            </ul>
+            <span class="date">{{ post.meta.createdAt }}</span>
             </p>
         </RouterLink>
+    </section>
+    <section v-else>
+        <LoadingPage />
     </section>
 </template>
   
 <style scoped lang="scss">
 @import '@/assets/style/base.scss';
 
-section {
+.posts {
     $gap: 2.8rem;
-    columns: 14rem;
     gap: $gap;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     overflow-y: scroll;
+    justify-content: space-between;
 
     .post {
-        width: 100%;
-        display: inline-block;
-        margin-bottom: $gap;
-
-        .thumbnail {
-            min-width: 100%;
-            max-width: 100%;
-            height: auto;
-            background-color: gray;
-            margin: auto;
-        }
+        display: inline-flex;
+        flex-direction: column;
 
         .text {
             max-width: 100%;
@@ -73,7 +94,7 @@ section {
             align-items: flex-start;
 
             .title,
-            .author {
+            .authors {
                 margin-bottom: .1rem;
             }
 
@@ -102,6 +123,14 @@ section {
                 color: $text-faded;
             }
         }
+    }
+}
+
+@media screen and (max-width: $mobile-width-large) {
+    .posts {
+        width: 100%;
+        flex-direction: column;
+        justify-content: center;
     }
 }
 </style>

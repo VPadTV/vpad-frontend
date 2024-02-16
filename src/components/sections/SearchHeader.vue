@@ -1,31 +1,49 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import UserProfilePicture from '../UserProfilePicture.vue';
 import ProfileDropdown from '../ProfileDropdown.vue';
 import SearchIcon from '../icons/SearchIcon.vue';
 import PenIcon from '../icons/PenIcon.vue';
 import MailIcon from '../icons/MailIcon.vue';
-
 import { getUserAuth } from '@/composables/api/auth';
+import type { UserAuth } from '@/types/auth';
+import { useRoute, useRouter } from 'vue-router';
 
-const userAuth = getUserAuth()
+const route = useRoute()
+const router = useRouter()
 
-function toggleProfile() {
+const profileDropdownClosed = ref(true)
+function toggleProfileDropdown() {
     profileDropdownClosed.value = !profileDropdownClosed.value
 }
 
-const profileDropdownClosed = ref(true)
+const userAuth = ref<UserAuth | undefined>()
+onMounted(() => {
+    userAuth.value = getUserAuth()
+})
 
+function onClickLogo() {
+    router.push({
+        path: '/',
+        query: {
+            search: ''
+        }
+    });
+}
+const search = ref<string>('')
+function onSearch() {
+    router.replace({ query: { ...route.query, search: search.value } })
+}
 </script>
 
 <template>
     <header>
-        <RouterLink to="/" class="logo">
-            <img alt="VPad" src="@/assets/logo_whitebg.png" height="60" />
-        </RouterLink>
-        <form class="search-box" method="get">
-            <input name="search" type="text">
+        <button class="logo" @click.prevent="onClickLogo">
+            <img alt="VPad" src="@/assets/logonew.png" height="60" />
+        </button>
+        <form class="search-box" @submit.prevent="onSearch">
+            <input name="search" type="text" v-model="search">
             <button>
                 <SearchIcon />
             </button>
@@ -41,10 +59,10 @@ const profileDropdownClosed = ref(true)
                 <MailIcon />
             </RouterLink>
             <div class="profile-wrap nt" v-if="userAuth">
-                <button class="profile" @click="toggleProfile">
+                <button class="profile" @click="toggleProfileDropdown">
                     <UserProfilePicture :id="''" />
                 </button>
-                <ProfileDropdown :userAuth="userAuth" :closed="profileDropdownClosed" />
+                <ProfileDropdown :userId="userAuth.id" :closed="profileDropdownClosed" />
             </div>
             <RouterLink v-else to="/login">
                 <span>Login</span>
@@ -64,12 +82,18 @@ header {
     background-color: $main;
     width: 100vw;
     height: $header-height;
+    column-gap: 1rem;
 
-    .logo {
-        margin: 0 1rem 0 0;
+    button {
+        background: none;
+        border: none;
 
-        img {
-            vertical-align: middle;
+        .logo {
+            margin: 0 1rem 0 0;
+
+            img {
+                vertical-align: middle;
+            }
         }
     }
 }
@@ -81,8 +105,8 @@ header {
 }
 
 .search-box {
-    height: 40%;
-    border: 2px solid $main-light;
+    height: 35%;
+    border: 2px solid $main-lighter;
     border-radius: 1rem;
     overflow: hidden;
     transition: background-color 0.08s, border 0.08s;
@@ -98,10 +122,6 @@ header {
         background-color: $main;
     }
 
-    input:focus {
-        outline: none;
-    }
-
     button {
         height: 100%;
         padding: 0.22rem 0.8rem;
@@ -115,7 +135,6 @@ header {
 
         svg {
             height: 100%;
-            width: 100%;
         }
 
         :hover {
@@ -135,7 +154,7 @@ header {
     margin-left: auto;
     justify-content: flex-end;
     align-items: center;
-    gap: 0.5rem;
+    column-gap: 2rem;
 
     .nt {
         height: 100%;
@@ -146,6 +165,7 @@ header {
     }
 
     .profile-wrap {
+        aspect-ratio: 1;
         height: 100%;
         left: 1px;
 
@@ -214,6 +234,8 @@ header {
     }
 
     .user-area {
+        column-gap: 1rem;
+
         .nt {
             aspect-ratio: 1;
 

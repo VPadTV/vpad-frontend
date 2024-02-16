@@ -1,6 +1,7 @@
 <script setup lang="ts">
-const { id } = defineProps<{
-    id: string
+const { id, pfpUrl } = defineProps<{
+    id?: string
+    pfpUrl?: string
 }>()
 
 </script>
