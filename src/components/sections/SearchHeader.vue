@@ -40,7 +40,7 @@ function onSearch() {
 <template>
     <header>
         <button class="logo" @click.prevent="onClickLogo">
-            <img alt="VPad" src="@/assets/logonew.png" height="60" />
+            <img alt="VPad" src="@/assets/logo.png" height="60" />
         </button>
         <form class="search-box" @submit.prevent="onSearch">
             <input name="search" type="text" v-model="search">
@@ -50,7 +50,7 @@ function onSearch() {
         </form>
         <nav class="user-area">
             <RouterLink to="/" class="logo-mobile nt">
-                <img alt="VPad" src="@/assets/logo_whitebg.png" height="60" />
+                <img alt="VPad" src="@/assets/logo.png" height="60" />
             </RouterLink>
             <RouterLink class="nt" to="/create">
                 <PenIcon />

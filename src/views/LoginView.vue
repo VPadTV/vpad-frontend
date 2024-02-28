@@ -22,7 +22,7 @@ async function onSubmit() {
     <main>
         <h1 class="title">
             <RouterLink to="/" class="logo">
-                <img alt="VPad" src="@/assets/logo_whitebg.png" />
+                <img alt="VPad" src="@/assets/logo.png" />
             </RouterLink>
             <span>Welcome back!</span>
         </h1>
