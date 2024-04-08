@@ -3,7 +3,7 @@ import type { User } from '@domain/entities/User'
 import type { IUserRepository } from '@domain/interfaces/user/IUserRepository'
 import type { HttpClient } from '@infrastructure/repositories/shared/HttpClient'
 
-export class AuthentificationRepository extends BaseRepository<User> implements IUserRepository {
+export class AuthenticationRepository extends BaseRepository<User> implements IUserRepository {
   constructor(public httpClient: HttpClient) {
     super(httpClient)
   }

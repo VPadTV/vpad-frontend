@@ -2,9 +2,9 @@
 import { ref } from 'vue'
 import InputField from '@/components/forms/InputField.vue'
 import router from '@/router'
-import { useAuthentification } from '../composables'
+import { useAuthentication } from '../composables'
 
-const { login } = useAuthentification()
+const { login } = useAuthentication()
 
 const emailOrUsername = ref<string>('')
 const password = ref<string>('')

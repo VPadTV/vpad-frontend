@@ -1,12 +1,12 @@
 import { ERepositories } from '@/infrastructure/constants'
 import { RepositoryFactory } from '@/infrastructure/repositories/shared/RepositoryFactory'
-import type { AuthentificationRepository } from '@infrastructure/repositories/authentification/AuthentificationRepository'
-import { AuthentificationUseCase } from '@domain/use-cases/authentification/AuthentificationUseCase'
+import type { AuthenticationRepository } from '@infrastructure/repositories/authentication/AuthenticationRepository'
+import { AuthenticationUseCase } from '@domain/use-cases/authentication/AuthenticationUseCase'
 
-const authentificationRepository = RepositoryFactory.createRepository(
-  ERepositories.Authentification
-) as AuthentificationRepository
+const authenticationRepository = RepositoryFactory.createRepository(
+  ERepositories.Authentication
+) as AuthenticationRepository
 
-const authentificationUseCase = new AuthentificationUseCase(authentificationRepository)
+const authenticationUseCase = new AuthenticationUseCase(authenticationRepository)
 
-export { authentificationUseCase }
+export { authenticationUseCase }

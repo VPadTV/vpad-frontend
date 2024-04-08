@@ -1,9 +1,9 @@
 export enum EApis {
-  Authentification = '/user',
+  Authentication = '/user',
   Post = '/post'
 }
 
 export enum ERepositories {
-  Authentification = 'AuthentificationRepository',
+  Authentication = 'AuthenticationRepository',
   Post = 'PostRepository'
 }

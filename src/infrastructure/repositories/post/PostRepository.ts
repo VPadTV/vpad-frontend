@@ -7,4 +7,6 @@ export class PostRepository extends BaseRepository<Post> implements IPostReposit
   constructor(public httpClient: HttpClient) {
     super(httpClient)
   }
+
+  duplicate() {}
 }

@@ -1,7 +1,7 @@
-import { authentificationUseCase } from '@/plugins/use-cases/useCases'
-import { LoginRequest, LoginResponse, RegisterRequest } from '@domain/entities/Authentification'
+import { authenticationUseCase } from '@/plugins/use-cases/useCases'
+import { LoginRequest, LoginResponse, RegisterRequest } from '@domain/entities/Authentication'
 
-export function useAuthentification() {
+export function useAuthentication() {
   function getUserAuth(): LoginResponse | undefined {
     const raw = localStorage.getItem('userAuth')
     if (!raw) return
@@ -18,14 +18,14 @@ export function useAuthentification() {
   }
 
   async function register(body: RegisterRequest): Promise<LoginResponse | undefined> {
-    const data = await authentificationUseCase.createUser(new URLSearchParams(body))
+    const data = await authenticationUseCase.createUser(new URLSearchParams(body))
     if (!data) return undefined
     localStorage.setItem('userAuth', `${data.id} ${data.token}`)
     return data
   }
 
   async function login(body: LoginRequest): Promise<LoginResponse | undefined> {
-    const data = await authentificationUseCase.login(new URLSearchParams(body))
+    const data = await authenticationUseCase.login(new URLSearchParams(body))
     if (!data) return undefined
     localStorage.setItem('userAuth', `${data.id} ${data.token}`)
     return data
