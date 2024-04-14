@@ -1,4 +1,4 @@
-import { HttpClient } from '@infrastructure/repositories/shared/HttpClient'
+import { HttpClient } from './HttpClient.js'
 
 export class BaseRepository {
     constructor(public httpClient: HttpClient) { }

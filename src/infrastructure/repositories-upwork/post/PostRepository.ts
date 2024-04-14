@@ -1,6 +1,6 @@
-import { BaseRepository } from '@/infrastructure/repositories/shared/BaseRepository'
+import { BaseRepository } from '../shared/BaseRepository.js'
 import type { Post } from '@/domain/entities/Posts'
-import type { HttpClient } from '@/infrastructure/repositories/shared/HttpClient'
+import type { HttpClient } from '../shared/HttpClient.js'
 import { asFormData } from '@/modules/shared/helpers'
 import type { RequestParams } from '@/domain/entities/Api'
 

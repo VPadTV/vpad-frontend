@@ -1,8 +1,8 @@
 import axios, { type AxiosInstance } from 'axios'
 import { ApiPaths, RepositoryTypes } from '@infrastructure/constants'
-import { HttpClient } from '@infrastructure/repositories/shared/HttpClient'
-import { PostRepository } from '@infrastructure/repositories/post/PostRepository'
-import { AuthenticationRepository } from '@infrastructure/repositories/authentication/AuthenticationRepository'
+import { HttpClient } from '@/infrastructure/repositories/shared/HttpClient'
+import { PostRepository } from '@/infrastructure/repositories/post/PostRepository'
+import { AuthenticationRepository } from '@/infrastructure/repositories/authentication/AuthenticationRepository'
 
 export class RepositoryFactory {
     public static axiosInstance: AxiosInstance = axios.create({
