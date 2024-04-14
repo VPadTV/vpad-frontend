@@ -11,7 +11,6 @@ export interface RegisterRequest {
     about?: string
 }
 
-
 export interface LoginOrRegisterResponse {
     id: string
     token: string

@@ -1,9 +1,9 @@
-export enum EApis {
-  Authentication = '/user',
-  Post = '/post'
+export enum ApiPaths {
+    Authentication = '/user',
+    Post = '/post'
 }
 
-export enum ERepositories {
-  Authentication = 'AuthenticationRepository',
-  Post = 'PostRepository'
+export enum RepositoryTypes {
+    Authentication = 'AuthenticationRepository',
+    Post = 'PostRepository'
 }

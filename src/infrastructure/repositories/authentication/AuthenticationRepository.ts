@@ -1,19 +1,17 @@
-import { BaseRepository } from '@infrastructure/repositories/shared/BaseRepository'
-import type { User } from '@domain/entities/User'
 import type { HttpClient } from '@infrastructure/repositories/shared/HttpClient'
 import type { LoginRequest, LoginOrRegisterResponse, RegisterRequest } from '@/domain/entities/Authentication'
-import type { ApiBaseResponse } from '@/domain/entities/Api'
+import { BaseRepository } from '../shared/BaseRepository'
 
-export class AuthenticationRepository extends BaseRepository<User> {
+export class AuthenticationRepository extends BaseRepository {
     constructor(public httpClient: HttpClient) {
         super(httpClient)
     }
 
     async register(req: RegisterRequest) {
-        return this.httpClient.post<ApiBaseResponse<LoginOrRegisterResponse>>('/user/register', req)
+        return await this.httpClient.post<LoginOrRegisterResponse>('/user/register', new URLSearchParams(req as any))
     }
 
     async login(req: LoginRequest) {
-        return this.httpClient.post<ApiBaseResponse<LoginOrRegisterResponse>>('/user/login', req)
+        return await this.httpClient.post<LoginOrRegisterResponse>('/user/login', new URLSearchParams(req as any))
     }
 }

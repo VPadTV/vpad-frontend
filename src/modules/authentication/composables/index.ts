@@ -1,50 +1,50 @@
-import { authenticationUseCase } from '@/plugins/use-cases/useCases'
-import { LoginRequest, LoginResponse, RegisterRequest } from '@domain/entities/Authentication'
+import type { LoginOrRegisterResponse, RegisterRequest, LoginRequest } from '@/domain/entities/Authentication'
+import { authenticationRepository } from '@/infrastructure/repositories'
 
 export function useAuthentication() {
-  function getUserAuth(): LoginResponse | undefined {
-    const raw = localStorage.getItem('userAuth')
-    if (!raw) return
-    const [id, token] = raw.split(' ')
-    return { id, token }
-  }
-
-  function getAuthorization(): { Authorization: string } | undefined {
-    const user = getUserAuth()
-    if (!user) return
-    return {
-      Authorization: 'Bearer ' + user.token
+    function getUserAuth(): LoginOrRegisterResponse | undefined {
+        const raw = localStorage.getItem('userAuth')
+        if (!raw) return
+        const [id, token] = raw.split(' ')
+        return { id, token }
     }
-  }
 
-  async function register(body: RegisterRequest): Promise<LoginResponse | undefined> {
-    const data = await authenticationUseCase.createUser(new URLSearchParams(body))
-    if (!data) return undefined
-    localStorage.setItem('userAuth', `${data.id} ${data.token}`)
-    return data
-  }
+    function getAuthorization(): { Authorization: string } | undefined {
+        const user = getUserAuth()
+        if (!user) return
+        return {
+            Authorization: 'Bearer ' + user.token
+        }
+    }
 
-  async function login(body: LoginRequest): Promise<LoginResponse | undefined> {
-    const data = await authenticationUseCase.login(new URLSearchParams(body))
-    if (!data) return undefined
-    localStorage.setItem('userAuth', `${data.id} ${data.token}`)
-    return data
-  }
+    async function register(body: RegisterRequest) {
+        const data = await authenticationRepository.register(body)
+        if (!data) return undefined
+        localStorage.setItem('userAuth', `${data.id} ${data.token}`)
+        return data
+    }
 
-  function refreshToken(newToken: string): void {
-    const current = getUserAuth()
-    if (!current) return
-    localStorage.setItem('userAuth', `${current.id} ${newToken}`)
-  }
+    async function login(body: LoginRequest) {
+        const data = await authenticationRepository.login(body)
+        if (!data) return undefined
+        localStorage.setItem('userAuth', `${data.id} ${data.token}`)
+        return data
+    }
 
-  function logout(): void {
-    localStorage.removeItem('userAuth')
-  }
+    function refreshToken(newToken: string): void {
+        const current = getUserAuth()
+        if (!current) return
+        localStorage.setItem('userAuth', `${current.id} ${newToken}`)
+    }
 
-  return {
-    login,
-    register,
-    refreshToken,
-    logout
-  }
+    function logout(): void {
+        localStorage.removeItem('userAuth')
+    }
+
+    return {
+        login,
+        register,
+        refreshToken,
+        logout
+    }
 }
