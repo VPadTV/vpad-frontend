@@ -1,14 +1,14 @@
-import type { IAuthenticationRepository } from '@/domain/interfaces/authentication/IAuthenticationRepository'
-import { LoginResponse, LoginRequest, RegisterRequest } from '@domain/entities/Authentication'
+import type { AuthenticationRepository } from '@/infrastructure/repositories/authentication/AuthenticationRepository'
+import type { LoginRequest, RegisterRequest } from '@domain/entities/Authentication'
 
 export class AuthenticationUseCase {
-  constructor(private readonly repository: IAuthenticationRepository) {}
+    constructor(private readonly repository: AuthenticationRepository) { }
 
-  async createUser(user: RegisterRequest): Promise<LoginResponse | undefined> {
-    return this.repository.create(user, '/register')
-  }
+    async createUser(req: RegisterRequest) {
+        return this.repository.register(req)
+    }
 
-  async login(user: LoginRequest): Promise<LoginResponse | undefined> {
-    return this.repository.get(user, '/login')
-  }
+    async login(req: LoginRequest) {
+        return this.repository.login(req)
+    }
 }
