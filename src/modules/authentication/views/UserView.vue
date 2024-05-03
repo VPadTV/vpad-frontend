@@ -7,7 +7,7 @@ const route = useRoute()
 const user = ref<User | undefined>()
 onBeforeMount(async () => {
     const id = route.params.userId
-    if (id && typeof id === 'string') user.value = await UserAPI.get(id)
+    if (id && typeof id === 'string') user.value = await UserRepository.get(id)
 })
 </script>
 

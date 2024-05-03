@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { CloseableComponentProps } from '.'
-
-defineProps<CloseableComponentProps>()
+defineProps<{
+    closed: boolean
+}>()
 </script>
 
 <template>
-  <div class="closeable" :class="{ closed }">
-    <slot></slot>
-  </div>
+    <div class="closeable" :class="{ closed }">
+        <slot></slot>
+    </div>
 </template>
 
 <style scoped lang="scss">
 .closed {
-  display: none;
+    display: none;
 }
 </style>

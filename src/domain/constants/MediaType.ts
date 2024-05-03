@@ -1,4 +1,4 @@
-export enum EMediaType {
-  VIDEO = 'VIDEO',
-  IMAGE = 'IMAGE'
+export enum MediaType {
+    VIDEO = 'VIDEO',
+    IMAGE = 'IMAGE'
 }

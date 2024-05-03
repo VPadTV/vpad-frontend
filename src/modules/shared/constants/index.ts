@@ -1,4 +1,4 @@
-export enum EResize {
-  VERTICAL = 'vertical',
-  HORIZONTAL = 'horizontal'
+export enum Resize {
+    VERTICAL = 'vertical',
+    HORIZONTAL = 'horizontal'
 }

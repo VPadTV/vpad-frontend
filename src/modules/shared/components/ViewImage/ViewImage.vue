@@ -1,19 +1,24 @@
 <script setup lang="ts">
-import type { ViewImageProps } from '.'
+import type { MediaType } from '@domain/constants/MediaType'
 
-const { post } = defineProps<ViewImageProps>()
+const { post } = defineProps<{
+    post: {
+        readonly mediaType: MediaType
+        readonly mediaUrl: string
+    }
+}>()
 </script>
 
 <template>
-  <img class="content" v-lazy="{ src: post.mediaUrl }" />
+    <img class="content" v-lazy="{ src: post.mediaUrl }" />
 </template>
 
 <style scoped lang="scss">
 @import '@assets/style/base.scss';
 
 .content {
-  align-self: center;
-  max-width: 100%;
-  background-color: $main;
+    align-self: center;
+    max-width: 100%;
+    background-color: $main;
 }
 </style>
