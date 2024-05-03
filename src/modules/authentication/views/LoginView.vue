@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import router from '@/router'
-import { useAuthentication } from '../composables'
-
-const { login } = useAuthentication()
+import { login } from '../composables'
 
 const emailOrUsername = ref<string>('')
 const password = ref<string>('')

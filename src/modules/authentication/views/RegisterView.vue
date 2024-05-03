@@ -4,9 +4,7 @@ import TextAreaInput from '@/modules/shared/components/TextAreaInputField'
 import RequiredStar from '@/modules/shared/components/RequiredStar'
 import { ref } from 'vue'
 import router from '@/router'
-import { useAuthentication } from '@modules/authentication/composables'
-
-const { register } = useAuthentication()
+import { register } from '@modules/authentication/composables'
 
 const username = ref<string>('')
 const nickname = ref<string>('')
