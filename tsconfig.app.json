@@ -4,10 +4,16 @@
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
-    "noEmit": true,
+    //"noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@assets": ["./src/assets"],
+      "@modules/*": ["./src/modules/*"],
+      "@shared/*": ["./src/modules/shared/*"],
+      "@plugins": ["./src/plugins/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@infrastructure/*": ["./src/infrastructure/*"]
     }
   }
 }

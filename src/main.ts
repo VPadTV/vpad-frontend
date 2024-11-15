@@ -1,21 +1,14 @@
-import './assets/style/main.scss'
-import "vue-toastification/dist/index.css";
-
-import VueLazyLoad from 'vue3-lazyload'
-import Toast, { POSITION, type PluginOptions } from "vue-toastification";
+import '@assets/style/main.scss'
 
 import { createApp } from 'vue'
 
 import App from './App.vue'
 import router from './router'
+import { addUIDependencies } from './plugins/ui'
 
-const toastOptions: PluginOptions = {
-    maxToasts: 5,
-    position: POSITION.TOP_CENTER
-}
 const app = createApp(App)
 
+addUIDependencies(app)
+
 app.use(router)
-app.use(Toast, toastOptions)
-app.use(VueLazyLoad, {})
 app.mount('#app')
