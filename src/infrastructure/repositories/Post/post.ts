@@ -1,4 +1,4 @@
-import type { Paginate } from "@/domain/entities"
+import type { Paginate } from "@/infrastructure/api/types"
 import { HTTP, callAPI } from "../../api"
 import type { PostCreateBody, PostGetManyBody, UpdatePostBody, PostDeleteResponse } from "./post.types"
 
