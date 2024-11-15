@@ -14,8 +14,6 @@ export interface Paginate<T> {
     data: T[]
 }
 
-export interface ApiPaginateResponse<T> extends Paginate<T> { }
-
 export interface PaginationParams {
     page: number
     size: number

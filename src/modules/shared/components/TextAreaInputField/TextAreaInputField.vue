@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { EResize } from '@modules/shared/constants'
+import type { Resize } from '../../constants';
+
 
 const { required } = defineProps<{
     readonly required?: boolean
     readonly minWidth?: string
     readonly maxWidth?: string
-    readonly resize?: EResize
+    readonly resize?: Resize
 }
 >()
 const model = defineModel<string>()

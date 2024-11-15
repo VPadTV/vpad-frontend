@@ -1,8 +1,8 @@
-import { getAuthorization, logout, refreshToken } from "../repositories/Authentication/auth"
 import { useToast } from "vue-toastification"
-import { ErrorMessage, getErrorMessage, isCode } from "./errorMessage"
+import { ErrorMessage, isCode } from "./errorMessage"
 import { useRouter } from "vue-router"
 import { asFormData } from "@/modules/shared/helpers"
+import { getAuthorization, logout, refreshToken } from "@/modules/authentication/composables"
 
 export enum HTTP {
     GET = "get",
@@ -13,15 +13,15 @@ export enum HTTP {
 
 export type ResponseRefreshToken = { token?: string }
 type BodyItem = string | number | boolean
-
 export type APIArgs = { [key: string]: BodyItem | BodyItem[] | File } | URLSearchParams | FormData
+
 function parseArguments(args?: APIArgs) {
     if (!args || args instanceof URLSearchParams || args instanceof FormData) return args;
     if (Object.values(args).some(v => v instanceof File)) return asFormData(args)
     return new URLSearchParams(args as any)
 }
 
-export async function callAPI<T>(url: string, method: HTTP, args?: APIArgs): Promise<T | undefined> {
+export async function callAPI<T = unknown>(url: string, method: HTTP, args?: APIArgs): Promise<T | undefined> {
     const toast = useToast()
     let response: Response
     const body = parseArguments(args)
