@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { MediaType } from '@domain/constants/MediaType'
+import type { MediaType } from '@/infrastructure/constants/MediaType';
+
 
 const { post } = defineProps<{
     post: {
