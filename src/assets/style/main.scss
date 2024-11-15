@@ -16,14 +16,3 @@ body,
   height: 100vh;
   overflow: hidden;
 }
-
-a {
-  text-decoration: none;
-  transition: 0.2s color;
-}
-
-a:hover,
-button:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
