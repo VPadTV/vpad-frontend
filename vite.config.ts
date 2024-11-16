@@ -14,7 +14,8 @@ export default defineConfig({
       '@modules': fileURLToPath(new URL('./src/modules', import.meta.url)),
       '@plugins': fileURLToPath(new URL('./src/plugins', import.meta.url)),
       '@domain': fileURLToPath(new URL('./src/domain', import.meta.url)),
-      '@infrastructure': fileURLToPath(new URL('./src/infrastructure', import.meta.url))
+      '@infrastructure': fileURLToPath(new URL('./src/infrastructure', import.meta.url)),
+      "@infra": fileURLToPath(new URL('./src/infrastructure', import.meta.url))
     }
   },
   build: {
