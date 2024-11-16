@@ -13,18 +13,18 @@ export enum HTTP {
 
 export type ResponseRefreshToken = { token?: string }
 type BodyItem = string | number | boolean
-export type APIArgs = { [key: string]: BodyItem | BodyItem[] | File } | URLSearchParams | FormData
+export type APIArgs<T> = { [key: string]: BodyItem | BodyItem[] | File } | URLSearchParams | FormData | T
 
-function parseArguments(args?: APIArgs) {
-    if (!args || args instanceof URLSearchParams || args instanceof FormData) return args;
+function parseArguments<R>(args?: APIArgs<R>) {
+    if (!args || args instanceof URLSearchParams || args instanceof FormData) return args as (FormData | URLSearchParams);
     if (Object.values(args).some(v => v instanceof File)) return asFormData(args)
     return new URLSearchParams(args as any)
 }
 
-export async function callAPI<T = unknown>(url: string, method: HTTP, args?: APIArgs): Promise<T | undefined> {
+export async function callAPI<T = unknown, R = any>(url: string, method: HTTP, args?: APIArgs<R>): Promise<T | undefined> {
     const toast = useToast()
     let response: Response
-    const body = parseArguments(args)
+    const body = parseArguments<R>(args)
 
     try {
         response = await fetch(import.meta.env.VITE_API_URL + url + (method === "get" && body ? "?" + body : ""), {
