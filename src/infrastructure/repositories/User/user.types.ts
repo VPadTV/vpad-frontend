@@ -1,3 +1,5 @@
+import type { Paginate } from "@/infrastructure/api/types"
+
 export type UserSimpleResponse = {
     id: string
     nickname: string
@@ -13,6 +15,22 @@ export type UserGetResponse = {
     contact?: string,
     admin: false
 }
+
+export type UserGetManyBody = {
+    search: string
+    page: number
+    size: number
+    sortBy: 'nickname' | 'createdAt'
+    sortDirection: 'oldest' | 'latest'
+}
+
+export type UserGetManyResponse = Paginate<{
+    search: string
+    page: number
+    size: number
+    sortBy: 'nickname' | 'createdAt'
+    sortDirection: 'oldest' | 'latest'
+}>
 
 export type UserEditBody = {
     username?: string
