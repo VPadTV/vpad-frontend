@@ -4,7 +4,7 @@ import type { CommentCreateBody, CommentGetManyBody, CommentGetManyResponse, Com
 
 export abstract class CommentRepository {
     static create = (body: CommentCreateBody) => callAPI<{}>('comment', HTTP.POST, body)
-    static getMany = (body: CommentGetManyBody) => callAPI<Paginate<CommentGetManyResponse>>(`post`, HTTP.GET, body)
-    static update = (id: string, body: CommentUpdateBody) => callAPI<{}>(`post/${id}`, HTTP.PUT, body)
-    static delete = (id: string) => callAPI<{}>(`post/${id}`, HTTP.DELETE)
+    static getMany = (body: CommentGetManyBody) => callAPI<Paginate<CommentGetManyResponse>>('comment', HTTP.GET, body)
+    static update = (id: string, body: CommentUpdateBody) => callAPI<{}>(`comment/${id}`, HTTP.PUT, body)
+    static delete = (id: string) => callAPI<{}>(`comment/${id}`, HTTP.DELETE)
 }
