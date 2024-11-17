@@ -1,4 +1,4 @@
-import type { Paginate } from "@/infrastructure/api/types"
+import type { Paginate } from "@infra/api/types.js"
 import { HTTP, callAPI } from "../../api"
 import type { PostCreateBody, PostGetManyBody, UpdatePostBody, PostGetManyResponse, PostGetResponse } from "./post.types"
 

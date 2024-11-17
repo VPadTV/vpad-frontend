@@ -4,13 +4,17 @@
     "composite": true,
     //"noEmit": true,
     "baseUrl": ".",
+    "rootDir": "src",
+    "typeRoots": ["src/typings", "node_modules/@types"],
+    "types": ["vue"],
     "paths": {
       "@/*": ["./src/*"],
       "@assets": ["./src/assets"],
       "@modules/*": ["./src/modules/*"],
       "@shared/*": ["./src/modules/shared/*"],
-      "@plugins": ["./src/plugins/*"],
-      "@infrastructure/*": ["./src/infrastructure/*"]
+      "@plugins/*": ["./src/plugins/*"],
+      "@infra/*": ["src/infrastructure/*"],
+      "@infrastructure/*": ["src/infrastructure/*"]
     }
   }
 }
