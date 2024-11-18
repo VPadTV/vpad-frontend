@@ -1,28 +1,54 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive } from 'vue'
 import router from '@/router'
 import { register } from '@modules/authentication/composables'
 
-const username = ref<string>('')
-const nickname = ref<string>('')
-const email = ref<string>('')
-const password = ref<string>('')
-const about = ref<string>('')
+const formState = reactive<{
+  username: string
+  nickname: string
+  email: string
+  password: string
+  about: string
+}>({
+  username: '',
+  nickname: "",
+  email: "",
+  password: "",
+  about: ""
+})
+function requiredRule(field: string) {
+  const split = field.trim().split("");
+  split[0] = split[0].toLocaleUpperCase();
+  return [{required: true, message: `${split.join("")} is required.`}]
+}
 
 async function onSubmit() {
-    const response = await register({
-        username: username.value,
-        nickname: nickname.value.trim().length > 0 ? nickname.value : '',
-        email: email.value,
-        password: password.value,
-        about: about.value.length > 0 ? about.value : ''
-    })
-    if (response != null) router.push({ name: 'home' })
+  const response = await register(formState)
+  if (response != null) router.push({ name: 'home' })
 }
 </script>
 
 <template>
-    <h1>Not Implemented</h1>
+  <a-form :model="formState" @submit="onSubmit">
+    <a-form-item label="Username" name="username"
+     :rules="requiredRule('username')"
+    >
+      <a-input v-model:value="formState.username"/>
+    </a-form-item>
+    <a-form-item label="Nickname" name="nickname">
+      <a-input v-model:value="formState.nickname"/>
+    </a-form-item>
+    <a-form-item label="Email" name="email" :rules="requiredRule('email')">
+      <a-input type="email" v-model:value="formState.email"/>
+    </a-form-item>
+    <a-form-item label="Password" name="password" :rules="requiredRule('password')">
+      <a-input-password v-model:value="formState.password"/>
+    </a-form-item>
+      <a-form-item label="About you!" name="about">
+        <a-textarea v-model:value="formState.about"/>
+      </a-form-item>
+    <a-button type="primary" html-type="submit">Register</a-button>
+  </a-form>
 </template>
 
 <style scoped lang="scss"></style>

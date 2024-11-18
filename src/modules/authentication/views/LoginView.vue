@@ -16,7 +16,14 @@ async function onSubmit() {
 </script>
 
 <template>
-    <h1>Not Implemented</h1>
-</template>
+  <a-form @submit="onSubmit" layout="vertical">
 
-<style scoped lang="scss"></style>
+    <a-form-item label="Email or username">
+      <a-input v-model:value="emailOrUsername"/>
+    </a-form-item>
+    <a-form-item label="Password">
+      <a-input-password v-model:value="password"/>
+    </a-form-item>
+    <a-button html-type="submit" type="primary">Log In</a-button>
+  </a-form>
+</template>
