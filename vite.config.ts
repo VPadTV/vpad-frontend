@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
-
+import tailwindcss from "tailwindcss"
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
@@ -23,6 +23,12 @@ export default defineConfig({
     cssMinify: true,
     cssCodeSplit: true
   },
+  css: {
+    postcss: {
+      plugins: [tailwindcss()]
+    }
+  },
+  assetsInclude: ['src/assets/images/**/*', 'src/assets/icons/**/*'],
   // css : {
   //   preprocessorOptions : {
   //     scss: {

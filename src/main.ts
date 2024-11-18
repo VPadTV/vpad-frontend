@@ -1,4 +1,5 @@
 import '@assets/style/main.scss'
+import '@assets/style/global.css'
 import "ant-design-vue/dist/reset.css";
 
 import { createApp } from 'vue'
