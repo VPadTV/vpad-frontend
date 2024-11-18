@@ -3,7 +3,7 @@ import type { UserSimpleResponse } from "../User/user.types"
 export type PostCreateBody = {
     title: string
     text: string
-    media: File
+    media?: File
     thumb?: File
     nsfw?: boolean
     tags: string[]
@@ -25,7 +25,7 @@ export type PostAuthor = {
 
 export type Post = {
     text: string
-
+    title: string
     meta: {
         author: PostAuthor
         credits: PostCredit[]
@@ -42,25 +42,6 @@ export type Post = {
     thumbUrl: string
 }
 
-export type PostGetResponse = {
-    text?: string
-    mediaUrl: string
-    thumbUrl?: string
-    meta: {
-        author: UserSimpleResponse
-        credits: [
-            {
-                user: UserSimpleResponse
-                description: "some description"
-            }
-        ],
-        likes: 10
-        dislikes: 20
-        views: 40
-        myVote: 1
-    }
-}
-
 export type SortBy = 'latest' | 'oldest' | 'high-views' | 'low-views'
 export type PostGetManyBody = {
     userTierId?: string
@@ -72,32 +53,30 @@ export type PostGetManyBody = {
     size: number
 }
 
-export type PostGetManyResponse = {
+export type PostGetResponse = {
     id: string
     text?: string
     thumbUrl?: string
     meta: {
-        width?: 300
-        height?: 300
-        nsfw: false
-        tags: [
-            "some"
-        ],
+        width?: number
+        height?: number
+        nsfw: boolean
+        tags: string[],
         minTierId?: string
         author: UserSimpleResponse
-        credits: [
+        credits:
             {
                 user: UserSimpleResponse
                 description: string
-            }
-        ],
+            }[]
+        ,
         series?: {
             id: string
             name: string
         }
-        views: 1000
+        views: number
         createdAt: string
     }
 }
 
-export type UpdatePostBody = {}
+export type UpdatePostBody = PostCreateBody;
