@@ -9,6 +9,9 @@ export default {
       colors: {
         primary: "#4c9bd4",
         link: "#7bc8fc"
+      },
+      height: {
+        'inherit': 'inherit'
       }
     },
   },
