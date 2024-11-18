@@ -9,6 +9,7 @@ declare module "vue" {
 }
 declare module "*.vue" {
   global {
+    const window: typeof window
     const $fetch: typeof callAPI
   }
 }

@@ -9,6 +9,7 @@ import router from './router'
 import { addUIDependencies } from './plugins/ui'
 
 const app = createApp(App)
+app.config.globalProperties.window = window
 
 addUIDependencies(app)
 
