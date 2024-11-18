@@ -13,7 +13,8 @@ export type UserGetResponse = {
     profilePhotoUrl: string,
     about?: string,
     contact?: string,
-    admin: false
+    admin: boolean,
+    id: string
 }
 
 export type UserGetManyBody = {
@@ -24,13 +25,7 @@ export type UserGetManyBody = {
     sortDirection: 'oldest' | 'latest'
 }
 
-export type UserGetManyResponse = Paginate<{
-    search: string
-    page: number
-    size: number
-    sortBy: 'nickname' | 'createdAt'
-    sortDirection: 'oldest' | 'latest'
-}>
+export type UserGetManyResponse = Paginate<UserGetResponse>
 
 export type UserEditBody = {
     username?: string
