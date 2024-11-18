@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { theme } from 'ant-design-vue'
-import logo from "@assets/images/logonew.webp"
+import logo from '@assets/images/logonew.webp'
 </script>
 
 <template>
@@ -22,29 +22,29 @@ import logo from "@assets/images/logonew.webp"
       <a-typography-title> ¯\_(ツ)_/¯</a-typography-title>
       <i> Nothing here. </i>
     </template>
-   <main class="flex flex-col">
-     <a-layout>
-       <a-layout-header >
-         <div class="flex h-inherit py-3 gap-4">
-           <img alt="VPad logo" class="brand shrink object-contain h-inherit" :src="logo"/>
-           <a-typography-title :level="2">
-            VPad
-           </a-typography-title>
-         </div>
-       </a-layout-header>
-       <a-layout>
-         <a-layout-content class="p-6">
-           <RouterView v-slot="{ Component }">
-             <template v-if="Component">
-               <Suspense>
-                 <component :is="Component"></component>
-               </Suspense>
-             </template>
-           </RouterView>
-         </a-layout-content>
-       </a-layout>
-     </a-layout>
-   </main>
+    <main class="flex flex-col">
+      <a-layout>
+        <a-layout-header>
+          <div class="flex py-3 gap-4 h-inherit">
+            <span>
+              <img alt="VPad logo" class="brand shrink h-full" :src="logo" />
+            </span>
+            <a-typography-title :level="2"> VPad </a-typography-title>
+          </div>
+        </a-layout-header>
+        <a-layout>
+          <a-layout-content class="p-6">
+            <RouterView v-slot="{ Component }">
+              <template v-if="Component">
+                <Suspense>
+                  <component :is="Component"></component>
+                </Suspense>
+              </template>
+            </RouterView>
+          </a-layout-content>
+        </a-layout>
+      </a-layout>
+    </main>
   </a-config-provider>
 </template>
 
