@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body {
+    height: 100vw;
+    @apply dark:bg-slate-950 bg-zinc-50;
+}
+
+
+.ant-image:has(img[class*="rounded-xl"]) .ant-image-mask {
+    @apply rounded-xl overflow-hidden;
+}

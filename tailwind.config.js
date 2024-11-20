@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const unset = "unset"
 export default {
   content: [
     "./index.html",
@@ -11,7 +12,11 @@ export default {
         link: "#7bc8fc"
       },
       height: {
-        'inherit': 'inherit'
+        'inherit': 'inherit',
+      },
+      spacing: {
+        unset,
+        sidebar: '200px'
       }
     },
   },
