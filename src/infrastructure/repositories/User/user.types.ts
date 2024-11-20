@@ -3,7 +3,7 @@ import type { Paginate } from "@/infrastructure/api/types"
 export type UserSimpleResponse = {
     id: string
     nickname: string
-    profilePhotoId?: string
+    profilePhotoUrl?: string
 }
 
 export type UserGetResponse = {
