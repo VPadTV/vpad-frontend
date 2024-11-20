@@ -55,8 +55,10 @@ export type PostGetManyBody = {
 
 export type PostGetResponse = {
     id: string
-    text?: string
+    text: string
+    title: string;
     thumbUrl?: string
+    mediaUrl: string;
     meta: {
         width?: number
         height?: number
@@ -74,6 +76,8 @@ export type PostGetResponse = {
             id: string
             name: string
         }
+        likes: number
+        dislikes: number
         views: number
         createdAt: string
     }
