@@ -1,18 +1,19 @@
 <script setup lang="ts">
   import { Grid } from 'ant-design-vue'
   import { ref, watch, inject, type Ref} from 'vue'
+  import { debugLog } from '@shared/helpers'
 
   const sidebarCollapsed = inject<Ref<boolean>>("sidebarCollapsed")!
   const { useBreakpoint } = Grid
   const breakpointRef = useBreakpoint()
   const isMobile = ref<boolean>(!!breakpointRef.value.lg)
   watch(useBreakpoint(), (nv) => {
-    console.log('bp changed', nv)
+    debugLog('bp changed', nv)
     sidebarCollapsed.value = true
     isMobile.value =
       ['xs', 'sm', 'md'].some((a) => !!nv[a as keyof typeof nv]) &&
       !['lg', 'xl', 'xxl', 'xxxl'].some((a) => !!nv[a as keyof typeof nv])
-    console.log('horiz', isMobile.value)
+    debugLog('horiz', isMobile.value)
   })
 </script>
 
