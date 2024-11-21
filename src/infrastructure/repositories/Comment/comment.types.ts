@@ -3,6 +3,7 @@ import type { UserSimpleResponse } from "../User/user.types"
 export type CommentCreateBody = {
     postId: string
     text: string
+    parentId?: string | null
 }
 
 export type CommentCreateResponse = {
@@ -15,7 +16,7 @@ export type CommentUpdateBody = {
 
 export type CommentGetManyBody = {
     postId?: string
-    commentId?: string
+    parentId?: string | null
     sortBy: 'latest' | 'oldest'
     page: number
     size: number
@@ -29,5 +30,6 @@ export type CommentGetManyResponse = {
         user: UserSimpleResponse,
         createdAt: string,
         updatedAt: string
+        postId: string
     }
 }
