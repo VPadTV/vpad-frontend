@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {provide} from "vue";
 import { RouterView } from 'vue-router';
-import { AuthenticationRepository } from '@infra/repositories/Authentication/auth'
 import type { UserGetResponse } from '@infra/repositories/User/user.types'
-const maybeCurrentUser = (await AuthenticationRepository.whoami()) ?? null;
+import { getUserAuth } from '@modules/authentication/composables'
+const maybeCurrentUser = await getUserAuth() ?? null;
 provide<UserGetResponse | null>("user", maybeCurrentUser)
 </script>
 
