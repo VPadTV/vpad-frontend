@@ -1,9 +1,10 @@
-import type { UserAuth, RegisterRequest, LoginRequest } from '@/domain/entities/Authentication'
+import type { UserAuth, RegisterBody, LoginBody } from '@infra/repositories/Authentication/auth.types.js'
+
 import { AuthenticationRepository } from '@/infrastructure/repositories/Authentication/auth'
 
-export function getUserAuth(): UserAuth | undefined {
+export function getUserAuth(): UserAuth {
     const raw = localStorage.getItem('userAuth')
-    if (!raw) return
+    if (!raw) return {id: null, token: null}
     const [id, token] = raw.split(' ')
     return { id, token }
 }
@@ -16,14 +17,14 @@ export function getAuthorization(): { Authorization: string } | undefined {
     }
 }
 
-export async function register(body: RegisterRequest) {
+export async function register(body: RegisterBody) {
     const data = await AuthenticationRepository.register(body)
     if (!data) return undefined
     localStorage.setItem('userAuth', `${data.id} ${data.token}`)
     return data
 }
 
-export async function login(body: LoginRequest) {
+export async function login(body: LoginBody) {
     const data = await AuthenticationRepository.login(body)
     if (!data) return undefined
     localStorage.setItem('userAuth', `${data.id} ${data.token}`)

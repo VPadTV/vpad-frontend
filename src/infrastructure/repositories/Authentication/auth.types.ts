@@ -10,3 +10,8 @@ export type LoginBody = {
     emailOrUsername: string
     password: string
 }
+
+export type UserAuth = {
+    id: string | null
+    token: string | null
+}
