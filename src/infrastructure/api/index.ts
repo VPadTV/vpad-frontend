@@ -31,7 +31,7 @@ export async function callAPI<T = unknown, R = any>(url: string, method: HTTP, a
             method,
             body: method === "get" ? undefined : body,
             headers: {
-                ...getAuthorization(),
+                ...(await getAuthorization()),
                 'Expires': ''
             }
         })

@@ -35,3 +35,4 @@ export type UserEditBody = {
     password?: string
     profilePhoto?: File
 }
+export type MaybeUser = UserGetResponse | null

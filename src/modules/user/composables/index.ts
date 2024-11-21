@@ -7,7 +7,7 @@ type User = unknown
 
 export async function loadOrGetUser(router: Router, reload: boolean = true, fallbackRoute: string = '/'): Promise<User | undefined> {
     let user: User | undefined
-    const userAuth = getUserAuth()
+    const userAuth = await getUserAuth()
     if (!userAuth) {
         store.user = undefined
         if (reload)
