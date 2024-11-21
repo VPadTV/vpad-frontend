@@ -43,3 +43,11 @@ export const asFormData = (object: { [key: string]: any }) =>
         formData.append(key, object[key])
         return formData
     }, new FormData())
+export function debugLog(...args: any[]) {
+    if(import.meta.env.DEBUG) {
+        console.debug(...args)
+    }
+}
+export function mapOptions<T, L extends keyof T, V extends keyof T>(labelKey: L, labelVal: V) {
+    return (opt: T) =>  ({label: opt[labelKey], value: opt[labelVal]} as {label: T[L], value: T[V]})
+}
