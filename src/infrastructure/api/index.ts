@@ -21,7 +21,7 @@ function parseArguments<R>(args?: APIArgs<R>) {
     return new URLSearchParams(args as any)
 }
 
-export async function callAPI<T = unknown, R = any>(url: string, method: HTTP, args?: APIArgs<R>): Promise<T | undefined> {
+export async function callAPI<T = unknown, R = any>(url: string, method: HTTP, args?: APIArgs<R>): Promise<T & ResponseRefreshToken | undefined> {
     const toast = useToast()
     let response: Response
     const body = parseArguments<R>(args)
