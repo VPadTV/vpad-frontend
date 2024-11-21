@@ -17,7 +17,8 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
-
+    "date-fns": "^4.1.0",
+    "lodash-es": "^4.17.21",
     "ant-design-vue": "^4.2.6",
     "vee-validate": "^4.14.7",
     "vue": "^3.3.10",
