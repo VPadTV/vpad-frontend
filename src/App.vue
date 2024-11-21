@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { reactive, ref, watch, provide } from 'vue'
-import { RouterView } from 'vue-router'
-import colors from "tailwindcss/colors"
-import { theme, type ConfigProviderProps, Grid } from 'ant-design-vue'
+import colors from 'tailwindcss/colors'
+import { theme, type ConfigProviderProps } from 'ant-design-vue'
 import logo from '@assets/images/logonew.webp'
-import Sidebar from "@modules/shared/components/Sidebar/index.vue";
+import Sidebar from '@modules/shared/components/Sidebar/index.vue'
+import RootLayout from '@shared/components/RootLayout/RootLayout.vue'
 
 const mq = window.matchMedia('(prefers-color-scheme: dark)')
 const mqRef = ref<boolean>(mq.matches)
 mq.addEventListener('change', (e) => (mqRef.value = e.matches))
-const bg = (v: boolean) => v ? colors.slate['950'] : colors.zinc['50']
+const bg = (v: boolean) => (v ? colors.slate['950'] : colors.zinc['50'])
 const themeConf = reactive<NonNullable<ConfigProviderProps['theme']>>({
   token: {
     colorPrimary: '#4c9bd4',
@@ -24,9 +24,8 @@ watch(mqRef, (nv) => {
   themeConf.algorithm = nv ? theme.darkAlgorithm : theme.defaultAlgorithm
   themeConf.token!.colorBgBase = bg(nv)
 })
-const sidebarCollapsed = ref<boolean>(true);
-provide("sidebarCollapsed", sidebarCollapsed)
-
+const sidebarCollapsed = ref<boolean>(true)
+provide('sidebarCollapsed', sidebarCollapsed)
 </script>
 
 <template>
@@ -37,7 +36,6 @@ provide("sidebarCollapsed", sidebarCollapsed)
         <i> Nothing here. </i>
       </template>
       <a-layout class="">
-
         <a-layout-header
           class="dark:!bg-slate-900 !bg-zinc-100 !px-4 lg:!px-20 z-50 flex gap-6 h-inherit items-center"
         >
@@ -56,17 +54,10 @@ provide("sidebarCollapsed", sidebarCollapsed)
           </div>
         </a-layout-header>
         <a-layout has-sider>
-            <sidebar class="shrink basis-sidebar mt-16 lg:mt-0 md:!flex"/>
-
-          <a-layout-content class="lg:m-20 m-10">
-            <RouterView v-slot="{ Component }">
-              <template v-if="Component">
-                <Suspense>
-                  <component :is="Component"></component>
-                </Suspense>
-              </template>
-            </RouterView>
-          </a-layout-content>
+          <sidebar class="shrink basis-sidebar mt-16 lg:mt-0 md:!flex" />
+          <Suspense>
+            <root-layout />
+          </Suspense>
         </a-layout>
       </a-layout>
     </a-config-provider>
