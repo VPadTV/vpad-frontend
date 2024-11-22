@@ -22,7 +22,7 @@ export async function getUserAuth(): Promise<(UserGetResponse & ResponseRefreshT
 
 export async function getAuthorization(): Promise<{ Authorization: string } | undefined> {
   const user = await getUserAuth()
-  if (!user.token) return
+  if (!user?.token) return
   return {
     Authorization: 'Bearer ' + user.token
   }
@@ -44,7 +44,7 @@ export async function login(body: LoginBody) {
 
 export async function refreshToken(newToken: string): Promise<void> {
   const current = await getUserAuth()
-  if (!current.id || !current.token) return
+  if (!current?.id || !current?.token) return
   localStorage.setItem('userAuth', newToken)
 }
 
