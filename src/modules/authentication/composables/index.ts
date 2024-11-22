@@ -8,7 +8,7 @@ export async function getUserAuth(): Promise<(UserGetResponse & ResponseRefreshT
   const token = localStorage.getItem('userAuth')
   if (!token) return null
   try {
-    const response: UserGetResponse & ResponseRefreshToken = await fetch(import.meta.env.VITE_API_URL + '/user/whoami', {
+    const response: UserGetResponse & ResponseRefreshToken = await fetch(import.meta.env.VITE_API_URL + 'user/whoami', {
       headers: {
         Authorization: `Bearer ${token}`
       }
