@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { inject, type Ref, ref } from 'vue'
 import router from '@/router'
-import { login } from '../composables'
+import { getUserAuth, login } from '../composables'
+import type { MaybeUser, MaybeUserSetter } from '@infra/repositories/User/user.types'
 
 const emailOrUsername = ref<string>('')
 const password = ref<string>('')
-
+const u = inject<MaybeUserSetter>("user")
 async function onSubmit() {
     const response = await login({
         emailOrUsername: emailOrUsername.value!,
         password: password.value!
     })
-    if (response != null) router.push({ name: 'home' })
+    u.set(await getUserAuth())
+    if (response) router.push({ name: 'home' })
 }
 </script>
 
