@@ -1,4 +1,5 @@
 import type { Paginate } from "@/infrastructure/api/types"
+import type { Ref } from 'vue'
 
 export type UserSimpleResponse = {
     id: string
@@ -34,5 +35,9 @@ export type UserEditBody = {
     email?: string
     password?: string
     profilePhoto?: File
+}
+export type MaybeUserSetter = {
+    user: Ref<MaybeUser>
+    set(nv: MaybeUser): void
 }
 export type MaybeUser = UserGetResponse | null
