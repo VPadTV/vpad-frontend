@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "@yeger/vue-masonry-wall": "^5.0.16",
+    "ant-design-vue": "^4.2.6",
     "date-fns": "^4.1.0",
     "lodash-es": "^4.17.21",
     "ant-design-vue": "^4.2.6",
