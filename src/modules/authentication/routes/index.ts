@@ -11,6 +11,11 @@ const router: RouteRecordRaw[] = [
         name: 'register',
         component: () => import('../views/RegisterView.vue')
     },
+    {
+        path: '/logout',
+        name: 'logout',
+        component: () => import('../views/LogoutView.vue')
+    }
 ] as const
 
 export default router
