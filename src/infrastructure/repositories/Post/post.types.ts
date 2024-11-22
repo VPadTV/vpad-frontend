@@ -80,6 +80,7 @@ export type PostGetResponse = {
         dislikes: number
         views: number
         createdAt: string
+        myVote: 1 | -1 | 0
     }
 }
 
