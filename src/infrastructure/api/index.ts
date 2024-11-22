@@ -31,7 +31,7 @@ export async function callAPI<T = unknown, R = any>(url: string, method: HTTP, a
             method,
             body: method === "get" ? undefined : body,
             headers: {
-                ...(await getAuthorization()),
+                ...((await getAuthorization()) ?? {}),
                 'Expires': ''
             }
         })
@@ -55,7 +55,7 @@ export async function callAPI<T = unknown, R = any>(url: string, method: HTTP, a
     }
     const responseJson = await response.json() as T & ResponseRefreshToken
     if (responseJson.token)
-        refreshToken(responseJson.token)
+       await refreshToken(responseJson.token)
 
     return responseJson
 }
