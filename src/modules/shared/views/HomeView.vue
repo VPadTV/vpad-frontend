@@ -1,25 +1,30 @@
 <script setup lang="ts">
-//
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import {Grid} from 'ant-design-vue';
+import MasonryWall from "@yeger/vue-masonry-wall"
 import { PostRepository } from '@infra/repositories/Post/post'
-import { useRoute, RouterLink } from 'vue-router'
-import type { Post } from '@infra/repositories/Post/post.types.js'
+import type { PostGetResponse as Post } from '@infra/repositories/Post/post.types.js'
 import SingleFeedPost from '@shared/components/SingleFeedPost/SingleFeedPost.vue'
-
+const {useBreakpoint} = Grid;
+const bp = useBreakpoint();
 const route = useRoute()
-
-const { data } = (await PostRepository.getMany({
+const isDebug = ref(!!import.meta.env.VITE_DEBUG)
+const rdata = (await PostRepository.getMany({
   nsfw: !!route.query.nsfw,
   page: parseInt((route.query.page as string) ?? '1'),
-  size: 50,
+  size: 30,
   sortBy: 'latest'
-}))!
+}))
+const data = ref<Post[]>(rdata?.data ?? [])
+const duped = computed(() => Array(30).fill(0).flatMap(() => data.value).toSorted(() => Math.floor(Math.random() * 2 - 1) > 0 ? 1 : -1))
+const cols = computed(() => bp.value.xxxl ? 6 : bp.value.xxl ? 5 : bp.value.xl ? 4 : bp.value.lg ? 3 : bp.value.md ? 3 : bp.value.sm ? 1 : bp.value.xs ? 1 : 1)
 </script>
 <template>
-  <a-list :grid="{ gutter: 10, sm: 1, md: 3, lg: 4, xl: 6, xxl: 8 }" :data-source="data as Post[]">
-    <template #renderItem="{ item }">
-      <a-list-item style="padding: 0">
-        <single-feed-post :post="item" />
-      </a-list-item>
+  <masonry-wall :min-columns="cols" :max-columns="cols" :items="isDebug ? duped : data" :gap="16" :key-mapper="(a) => a.id">
+    <template #default="{item}">
+      <single-feed-post :post="item" />
     </template>
-  </a-list>
+  </masonry-wall>
+  <a-pagination :total="rdata.total" :default-page-size="50"/>
 </template>
