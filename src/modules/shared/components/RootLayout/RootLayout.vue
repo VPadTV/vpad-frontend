@@ -31,10 +31,10 @@ provide('sidebarCollapsed', sidebarCollapsed)
         <menu-fold-outlined v-else @click="() => (sidebarCollapsed = !sidebarCollapsed)" />
       </span>
       <div class="h-inherit py-3 grow flex justify-between">
-        <div class="h-full flex gap-3">
+        <router-link to="/" class="h-full flex gap-3">
           <img alt="VPad logo" class="brand shrink h-full" :src="logo" />
           <a-typography-title class="!m-0" :level="2"> VPad</a-typography-title>
-        </div>
+        </router-link>
         <suspense>
           <template #fallback>
             <div class="flex gap-4">
