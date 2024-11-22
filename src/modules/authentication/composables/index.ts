@@ -14,7 +14,7 @@ export async function getUserAuth(): Promise<(UserGetResponse & ResponseRefreshT
       }
     }).then(a => a.json())
     if (!response) return null
-    return response
+    return {...response, token}
   } catch (e) {
     return null;
   }
