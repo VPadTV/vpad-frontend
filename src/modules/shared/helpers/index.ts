@@ -44,7 +44,7 @@ export const asFormData = (object: { [key: string]: any }) =>
         return formData
     }, new FormData())
 export function debugLog(...args: any[]) {
-    if(import.meta.env.DEBUG) {
+    if(import.meta.env.VITE_DEBUG) {
         console.debug(...args)
     }
 }
