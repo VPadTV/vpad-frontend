@@ -35,15 +35,15 @@ watch(mqRef, (nv) => {
         <template #fallback>
           <a-layout>
             <a-layout-header class="dark:!bg-slate-900 !bg-zinc-100 !px-4 lg:!px-20 z-50">
-              <a-skeleton :paragraph="false" />
-              <a-skeleton :paragraph="false" />
+              <a-skeleton :paragraph="false" active />
+              <a-skeleton :paragraph="false" active />
             </a-layout-header>
             <a-layout-content class="lg:m-20 m-10">
-              <a-skeleton />
-              <a-skeleton />
-              <a-skeleton />
-              <a-skeleton />
-              <a-skeleton />
+              <a-skeleton active />
+              <a-skeleton active />
+              <a-skeleton active />
+              <a-skeleton active />
+              <a-skeleton active />
             </a-layout-content>
           </a-layout>
         </template>

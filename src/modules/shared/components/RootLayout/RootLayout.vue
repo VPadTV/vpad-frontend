@@ -47,19 +47,26 @@ provide('sidebarCollapsed', sidebarCollapsed)
       </div>
     </a-layout-header>
     <a-layout>
-
-    <a-layout has-sider>
-      <sidebar class="shrink basis-sidebar mt-16 lg:mt-0 md:!flex" />
-      <a-layout-content class="lg:m-20 m-10">
-        <RouterView v-slot="{ Component }">
-          <template v-if="Component">
-            <suspense>
-              <component :is="Component"></component>
-            </suspense>
-          </template>
-        </RouterView>
-      </a-layout-content>
-    </a-layout>
+      <a-layout has-sider>
+        <sidebar class="shrink basis-sidebar mt-16 lg:mt-0 md:!flex" />
+        <a-layout-content class="m-5 lg:m-10">
+          <RouterView v-slot="{ Component }">
+            <template v-if="Component">
+              <suspense>
+                <template #fallback>
+                  <div>
+                    <a-skeleton active />
+                    <a-skeleton active />
+                    <a-skeleton active />
+                    <a-skeleton active />
+                  </div>
+                </template>
+                <component :is="Component"></component>
+              </suspense>
+            </template>
+          </RouterView>
+        </a-layout-content>
+      </a-layout>
     </a-layout>
   </a-layout>
 </template>
