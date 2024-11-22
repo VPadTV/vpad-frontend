@@ -48,7 +48,7 @@ const props = defineProps<{
 </template>
 
 <style  lang="scss">
-.single-feed-post .ant-card .ant-card-cover {
+.ant-card-cover , .ant-card{
   overflow: hidden;
 }
 </style>

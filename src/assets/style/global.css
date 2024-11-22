@@ -7,7 +7,10 @@ html, body {
     @apply dark:bg-slate-950 bg-zinc-50;
 }
 
+p:last-child {
+    margin-bottom: 0 !important;
+}
 
-.ant-image:has(img[class*="rounded-xl"]) .ant-image-mask {
+.ant-image:has(img[class*="rounded-xl"]), .ant-image:has(img[class*="rounded-xl"]) .ant-image-mask {
     @apply rounded-xl overflow-hidden;
 }
