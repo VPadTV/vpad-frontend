@@ -30,14 +30,14 @@ export async function getAuthorization(): Promise<{ Authorization: string } | un
 
 export async function register(body: RegisterBody) {
   const data = await AuthenticationRepository.register(body)
-  if (!data) return undefined
+  if (!data || !data.token) return undefined
   localStorage.setItem('userAuth', data.token)
   return data
 }
 
 export async function login(body: LoginBody) {
   const data = await AuthenticationRepository.login(body)
-  if (!data) return undefined
+  if (!data || !data.token) return undefined
   localStorage.setItem('userAuth', data.token)
   return data
 }
