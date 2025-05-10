@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Post, PostSummary, PaginatedPosts } from '@/types/post';
-import { 
+import {
   createPost as apiCreatePost,
   getPosts as apiGetPosts,
   getPost as apiGetPost,
@@ -160,7 +160,7 @@ export const postSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      
+
       // Get posts
       .addCase(getPosts.pending, (state) => {
         state.loading = true;
@@ -172,7 +172,7 @@ export const postSlice = createSlice({
         state.pagination = {
           total: paginatedPosts?.total || 0,
           page: paginatedPosts?.currentPage || 1,
-          size: paginatedPosts?.data?.length || 20,
+          size: paginatedPosts?.total,
         };
         state.loading = false;
       })
@@ -180,7 +180,7 @@ export const postSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      
+
       // Get single post
       .addCase(getPost.pending, (state) => {
         state.loading = true;
@@ -194,7 +194,7 @@ export const postSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      
+
       .addCase(updatePost.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -208,7 +208,7 @@ export const postSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      
+
       .addCase(deletePost.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -223,7 +223,7 @@ export const postSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      
+
       .addCase(votePost.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -231,13 +231,13 @@ export const postSlice = createSlice({
       .addCase(votePost.fulfilled, (state, action) => {
         state.loading = false;
         const { postId, vote } = action.payload as { postId: string; vote: number };
-        
+
         if (state.currentPost && state.currentPost.id === postId) {
           if (!state.currentPost.meta) state.currentPost.meta = {} as any;
-          
+
           const oldVote = state.currentPost.meta.myVote || 0;
           state.currentPost.meta.myVote = vote;
-          
+
           if (vote === 1 && oldVote !== 1) {
             state.currentPost.meta.likes = (state.currentPost.meta.likes || 0) + 1;
             if (oldVote === -1) {
@@ -265,15 +265,15 @@ export const postSlice = createSlice({
               meta: {
                 ...post.meta,
                 myVote: vote,
-                likes: vote === 1 && oldVote !== 1 
-                  ? (post.meta.likes || 0) + 1 
-                  : oldVote === 1 && vote !== 1 
-                    ? Math.max((post.meta.likes || 0) - 1, 0) 
+                likes: vote === 1 && oldVote !== 1
+                  ? (post.meta.likes || 0) + 1
+                  : oldVote === 1 && vote !== 1
+                    ? Math.max((post.meta.likes || 0) - 1, 0)
                     : post.meta.likes,
-                dislikes: vote === -1 && oldVote !== -1 
-                  ? (post.meta.dislikes || 0) + 1 
-                  : oldVote === -1 && vote !== -1 
-                    ? Math.max((post.meta.dislikes || 0) - 1, 0) 
+                dislikes: vote === -1 && oldVote !== -1
+                  ? (post.meta.dislikes || 0) + 1
+                  : oldVote === -1 && vote !== -1
+                    ? Math.max((post.meta.dislikes || 0) - 1, 0)
                     : post.meta.dislikes
               }
             };

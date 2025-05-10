@@ -12,7 +12,7 @@ export interface User {
   contact?: string | null;
   admin: boolean;
   banned: boolean;
-  banTimeout?: Date | null; 
+  banTimeout?: Date | null;
 }
 
 export interface Comment {
@@ -175,11 +175,10 @@ export interface PostSummary {
 }
 
 export interface PaginatedPosts {
+  total: number;
+  currentPage: number;
+  from: number;
+  to: number;
+  lastPage: number;
   data: PostSummary[];
-  meta: {
-    total: number;
-    page: number;
-    offset: number;
-    size: number;
-  };
 }
